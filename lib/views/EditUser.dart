@@ -17,17 +17,17 @@ class EditUserPage extends StatefulWidget{
 	}
 	
 class EditUserPageState extends State<EditUserPage> {
-	
+
   void extractArgs(){
     if (user != null)
       return;
     user = ModalRoute.of(context).settings.arguments;
     if (user == null)
       return;
-    emailController.text = user.email;
-    phoneController.text = user.phone;
-    fnameController.text = user.firstName;
-    lnameController.text = user.lastName;
+    emailController.text = user.email.toString();
+    phoneController.text = user.phone.toString();
+    fnameController.text = user.firstName.toString();
+    lnameController.text = user.lastName.toString();
     dropdownValue = user.role;
   }
 
@@ -41,9 +41,9 @@ class EditUserPageState extends State<EditUserPage> {
 
   @override
 	Widget build(BuildContext context) {
-    
-    extractArgs();
-    
+    if (user == null)
+      extractArgs();
+  
     List<DropdownMenuItem<int>> c = Globals.accountTypes.map((value) {
       print('val = ' + value.id.toString());
                   return DropdownMenuItem<int>(

@@ -15,7 +15,7 @@ import 'package:requests/requests.dart';
     
       listUsers().then((value) {
 
-        print('code = ' + value.statusCode.toString());
+        print('code4 = ' + value.statusCode.toString());
         if (value.statusCode == 200)
         {
           list = value.json();
@@ -38,4 +38,8 @@ import 'package:requests/requests.dart';
 Future<Response> listUsers()
 {
   return Requests.get(Globals.url.toString() + '/api/admin/users/');
+}
+
+Future<Response> logout(){
+  return Requests.delete(Globals.url.toString() + '/api/logout');
 }

@@ -1,5 +1,6 @@
 
 
+import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:PatientMonitorMobileApp/views/PatientsListView.dart';
@@ -22,7 +23,6 @@ class RecepHomePageState extends State<RecepHomePage> {
 
 	@override
 	Widget build(BuildContext context) {
-
 		return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton:
@@ -33,33 +33,20 @@ class RecepHomePageState extends State<RecepHomePage> {
             child: Icon(Icons.add),
             backgroundColor: Color.fromARGB(255, 68, 189, 50),
             onPressed: (){
-              Navigator.of(context).pushNamed('add').whenComplete(() {
+              Navigator.of(context).pushNamed('addpatient').whenComplete(() {
                 setState(() {
                   
                 });
               });
             },
-            )
+          )
           ),
-          backgroundColor:Color.fromARGB(255, 0, 168, 255),
-          body:DefaultTabController(
-            length: 3,
-            child: Scaffold(
-              appBar: AppBar(
-                backgroundColor: Color.fromARGB(255, 64, 115, 158),
-                bottom: TabBar(
-                  tabs: [
-                    Tab(icon: Icon(Icons.person), text: 'doctors',),
-                  ],
-                ),
-                title: Text('Manage Users'),
-              ),
-              body: TabBarView(
-                children: [
-                ],
-              ),
-            ),
+          appBar: AppBar(
+            title: Text('Reception'),
+            backgroundColor: Color.fromARGB(255, 64, 115, 158),
           ),
+          backgroundColor:Globals.backgroundColor,
+          body:PatientsListView()
 		);
 	}
 
@@ -72,7 +59,6 @@ class RecepHomePageState extends State<RecepHomePage> {
       content: Text("Please wait..."),
     );
 
-    
     showDialog(
       context: context,
       builder: (BuildContext context) {

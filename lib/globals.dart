@@ -10,13 +10,16 @@ class AccountType{
 }
 
 class Globals{
-  static String url;
-  static var data;
-  static bool logged;
-  static List<User> usersList;
-  static List<Patient> patientsList;
+  static String url = 'http://10.30.248.2:8080';
+  static List<User> usersList = List();
+  static List<Patient> patientsList = List();
+  static int adminId = 1;
+  static int nurseId = 3;
+  static int doctorId = 2;
+  static int recepId = 5;
+  static int patientId = 4;
 
-  static Color backgroundColor = Color.fromARGB(255, 245, 246, 250);
+  static Color backgroundColor = Color.fromARGB(255, 220, 221, 225);
   
   static List<AccountType> accountTypes = List.from(
     [

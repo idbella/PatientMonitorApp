@@ -1,18 +1,15 @@
 import 'package:PatientMonitorMobileApp/views/AddUser.dart';
+import 'package:PatientMonitorMobileApp/views/EditPatient.dart';
+import 'package:PatientMonitorMobileApp/views/addPatient.dart';
 import 'package:flutter/material.dart';
 import 'views/LoginPage.dart';
 import 'views/AdminHomePage.dart';
-import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/views/Splash.dart';
 import 'package:PatientMonitorMobileApp/views/EditUser.dart';
 import 'package:PatientMonitorMobileApp/views/RecepHomePage.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
-  Globals.url = 'http://10.30.248.2:8080';//'https://idbella.herokuapp.com';
-  Globals.logged = false;
-  Globals.data = null;
-  Globals.usersList = List();
-  Globals.patientsList = List();
   runApp(MyApp());
 }
 
@@ -21,8 +18,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('fr'),
+        const Locale('ar'),
+      ],
+      debugShowCheckedModeBanner: false,
       title: 'Patient Monior',
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -33,8 +38,10 @@ class MyApp extends StatelessWidget {
         'admin' :(context) => AdminHomePage(title: 'Admin',),
         'splash':(context) => SplashPage(),
         'edit'  :(context) => EditUserPage(),
-        'add'   :(context) => AddUserPage(),
-        'recep' :(context) => RecepHomePage()
+        'adduser':(context) => AddUserPage(),
+        'recep' :(context) => RecepHomePage(),
+        'addpatient':(context)=> AddPatientPage(),
+        'editpatient':(context)=> EditPatientPage()
       },
     );
   }

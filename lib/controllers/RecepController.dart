@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:requests/requests.dart';
 
 
-  void refreshPatientsList(BuildContext context, [bool reload=false,])
+  void refreshPatientsList(BuildContext context, Function setState, [bool reload=false,])
   {
 
     List<dynamic> list;
 
     if (reload || Globals.patientsList.isEmpty)
     {
-      Globals.usersList = List();
+      Globals.patientsList = List();
     
       listPatients().then((value) {
 
@@ -23,15 +23,13 @@ import 'package:requests/requests.dart';
           list.forEach((element) {
             Patient patient = Patient.fromjson(element);
             Globals.patientsList.add(patient);
+            setState((){});
           });
         }
         else if (value.statusCode == 401)
           Navigator.pushNamed(context, 'login');
       })
-      .catchError((err)=>print('err = ' + err.toString()))
-      .then((value) {
-
-      });
+      .catchError((err)=>print('errr = ' + err.toString()));
     }
   }
   

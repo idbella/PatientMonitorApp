@@ -42,7 +42,11 @@ class UsersListState extends State<UsersList>{
               .pushNamed('edit', arguments:users[index])
               .whenComplete(() => refreshUserList(context, setState, true));
             },
-            leading: Icon(Icons.person, size:70,color: Color.fromARGB(255, 113, 128, 147),),
+            leading: Icon(
+              Icons.person,
+              size:70,
+              color: Color.fromARGB(255, 113, 128, 147)
+            ),
             title: Text(users[index].firstName + ' ' + users[index].lastName),
             subtitle: Column(
               children:[

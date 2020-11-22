@@ -1,5 +1,5 @@
 
-import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
+import 'package:PatientMonitorMobileApp/controllers/RecepController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
@@ -8,27 +8,23 @@ import 'package:requests/requests.dart';
 
 class PatientsListView extends StatefulWidget{
   
-  PatientsListView(this.role);
-
-  final int role;
+  PatientsListView();
 
   @override
-  State<StatefulWidget> createState() => PatientsListViewState(role);
+  State<StatefulWidget> createState() => PatientsListViewState();
 
 }
 
 class PatientsListViewState extends State<PatientsListView>{
 
-  PatientsListViewState(this.role);
-
-  final int role;
+  PatientsListViewState();
 
   @override
   Widget build(BuildContext context) {
 
     List<Patient> patients = Globals.patientsList;
 
-    refreshUserList(context, setState);
+    refreshPatientsList(context, setState);
 
     return
     ListView.builder
@@ -40,11 +36,10 @@ class PatientsListViewState extends State<PatientsListView>{
         child:ListTile(
             onTap: () {
               Navigator.of(context)
-              .pushNamed('edit', arguments:patients[index])
-              .whenComplete(() => refreshUserList(context, setState, true));
+              .pushNamed('editpatient', arguments:patients[index]);
             },
             leading: Icon(Icons.person, size:70,color: Color.fromARGB(255, 113, 128, 147),),
-            title: Text(patients[index].user.firstName + ' ' + patients[index].user.lastName),
+            title: Text(patients[index].user.firstName.toString() + ' ' + patients[index].user.lastName.toString()),
             subtitle: Column(
               children:[
                 Divider(height: 8,),
@@ -52,7 +47,9 @@ class PatientsListViewState extends State<PatientsListView>{
                 children: [
                   Icon(Icons.email, size: 15,),
                   VerticalDivider(width: 5,),
-                  Text(patients[index].user.email),
+                  Flexible(child:
+                    Text(patients[index].user.email.toString(), overflow: TextOverflow.ellipsis,),
+                  )
                 ]
               ),
               SizedBox(height: 5,),
@@ -60,20 +57,38 @@ class PatientsListViewState extends State<PatientsListView>{
                 children: [
                   Icon(Icons.phone, size: 15,),
                   VerticalDivider(width: 5,),
-                  Text(patients[index].user.phone.toString()),
+                  Flexible(child:
+                    Text(patients[index].user.phone.toString(), overflow: TextOverflow.ellipsis,),
+                  )
                 ]
               )
             ]),
             isThreeLine: true,
-            trailing: IconButton(
-              iconSize: 25,
-              icon: Icon(Icons.delete,
-                color: Color.fromARGB(255, 194, 54, 22),
-              ),
-              onPressed: (){
-                showAlertDialog(context, patients[index].user);
-              }),
-        )
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children:[
+                IconButton(
+                  iconSize: 25,
+                  icon: Icon(Icons.edit,
+                    color: Color.fromARGB(255, 64, 115, 158),
+                  ),
+                  onPressed: (){
+                    Navigator.of(context)
+                    .pushNamed('editpatient', arguments:patients[index]);
+                  }
+                ),
+                IconButton(
+                  iconSize: 25,
+                  icon: Icon(Icons.delete,
+                    color: Color.fromARGB(255, 194, 54, 22),
+                  ),
+                  onPressed: (){
+                    showAlertDialog(context, patients[index].user);
+                  }
+                ),
+              ]
+            )
+          )
         );
       }
     );

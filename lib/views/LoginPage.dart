@@ -1,12 +1,14 @@
 
+import 'package:PatientMonitorMobileApp/views/RecepHomePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:PatientMonitorMobileApp/controllers/Login.dart';
 import 'package:PatientMonitorMobileApp/views/AdminHomePage.dart';
+import 'package:PatientMonitorMobileApp/globals.dart';
 
 class LoginPage extends StatefulWidget {
-	LoginPage({Key key, this.title}) : super(key: key);
+	LoginPage({Key key, this.title = 'Login'}) : super(key: key);
 
 	final String title;
 
@@ -16,6 +18,11 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
 
+
+  LoginPageState(){
+    emailTextController.text = "recep";
+    passwordTextController.text = "admin";
+  }
 	ProgressDialog pr;
 
 	bool showError = true;
@@ -37,17 +44,24 @@ class LoginPageState extends State<LoginPage> {
 
 		pr.show();
 		authenticate(email, password)
-			.then((value) => {
-				print(value.statusCode),
+			.then((value) {
+				print(value.statusCode);
 				if (value.statusCode == 404){
 					setState(() {
 						showError = true;
 						errorString = "email/password invalid : " + value.statusCode.toString();
-					})
+					});
 				}
-        else if (value.statusCode == 200 || value.statusCode == 401){
-          pr.hide(),
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>AdminHomePage()))
+        else if (value.statusCode == 200){
+          pr.hide();
+          var json = value.json();
+          if (json['role'] == Globals.adminId)
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminHomePage()));
+          else if (json['role'] == Globals.recepId)
+          {
+            print('switch to recep page');
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RecepHomePage()));
+          }
         }
 			})
 			.catchError((e) => print(e))
@@ -77,7 +91,7 @@ class LoginPageState extends State<LoginPage> {
 				color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w600)
 		);
 		return Scaffold(
-			backgroundColor:Color.fromARGB(255, 0, 168, 255),
+			backgroundColor:Globals.backgroundColor,
 			appBar: AppBar(
 				title: Text(widget.title),
 				backgroundColor: Color.fromARGB(255, 64, 115, 158),
@@ -100,17 +114,21 @@ class LoginPageState extends State<LoginPage> {
 							child:  TextField(
 								controller: emailTextController,
 								decoration:  InputDecoration(
+                    fillColor: Color.fromARGB(255, 245, 246, 250),
+                    filled: true,
 										border:  OutlineInputBorder(
 											borderRadius: BorderRadius.all(Radius.circular(20)),
-											borderSide:  BorderSide(color: Colors.teal)),
+											borderSide:  BorderSide(color: Colors.teal, width: 0.0)),
 										hintText: 'enter your email',
 										labelText: 'email',
-										prefixIcon: const Icon(
+										prefixIcon: Icon(
 											Icons.person,
 											color: Color.fromARGB(255, 25, 42, 86),
 										),
 										prefixText: ' ',
-										suffixStyle: const TextStyle(color: Colors.green)),
+                    // labelStyle: TextStyle(background: ),
+										// suffixStyle: TextStyle(color: Colors.green)
+                    ),
 							),
 						),
 						SizedBox(height: 40,),
