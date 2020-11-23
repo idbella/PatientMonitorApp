@@ -23,8 +23,8 @@ import 'package:requests/requests.dart';
           list.forEach((element) {
             Patient patient = Patient.fromjson(element);
             Globals.patientsList.add(patient);
-            setState((){});
           });
+			 setState((){});
         }
         else if (value.statusCode == 401)
           Navigator.pushNamed(context, 'login');

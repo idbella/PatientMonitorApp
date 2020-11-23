@@ -3,13 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget textField({
-  String hint = '',
-  String label = '',
-  String prefix = '',
-  Icon icon,
-  TextEditingController controller,
-  Widget suffix
-  })
+	bool	 obscure = false,
+	String hint = '',
+	String label = '',
+	String prefix = '',
+	Icon icon,
+	TextEditingController controller,
+	Widget suffix
+	})
 {
   return 
     Theme(
@@ -19,6 +20,7 @@ Widget textField({
       ),
       child:
       TextField(
+			obscureText: obscure,
         controller: controller,
         decoration:  InputDecoration(
             border:  OutlineInputBorder(

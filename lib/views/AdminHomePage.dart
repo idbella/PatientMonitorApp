@@ -26,7 +26,7 @@ class AdminHomePageState extends State<AdminHomePage> {
     logout().then((value) {
       if (value.statusCode == 200)
         print('logged out');
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(checkLogin: false,)));
       }
     ).catchError((err){
       print(err.toString());

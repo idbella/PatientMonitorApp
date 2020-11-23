@@ -24,7 +24,7 @@ class PatientsListViewState extends State<PatientsListView>{
 
     List<Patient> patients = Globals.patientsList;
 
-    refreshPatientsList(context, setState);
+    //refreshPatientsList(context, setState);
 
     return
     ListView.builder

@@ -7,7 +7,7 @@ class User{
 	String firstName;
 	String lastName;
 	String email;
-  String phone;
+	String phone;
 	int	 role;
 
 	static User fromjson(Map<String, dynamic> json){

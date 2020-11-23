@@ -114,7 +114,6 @@ class AddPatientPageState extends State<AddPatientPage> {
                   Row(
                     children: [
                       Icon(FontAwesome.user, color: Colors.grey,),
-                      //VerticalDivider(),
                       Text('Sexe :'),
                     ]
                   ),
@@ -122,7 +121,6 @@ class AddPatientPageState extends State<AddPatientPage> {
                     children: [
                       Radio(value: Genre.male, groupValue: _selected,
                         onChanged: (value){
-                          print('sel = ' + _selected.toString());
                           setState(() {
                             _selected = value;
                           });
