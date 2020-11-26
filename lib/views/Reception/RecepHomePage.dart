@@ -5,7 +5,6 @@ import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:PatientMonitorMobileApp/views/LoginPage.dart';
-import 'package:PatientMonitorMobileApp/views/addPatient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -114,7 +113,7 @@ class RecepHomePageState extends State<RecepHomePage> {
 												)
 											]
 										),
-										SizedBox(height: 140,),
+										SizedBox(height: 50,),
 										Column(
 											children: [
 												Row(
@@ -138,11 +137,13 @@ class RecepHomePageState extends State<RecepHomePage> {
 																size: 70,
 															),
 															EdgeInsets.symmetric(horizontal: 40,vertical: 40),
-															(){}
+															(){
+																Navigator.of(context).pushNamed('listpatients');
+															}
 														),
 													],
 												),
-												SizedBox(height: 50,),
+												SizedBox(height: 20,),
 												Row(
 													mainAxisAlignment: MainAxisAlignment.spaceBetween,
 													children: [
@@ -165,7 +166,35 @@ class RecepHomePageState extends State<RecepHomePage> {
 															(){}
 														),
 													],
-												)
+												),
+												SizedBox(height: 20,),
+												Row(
+													mainAxisAlignment: MainAxisAlignment.spaceBetween,
+													children: [
+														getCard(
+															'      Render-Vous      ',
+															Icon(
+																Foundation.calendar,
+																size: 70,
+															),
+															EdgeInsets.symmetric(horizontal: 15, vertical:40),
+															(){
+																Navigator.of(context).pushNamed('addpatient');
+															}
+														),
+														getCard(
+															'List Patients',
+															Icon(
+																Icons.find_in_page,
+																size: 70,
+															),
+															EdgeInsets.symmetric(horizontal: 40,vertical: 40),
+															(){
+																Navigator.of(context).pushNamed('listpatients');
+															}
+														),
+													],
+												),
 											],
 										)
 									]
@@ -198,9 +227,9 @@ class RecepHomePageState extends State<RecepHomePage> {
 	Widget getCard(String text, Widget icon, EdgeInsetsGeometry padding, Function onClick){
 		return (
 			FlatButton(
-				padding: EdgeInsets.zero,
 				onPressed: onClick,
-				child:Card(
+				padding: EdgeInsets.zero,
+				child: Card(
 					elevation: 10,
 					child:Padding(
 						padding: padding,
@@ -215,5 +244,4 @@ class RecepHomePageState extends State<RecepHomePage> {
 			)
 		);
 	}
-
 }

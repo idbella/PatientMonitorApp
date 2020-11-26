@@ -1,9 +1,9 @@
 
 import 'package:PatientMonitorMobileApp/globals.dart';
+import 'package:PatientMonitorMobileApp/views/Admin/UsersListView.dart';
 import 'package:PatientMonitorMobileApp/views/LoginPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:PatientMonitorMobileApp/views/UsersListView.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
 

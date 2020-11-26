@@ -12,7 +12,7 @@ class AccountType{
 
 class Globals {
 
-	static String				url					= 'http://10.30.248.2:8080';
+	static String				url					= 'http://172.16.177.126:8080';
 	static List<User>			usersList			= List();
 	static List<Patient>		patientsList		= List();
 	static List<Insurance>	insuarnces			= List();

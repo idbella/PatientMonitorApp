@@ -9,7 +9,10 @@ Widget textField({
 	String prefix = '',
 	Icon icon,
 	TextEditingController controller,
-	Widget suffix
+	Widget suffix,
+	bool multiline = false,
+	TextInputType inputtype = TextInputType.text,
+	int maxlines = 1
 	})
 {
   return 
@@ -20,12 +23,14 @@ Widget textField({
       ),
       child:
       TextField(
+			keyboardType: inputtype,
+			maxLines: maxlines,
 			obscureText: obscure,
-        controller: controller,
-        decoration:  InputDecoration(
+      	controller: controller,
+      	decoration:  InputDecoration(
             border:  OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              borderSide:  BorderSide(color: Colors.teal)),
+            	borderRadius: BorderRadius.all(Radius.circular(20)),
+            	borderSide:  BorderSide(color: Colors.teal)),
             hintText: hint,
             labelText: label,
             suffix: suffix,

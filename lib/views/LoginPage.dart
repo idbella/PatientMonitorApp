@@ -5,8 +5,8 @@ import 'package:PatientMonitorMobileApp/StyledTextView.dart';
 import 'package:PatientMonitorMobileApp/controllers/Login.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
-import 'package:PatientMonitorMobileApp/views/AdminHomePage.dart';
-import 'package:PatientMonitorMobileApp/views/RecepHomePage.dart';
+import 'package:PatientMonitorMobileApp/views/Admin/AdminHomePage.dart';
+import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:requests/requests.dart';
@@ -37,6 +37,8 @@ class LoginPageState extends State<LoginPage>{
 	LoginPageState(this.checkLogin){
 		if (checkLogin == false)
 			showLoginPage = true;
+		emailTextController.text = 'recep';
+		passwordTextController.text = 'admin';
 	}
 
 	void connect(BuildContext context){
