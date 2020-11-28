@@ -3,6 +3,7 @@ import 'package:PatientMonitorMobileApp/views/Reception/EditMedicalFile.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/ListPatients.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/addPatientExtra.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/viewPatient.dart';
+import 'package:PatientMonitorMobileApp/views/doctor/DoctorHomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
 			'listpatients':(contect)=>ListPatientsPage(),
 			'viewpatient':(context)=>ViewPatientPage(),
 			'editfile':(context)=>EditMedicalFile(),
+			'doctor':(context)=>DoctorHomePage()
       },
     );
   }

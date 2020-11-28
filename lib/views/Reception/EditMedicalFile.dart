@@ -6,6 +6,7 @@ import 'package:PatientMonitorMobileApp/StyledTextView.dart';
 import 'package:PatientMonitorMobileApp/TimePicker.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
+import 'package:PatientMonitorMobileApp/models/insurance.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 	DateTime				date = DateTime.now();
 	TimeOfDay			time = TimeOfDay.now();
 	bool					rendezVous = true;
+	int					_selected;
 
 	TextEditingController titleController = TextEditingController();
 	TextEditingController motifController = TextEditingController();
@@ -49,6 +51,12 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 	Widget build(BuildContext context) {
 		
 		extractArgs();
+
+		List<Widget> widgets = List();
+		
+		Globals.insuarnces.forEach((Insurance element) {
+			widgets.add(getCard(element));
+		});
 		
 		return Scaffold(
 			backgroundColor:Globals.backgroundColor,
@@ -202,7 +210,23 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 												)
 											],
 										),
-										SizedBox(height: 20),
+										Padding(
+											padding: EdgeInsets.all(20),
+											child:Column(
+												children: [
+													Text(
+														'Insurance type',
+														style: TextStyle(
+															fontSize: 24,
+															fontWeight: FontWeight.w600
+														),
+													),
+													SizedBox(height: 20,),
+													Column(children: widgets,),
+													SizedBox(height: 30,),
+												]
+											)
+										),
 										Row(
 											mainAxisAlignment: MainAxisAlignment.spaceBetween,
 											children: [
@@ -232,7 +256,7 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 													shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
 												)
 											]
-										)
+										),
 									]
 								)
 							)
@@ -243,6 +267,52 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 		);
 	}
 
+	Widget getCard(Insurance element){
+		return
+			Card(
+				child: ListTile(
+					onTap: (){
+						setState(() {
+							_selected = element.id;
+						});
+					},
+					title:Column(
+						children:[
+							Row(
+								children:[
+									Radio(
+										value: element.id,
+										groupValue: _selected,
+										onChanged: (value){
+											setState(() {
+												_selected = value;
+											});
+										}
+									),
+									Text(element.title.toString()),
+								]
+							),
+							Visibility(
+								visible: _selected == element.id && element.editable,
+								child: Column(
+									children:[
+										textField(
+											label: element.title.toString(),
+											hint: element.title.toString(),
+											maxlines: null,
+											inputtype: TextInputType.multiline,
+											controller: element.controller
+										),
+										SizedBox(height: 10,)
+									]
+								)
+							)
+						]
+					)
+				)
+			);
+	}
+	
 	Widget patientInfo()
 	{
 		Patient patient = medicalFile.patient;

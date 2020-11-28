@@ -7,6 +7,7 @@ import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:PatientMonitorMobileApp/views/Admin/AdminHomePage.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
+import 'package:PatientMonitorMobileApp/views/doctor/DoctorHomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:requests/requests.dart';
@@ -245,15 +246,16 @@ class LoginPageState extends State<LoginPage>{
 				pr.hide();
 				var json = value.json();
 				Globals.user = User.fromjson(json);
+				StatefulWidget page;
 				if (json['role'] == Globals.adminId)
-					Navigator.pushReplacement(
-						context,
-						MaterialPageRoute(builder: (context) => AdminHomePage())
-					);
+					page = AdminHomePage();
 				else if (json['role'] == Globals.recepId)
-					Navigator.pushReplacement(
+					page = RecepHomePage();
+				else if (json['role'] == Globals.doctorId)
+					page = DoctorHomePage();
+				Navigator.pushReplacement(
 						context,
-						MaterialPageRoute(builder: (context) => RecepHomePage())
+						MaterialPageRoute(builder: (context) => page)
 					);
 			}
 		})
