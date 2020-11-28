@@ -170,7 +170,7 @@ class InsurancePageState extends State<InsurancePage> {
 		.then((value) {
 			if (value.statusCode == 200)
 			{
-				Globals.patientsList = List();
+				Globals.patientsList = null;
 				Navigator.pushReplacement(
 					context,
 					MaterialPageRoute(builder: (context)=>RecepHomePage())
@@ -178,7 +178,7 @@ class InsurancePageState extends State<InsurancePage> {
 				print('success');
 			}
 			else
-				print(value.statusCode.toString());	
+				print(value.statusCode.toString());
 		})
 		.catchError((e){
 			print(e.toString());

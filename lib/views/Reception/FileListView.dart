@@ -15,12 +15,12 @@ class FileListView extends StatefulWidget {
   
 class FileListViewState  extends State<FileListView>{
 	
-	List<MedicalFile> medicalFiles = List();
+	List<MedicalFile> medicalFiles;
 	Patient patient;
 
 	void getMedicalFiles()
 	{
-		if (medicalFiles.isEmpty == false)
+		if (medicalFiles != null)
 			return ;
 		Requests.get(Globals.url + '/api/patients/' + patient.id.toString() + '/files')
 			.then((response) {
@@ -28,13 +28,16 @@ class FileListViewState  extends State<FileListView>{
 				if (response.statusCode == 200)
 				{
 					List<dynamic> list = response.json();
-					list.forEach((element) {
-						MedicalFile medicalFile = MedicalFile.fromjson(element);
-						medicalFiles.add(medicalFile);
-						print('file : ' + element.toString());
-					});
+					medicalFiles = List();
 					if (list.isNotEmpty)
+					{
+						list.forEach((element) {
+							MedicalFile medicalFile = MedicalFile.fromjson(element);
+							medicalFile.patient = patient;
+							medicalFiles.add(medicalFile);
+						});
 						setState(() {});
+					}
 				}
 			});
 	}
@@ -50,9 +53,14 @@ class FileListViewState  extends State<FileListView>{
 
 		extractArgs();
 		getMedicalFiles();
-		print(medicalFiles.length.toString());
+
 		List<Widget> list = List();
 		
+		if (medicalFiles == null)
+			return Center(child:Column(children:[SizedBox(height:100),Text('Loading...')]));
+		if (medicalFiles.isEmpty)
+			return Center(child:Column(children:[SizedBox(height:100),Text('No medical files to show...')]));
+
 		medicalFiles.forEach((MedicalFile medicalFile) {
 			String insurance = '';
 			if (Globals.insuarnces.isNotEmpty)
@@ -109,17 +117,20 @@ class FileListViewState  extends State<FileListView>{
 											getButton(
 												'delete',
 												Icons.delete,
-												Color.fromARGB(255, 232, 65, 24)
+												Color.fromARGB(255, 232, 65, 24),
+												() => delete(medicalFile.id)
 											),
 											getButton(
 												'edit',
 												Icons.assignment,
-												Colors.lightBlue
+												Colors.lightBlue,
+												() => Navigator.of(context).pushNamed('editfile', arguments:medicalFile)
 											),
 											getButton(
 												'view',
 												Icons.description,
-												Color.fromARGB(255, 76, 209, 55)
+												Color.fromARGB(255, 76, 209, 55),
+												(){}
 											),
 										],
 									)
@@ -159,12 +170,12 @@ class FileListViewState  extends State<FileListView>{
 		);
 	}
 
-	Widget getButton(String title, IconData icon, Color color)
+	Widget getButton(String title, IconData icon, Color color, Function onClick)
 	{
 		return RaisedButton(
 			elevation: 5,
 			color: color,
-			onPressed: (){},
+			onPressed: onClick,
 			child: Row(
 				children:[
 					Icon(

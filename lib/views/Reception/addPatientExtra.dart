@@ -55,6 +55,7 @@ class AddPatientExtraPageState extends State<AddPatientExtraPage> {
 			cinController.text			= patient.cin.toString();
 			postalCodeController.text	= patient.postalCode.toString();
 			_country = Country.ALL.where((country) => country.name == patient.country).first;
+			_selected = patient.sexe == 0 ? Genre.male : Genre.female;
 		}
 	}
 
@@ -127,24 +128,43 @@ class AddPatientExtraPageState extends State<AddPatientExtraPage> {
 												),
 												Row(
 													children: [
-														Radio(value: Genre.male, groupValue: _selected,
-															onChanged: (value){
-																setState(() {
-																	_selected = value;
-																});
-															}
+														RaisedButton(
+															padding: EdgeInsets.symmetric(horizontal:10),
+															color: Colors.blue[100],
+															onPressed: () => setState(() =>_selected = Genre.male),
+															child:Row(
+																children:[
+																	SizedBox(
+																		width: 30,
+																		child:Radio(value: Genre.male, groupValue: _selected, onChanged: (value){
+																			print('sel = ' + _selected.toString());
+																			setState(() =>_selected = value);
+																		})
+																	),
+																	Icon(FontAwesome.male,),
+																	Text('male  '),
+																]
+															)
 														),
-														Icon(FontAwesome.male),
-														Text('male'),
-														VerticalDivider(),
-														Radio(value: Genre.female, groupValue: _selected, onChanged: (value){
-															print('sel = ' + _selected.toString());
-															setState(() {
-															_selected = value;
-															});
-														}),
-														Icon(FontAwesome.female),
-														Text('female'),
+														SizedBox(width: 5,),
+														RaisedButton(
+															padding: EdgeInsets.symmetric(horizontal:10),
+															color: Colors.pink[100],
+															onPressed: () => setState(() =>_selected = Genre.female),
+															child:Row(
+																children:[
+																	SizedBox(
+																		width: 30,
+																		child:Radio(value: Genre.female, groupValue: _selected, onChanged: (value){
+																			print('sel = ' + _selected.toString());
+																			setState(() =>_selected = value);
+																		})
+																	),
+																	Icon(FontAwesome.female,),
+																	Text('female'),
+																]
+															)
+														)
 													],
 												),
 											]
@@ -254,7 +274,7 @@ class AddPatientExtraPageState extends State<AddPatientExtraPage> {
 		.then((value) {
 			print('edit ' + patient.user.email+ ' ' + value.statusCode.toString());
 			if (value.statusCode == 200)
-				Globals.patientsList = List();
+				Globals.patientsList = null;
 				Navigator.pushReplacement(
 					context,
 					MaterialPageRoute(builder: (context)=>RecepHomePage())

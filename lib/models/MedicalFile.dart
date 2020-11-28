@@ -1,8 +1,10 @@
 
+import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 
 class MedicalFile{
 
+	Patient		patient;
 	int			id;
 	String 		title;
 	String		motif;
@@ -18,7 +20,8 @@ class MedicalFile{
 		this.creationDate,
 		this.insurance,
 		this.insuranceType,
-		this.doctor
+		this.doctor,
+		this.patient
 	});
 	
 	static MedicalFile fromjson(Map<String, dynamic> json){

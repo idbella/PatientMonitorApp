@@ -1,4 +1,5 @@
 
+import 'package:PatientMonitorMobileApp/views/Reception/EditMedicalFile.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/ListPatients.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/addPatientExtra.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/viewPatient.dart';
@@ -46,18 +47,18 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: 'login',
       routes: {
-        'login' :(context) => LoginPage(title:'login Page'),
-        'admin' :(context) => AdminHomePage(title: 'Admin',),
-        'edit'  :(context) => EditUserPage(),
-        'adduser':(context) => AddUserPage(),
-        'recep' :(context) => RecepHomePage(),
-        'addpatient':(context) => AddPatientPage(),
-		  'addpatientextra':(context)=>AddPatientExtraPage(),
-        'editpatient':(context) => EditPatientPage(),
-		  'insurance':(context) => InsurancePage(),
-		  'listpatients':(contect)=>ListPatientsPage(),
-		  'viewpatient':(context)=>ViewPatientPage(),
-
+			'login' :(context) => LoginPage(title:'login Page'),
+			'admin' :(context) => AdminHomePage(title: 'Admin',),
+			'edit'  :(context) => EditUserPage(),
+			'adduser':(context) => AddUserPage(),
+			'recep' :(context) => RecepHomePage(),
+			'addpatient':(context) => AddPatientPage(),
+			'addpatientextra':(context)=>AddPatientExtraPage(),
+			'editpatient':(context) => EditPatientPage(),
+			'insurance':(context) => InsurancePage(),
+			'listpatients':(contect)=>ListPatientsPage(),
+			'viewpatient':(context)=>ViewPatientPage(),
+			'editfile':(context)=>EditMedicalFile(),
       },
     );
   }

@@ -60,9 +60,30 @@ class AdminHomePageState extends State<AdminHomePage> {
             backgroundColor: Color.fromARGB(255, 64, 115, 158),
             bottom: TabBar(
               tabs: [
-                Tab(icon: Icon(Icons.person), text: 'doctors',),
-                Tab(icon: Icon(Icons.person), text: 'nurses',),
-                Tab(icon: Icon(Icons.person), text: 'receptionists',)
+               	Tab(
+							iconMargin: EdgeInsets.zero,
+							icon: CircleAvatar(
+								backgroundImage: Image.asset('images/doctor.jpg').image,
+								radius: 20,
+						 	),
+							text: 'Doctors'
+						),
+               	Tab(
+							iconMargin: EdgeInsets.zero,
+							icon: CircleAvatar(
+								backgroundImage: Image.asset('images/doctor.jpg').image,
+								radius: 20,
+						 	),
+							text: 'Nurses'
+						),
+               	Tab(
+							iconMargin: EdgeInsets.zero,
+							icon: CircleAvatar(
+								backgroundImage: Image.asset('images/doctor.jpg').image,
+								radius: 20,
+						 	),
+							text: 'Receptionists'
+						),
               ],
             ),
             title: Text('Manage Users'),
