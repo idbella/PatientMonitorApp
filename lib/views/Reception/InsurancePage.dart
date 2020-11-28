@@ -22,32 +22,8 @@ class InsurancePageState extends State<InsurancePage> {
 
 	int _selected;
 
-	void getInurances(BuildContext context){
-
-		if (Globals.insuarnces.isEmpty == false)
-			return ;
-		Requests.get(Globals.url + '/api/insurance').then((Response response){
-			print('response = ' + response.content().toString());
-			if (response.statusCode == 200)
-			{
-				List<dynamic> list = response.json();
-				list.forEach((json) { 
-					var insurance = Insurance.fromJson(json);
-					Globals.insuarnces.add(insurance);
-				});
-				setState(() {
-				  
-				});
-			}
-			else
-				print('error ' + response.content().toString());
-		});
-	}
-
 	@override
 	Widget build(BuildContext context) {
-
-		getInurances(context);
 
 		List<Widget> widgets = List();
 		

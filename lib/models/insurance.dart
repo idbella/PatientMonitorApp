@@ -6,6 +6,7 @@ class Insurance{
 	String						title;
 	bool							editable;
 	TextEditingController	controller = TextEditingController();
+
 	Insurance(this.id,this.title,this.editable);
 
 	static Insurance fromJson(var json)

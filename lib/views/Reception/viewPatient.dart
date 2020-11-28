@@ -6,6 +6,8 @@ import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:PatientMonitorMobileApp/views/LoginPage.dart';
+import 'package:PatientMonitorMobileApp/views/Reception/FileListView.dart';
+import 'package:PatientMonitorMobileApp/views/Reception/PatientsListView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -55,108 +57,28 @@ class ViewPatientPageState extends State<ViewPatientPage> {
 								),
 								clipper: ImageClipper(),
 							),
-							Positioned(
-								top:20,
-								right: 20,
-								child:IconButton(
-									icon: Icon(Icons.menu),
-									onPressed: (){
-									   logout().then((value) {
-											if (value.statusCode == 200)
-												print('logged out');
-												Navigator.pushReplacement(
-													context,
-													MaterialPageRoute(builder: (context) => LoginPage(checkLogin: false,))
-												);
-											}
-										).catchError((err){
-											print(err.toString());
-										});
-									}
-								),
-							),
 							Padding(
 								padding: EdgeInsets.all(20),
 								child: Column(
 									mainAxisAlignment: MainAxisAlignment.center,
 									crossAxisAlignment: CrossAxisAlignment.start,
 									children: [
-										SizedBox(height: 10,),
-										Row(
-											children: [
-												Image.asset('images/avatar.png', width: 100, height: 100,),
-												SizedBox(width: 10,),
-												Column(
-													mainAxisAlignment: MainAxisAlignment.center,
-													crossAxisAlignment: CrossAxisAlignment.start,
-													children: [
-														Text(
-															'Patient',
-															style: TextStyle(
-																fontSize: 18,
-																fontWeight: FontWeight.w700
-															),
-														),
-														Divider(height: 8,),
-														Text(patient.user.lastName.toString() + ' ' + patient.user.firstName.toString()),
-														SizedBox(height: 5,),
-														Text(patient.user.email.toString()),
-														SizedBox(height: 5,),
-														Text(patient.user.phone.toString())
-													]
-												)
-											]
-										),
-										SizedBox(height: 50,),
-										Column(
-											children: [
-												Card(
-													elevation: 5,
-													child: Padding(
-														padding: EdgeInsets.symmetric(horizontal: 15,vertical: 20),
-														child:Column(
-															mainAxisAlignment: MainAxisAlignment.start,
-															crossAxisAlignment: CrossAxisAlignment.start,
-															children:[
-																Row(
-																	mainAxisAlignment: MainAxisAlignment.spaceBetween,
-																	children:[
-																		Expanded(child:Text(
-																			'motif de consultation testing',
-																			style: TextStyle(
-																				fontSize: 20,
-																				fontWeight: FontWeight.w500
-																			),
-																			overflow: TextOverflow.ellipsis,
-																		)),
-																		Icon(MaterialCommunityIcons.dots_vertical)
-																	]
-																),
-																Text('14/12/2020 22:45'),
-																Divider(),
-																Text('Doctor : ',
-																	style: TextStyle(
-																		fontWeight: FontWeight.w700
-																	),
-																),
-																SizedBox(height: 8,),
-																Text('insurance : ',
-																	style: TextStyle(
-																		fontWeight: FontWeight.w700
-																	),
-																),
-																SizedBox(height: 8,),
-																Text('rendez-vous : ',
-																	style: TextStyle(
-																		fontWeight: FontWeight.w700
-																	),
-																),
-															]
-														)
-													)
+										patientInfo(),
+										SizedBox(height: 30,),
+										TextField(
+											decoration: InputDecoration(
+												border:  OutlineInputBorder(
+													borderRadius: BorderRadius.all(Radius.circular(5)),
+													borderSide:  BorderSide(color: Colors.teal)
 												),
-											],
-										)
+												fillColor: Colors.white,
+												filled: true,
+												suffix: Icon(Icons.search),
+												hintText: 'search'
+											),
+										),
+										SizedBox(height: 15,),
+										FileListView()
 									]
 								)
 							)
@@ -167,42 +89,34 @@ class ViewPatientPageState extends State<ViewPatientPage> {
 		);
 	}
 
-	Widget file(){
-		return(
-			Card(
-				elevation: 5,
-				child:ListTile(
-					title: Column(
-						children:[
+	Widget patientInfo()
+	{
+		return (
+			Row(
+				children: [
+					Image.asset('images/avatar.png', width: 100, height: 100,),
+					SizedBox(width: 10,),
+					Column(
+						mainAxisAlignment: MainAxisAlignment.center,
+						crossAxisAlignment: CrossAxisAlignment.start,
+						children: [
 							Text(
-								'motif de consultation',
+								'Patient',
 								style: TextStyle(
-									fontSize: 20,
-									fontWeight: FontWeight.w500
+									fontSize: 18,
+									fontWeight: FontWeight.w700
 								),
-								overflow: TextOverflow.ellipsis,
 							),
-							Text(
-								'motif de consultation',
-								style: TextStyle(
-									fontSize: 20,
-									fontWeight: FontWeight.w500
-								),
-								overflow: TextOverflow.ellipsis,
-							),
-							Text(
-								'motif de consultation',
-								style: TextStyle(
-									fontSize: 20,
-									fontWeight: FontWeight.w500
-								),
-								overflow: TextOverflow.ellipsis,
-							),
+							Divider(height: 8,),
+							Text(patient.user.lastName.toString() + ' ' + patient.user.firstName.toString()),
+							SizedBox(height: 5,),
+							Text(patient.user.email.toString()),
+							SizedBox(height: 5,),
+							Text(patient.user.phone.toString())
 						]
 					)
-				)
+				]
 			)
 		);
 	}
-
 }

@@ -1,4 +1,5 @@
 
+import 'package:PatientMonitorMobileApp/controllers/RecepController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/PatientsListView.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,9 @@ class ListPatientsPageState extends State<ListPatientsPage> {
 
 	@override
 	Widget build(BuildContext context) {
+
+		refreshPatientsList(context, setState);
+
 		return Scaffold(
 			backgroundColor:Color.fromARGB(255, 0, 168, 255),
 			body:DefaultTabController(
@@ -27,10 +31,19 @@ class ListPatientsPageState extends State<ListPatientsPage> {
 						backgroundColor: Color.fromARGB(255, 64, 115, 158),
 						title: Text('Manage Patients'),
 					),
-					body: PatientsListView(),
+					body: getContent()
 				),
 			),
    	);
+	}
+
+	Widget getContent()
+	{
+		if (Globals.patientsList == null)
+			return Center(child:Text('Loading...'));
+		if (Globals.patientsList.isEmpty)
+			return Center(child:Text('No Patients to view'));
+		return PatientsListView();
 	}
 
 	void showAlertDialog(BuildContext context) {

@@ -47,6 +47,7 @@ class LoginPageState extends State<LoginPage>{
 			print('check : ' + value.statusCode.toString());
 			var status = value.statusCode;
 			if (status == 200){
+				Globals.getInsurances();
 				var json = value.json();
 				Globals.user = User.fromjson(json);
 				if (json['role'] == Globals.adminId)
@@ -240,6 +241,7 @@ class LoginPageState extends State<LoginPage>{
 				});
 			}
 			else if (value.statusCode == 200){
+				Globals.getInsurances();
 				pr.hide();
 				var json = value.json();
 				Globals.user = User.fromjson(json);

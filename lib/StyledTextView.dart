@@ -12,7 +12,8 @@ Widget textField({
 	Widget suffix,
 	bool multiline = false,
 	TextInputType inputtype = TextInputType.text,
-	int maxlines = 1
+	int maxlines = 1,
+	Color color
 	})
 {
   return 
@@ -30,13 +31,17 @@ Widget textField({
       	decoration:  InputDecoration(
             border:  OutlineInputBorder(
             	borderRadius: BorderRadius.all(Radius.circular(20)),
-            	borderSide:  BorderSide(color: Colors.teal)),
+            	borderSide:  BorderSide(color: Colors.teal)
+				),
             hintText: hint,
             labelText: label,
             suffix: suffix,
             prefixIcon: icon,
             prefixText: ' ',
-            suffixStyle: const TextStyle(color: Colors.green)),
+            suffixStyle: const TextStyle(color: Colors.green),
+				filled: color != null,
+				fillColor: color
+			),
       )
     );
 }
