@@ -16,7 +16,7 @@ class _UserDrawerState extends State<UserDrawer> {
   	Widget build(BuildContext context) {
 		return Drawer(
 			child:Container(
-				color: Color.fromARGB(255, 113, 128, 147),
+				color: Color.fromARGB(255, 220, 221, 225),
 				child: SafeArea(
 					child:Column(
 						children:[
@@ -24,12 +24,13 @@ class _UserDrawerState extends State<UserDrawer> {
 								width: double.infinity,
 								color: Colors.white,
 								child:Container(
-									width: 40,
-									child:CircleAvatar(
-										radius: 100,
-										backgroundImage: Image.asset('images/doctor.jpg').image,
+									height: 250,
+									child:Image.asset('images/doctor.jpg',fit: BoxFit.fill,),
+									decoration: BoxDecoration(
+										borderRadius: BorderRadius.circular(100),
+										//border: BoxBorder.lerp(a, b, t)
 									),
-								)
+								),
 							),
 							Card(
 								child:ListTile(
