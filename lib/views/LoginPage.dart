@@ -46,7 +46,7 @@ class LoginPageState extends State<LoginPage>{
 			print('check : ' + value.statusCode.toString());
 			var status = value.statusCode;
 			if (status == 200){
-				Globals.getInsurances();
+				Globals.init();
 				var json = value.json();
 				Globals.user = User.fromjson(json);
 				StatefulWidget page;
@@ -247,7 +247,7 @@ class LoginPageState extends State<LoginPage>{
 				});
 			}
 			else if (value.statusCode == 200){
-				Globals.getInsurances();
+				Globals.init();
 				pr.hide();
 				var json = value.json();
 				Globals.user = User.fromjson(json);

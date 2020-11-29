@@ -25,6 +25,7 @@ dependencies:
   progress_dialog: ^1.2.4
   flutter_country_picker: ^0.1.6
   flutter_icons: ^1.1.0
+  flutter_typeahead: ^1.8.8
   flutter_localizations:
     sdk: flutter
   flutter:

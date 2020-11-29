@@ -33,116 +33,108 @@ class DoctorHomePageState extends State<DoctorHomePage> {
 			drawer: UserDrawer(),
 			floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
 			backgroundColor:Globals.backgroundColor,
-			body:SafeArea(
-				child:SingleChildScrollView(
-					child: Stack(
-						children: [
-							ClipPath(
-								child:Container(
-									height: 230,
-									width: MediaQuery.of(context).size.width,
-									decoration: BoxDecoration(
-										image: DecorationImage(
-											image: AssetImage('images/header.png'),
-											fit:BoxFit.fitWidth
-										)
-									),
-								),
-								clipper: ImageClipper(),
-							),
-							Positioned(
-								top:20,
-								right: 20,
-								child:IconButton(
-									icon: Icon(Icons.menu),
-									onPressed: (){
-									   logout().then((value) {
-											if (value.statusCode == 200)
-												print('logged out');
-												Navigator.pushReplacement(
-													context,
-													MaterialPageRoute(builder: (context) => LoginPage(checkLogin: false,))
-												);
-											}
-										).catchError((err){
-											print(err.toString());
-										});
-									}
-								),
-							),
-							Padding(
-								padding: EdgeInsets.all(20),
-								child: Column(
-									mainAxisAlignment: MainAxisAlignment.center,
-									crossAxisAlignment: CrossAxisAlignment.start,
-									children: [
-										SizedBox(height: 10,),
-										Row(
-											children: [
-												CircleAvatar(
-													radius: 50,
-													backgroundImage:Image.asset('images/doctor.jpg',).image,
-												),
-												SizedBox(width: 10,),
-												Column(
-													mainAxisAlignment: MainAxisAlignment.center,
-													crossAxisAlignment: CrossAxisAlignment.start,
-													children: [
-														Text(
-															'Doctor',
-															style: TextStyle(
-																fontSize: 18,
-																fontWeight: FontWeight.w700
-															),
-														),
-														Divider(height: 8,),
-														Text(user.lastName.toString() + ' ' + user.firstName.toString()),
-														SizedBox(height: 5,),
-														Text(user.email.toString()),
-														SizedBox(height: 5,),
-														Text(user.phone.toString())
-													]
+			body:Builder(
+				builder:(context){
+					return SafeArea(
+						child:SingleChildScrollView(
+							child: Stack(
+								children: [
+									ClipPath(
+										child:Container(
+											height: 230,
+											width: MediaQuery.of(context).size.width,
+											decoration: BoxDecoration(
+												image: DecorationImage(
+													image: AssetImage('images/header.png'),
+													fit:BoxFit.fitWidth
 												)
-											]
+											),
 										),
-										SizedBox(height: 50,),
-										Column(
+										clipper: ImageClipper(),
+									),
+									Positioned(
+										top:20,
+										right: 20,
+										child:IconButton(
+											icon: Icon(Icons.menu),
+											onPressed: ()=>Scaffold.of(context).openDrawer()
+										),
+									),
+									Padding(
+										padding: EdgeInsets.all(20),
+										child: Column(
+											mainAxisAlignment: MainAxisAlignment.center,
+											crossAxisAlignment: CrossAxisAlignment.start,
 											children: [
+												SizedBox(height: 10,),
 												Row(
-													mainAxisAlignment: MainAxisAlignment.spaceBetween,
 													children: [
-														getCard(
-															'      Render-Vous      ',
-															Icon(
-																Foundation.calendar,
-																size: 70,
-															),
-															EdgeInsets.symmetric(horizontal: 15, vertical:40),
-															(){
-																Navigator.of(context).pushNamed('addpatient');
-															}
+														CircleAvatar(
+															radius: 50,
+															backgroundImage:Image.asset('images/doctor.jpg',).image,
 														),
-														getCard(
-															'List Patients',
-															Icon(
-																Icons.find_in_page,
-																size: 70,
-															),
-															EdgeInsets.symmetric(horizontal: 40,vertical: 40),
-															(){
-																Navigator.of(context).pushNamed('listpatients');
-															}
+														SizedBox(width: 10,),
+														Column(
+															mainAxisAlignment: MainAxisAlignment.center,
+															crossAxisAlignment: CrossAxisAlignment.start,
+															children: [
+																Text(
+																	'Doctor',
+																	style: TextStyle(
+																		fontSize: 18,
+																		fontWeight: FontWeight.w700
+																	),
+																),
+																Divider(height: 8,),
+																Text(user.lastName.toString() + ' ' + user.firstName.toString()),
+																SizedBox(height: 5,),
+																Text(user.email.toString()),
+																SizedBox(height: 5,),
+																Text(user.phone.toString())
+															]
+														)
+													]
+												),
+												SizedBox(height: 50,),
+												Column(
+													children: [
+														Row(
+															mainAxisAlignment: MainAxisAlignment.spaceBetween,
+															children: [
+																getCard(
+																	'      Render-Vous      ',
+																	Icon(
+																		Foundation.calendar,
+																		size: 70,
+																	),
+																	EdgeInsets.symmetric(horizontal: 15, vertical:40),
+																	(){
+																		Navigator.of(context).pushNamed('addpatient');
+																	}
+																),
+																getCard(
+																	'List Patients',
+																	Icon(
+																		Icons.find_in_page,
+																		size: 70,
+																	),
+																	EdgeInsets.symmetric(horizontal: 40,vertical: 40),
+																	(){
+																		Navigator.of(context).pushNamed('listpatients');
+																	}
+																),
+															],
 														),
 													],
-												),
-											],
+												)
+											]
 										)
-									]
-								)
+									)
+								]
 							)
-						]
-					)
-				)
+						)
+					);
+				}
 			)
 		);
 	}

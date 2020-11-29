@@ -1,4 +1,5 @@
 
+import 'package:PatientMonitorMobileApp/models/Doctor.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 
@@ -11,7 +12,7 @@ class MedicalFile{
 	DateTime		creationDate;
 	int			insuranceType;
 	String		insurance;
-	User			doctor;
+	Doctor		doctor;
 
 	MedicalFile({
 		this.id,

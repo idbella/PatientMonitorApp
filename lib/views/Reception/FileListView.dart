@@ -1,5 +1,6 @@
 
 import 'package:PatientMonitorMobileApp/globals.dart';
+import 'package:PatientMonitorMobileApp/models/Doctor.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/insurance.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
@@ -35,10 +36,20 @@ class FileListViewState  extends State<FileListView>{
 							MedicalFile medicalFile = MedicalFile.fromjson(element);
 							medicalFile.patient = patient;
 							medicalFiles.add(medicalFile);
+							print('element : ' + element.toString());
+							if (element['doctor'] != null)
+							{
+								Doctor doc = Globals.doctors.firstWhere((doctor) => doctor.id == element['doctor']);
+								if (doc != null)
+									medicalFile.doctor = doc;
+								print(doc.toString());
+							}
 						});
 						setState(() {});
 					}
 				}
+			}).catchError((err){
+				print('files err = ' + err.toString());
 			});
 	}
 
@@ -53,7 +64,6 @@ class FileListViewState  extends State<FileListView>{
 
 		extractArgs();
 		getMedicalFiles();
-		bool editable = Globals.user.role == Globals.recepId;
 
 		List<Widget> list = List();
 		
@@ -63,13 +73,21 @@ class FileListViewState  extends State<FileListView>{
 			return Center(child:Column(children:[SizedBox(height:100),Text('No medical files to show...')]));
 
 		medicalFiles.forEach((MedicalFile medicalFile) {
-			String insurance = '';
+			String insurance;
 			if (Globals.insuarnces.isNotEmpty)
 			{
-				// insurance = Globals.insuarnces.firstWhere((element) => element.id == medicalFile.insuranceType)?.title.toString();
-				// if (medicalFile.insurance != null)
-				// 	insurance = medicalFile.insurance.toString();
+				Insurance i = Globals.insuarnces.firstWhere((element) => element.id == medicalFile.insuranceType);
+				if (i != null)
+				{
+					insurance = i.title.toString();
+					if (i.editable)
+						insurance = medicalFile.insurance.toString();
+				}
 			}
+
+			String doctor = 'No Doctor Assigned yet !';
+			if (medicalFile.doctor != null)
+				doctor = medicalFile.doctor.user.firstName +" "+ medicalFile.doctor.user.lastName;
 			Widget wi = Card(
 				shape: RoundedRectangleBorder(
    				borderRadius: BorderRadius.circular(30),
@@ -105,35 +123,15 @@ class FileListViewState  extends State<FileListView>{
 								children: [
 									getKeyValue('motif de consultation', medicalFile.motif.toString()),
 									SizedBox(height: 8,),
-									getKeyValue('Doctor', medicalFile.doctor.toString()),
+									getKeyValue('Doctor', doctor.toString()),
 									SizedBox(height: 8,),
 									getKeyValue('Inusrance', insurance.toString()),
 									SizedBox(height: 8,),
 									getKeyValue('Rendez-vous', medicalFile.doctor.toString()),
+									SizedBox(height: 8,),
+									getKeyValue('Status', 'Active'),
 									SizedBox(height: 10,),
-									Row(
-										mainAxisAlignment: MainAxisAlignment.spaceBetween,
-										children: [
-											getButton(
-												'delete',
-												Icons.delete,
-												Color.fromARGB(255, 232, 65, 24),
-												editable ? () => delete(medicalFile.id) : null
-											),
-											getButton(
-												'edit',
-												Icons.assignment,
-												Colors.lightBlue,
-												() => Navigator.of(context).pushNamed('editfile', arguments:medicalFile)
-											),
-											getButton(
-												'view',
-												Icons.description,
-												Color.fromARGB(255, 76, 209, 55),
-												() => Navigator.of(context).pushNamed('viewfile', arguments:medicalFile)
-											),
-										],
-									)
+									getButtons(medicalFile)
 								]
 							)
 						)
@@ -167,6 +165,43 @@ class FileListViewState  extends State<FileListView>{
 					],
 				),
 			)
+		);
+	}
+
+	Widget getButtons(MedicalFile medicalFile)
+	{
+		Widget deleteBtn = getButton(
+			'delete',
+			Icons.delete,
+			Color.fromARGB(255, 232, 65, 24),
+			() => delete(medicalFile.id)
+		);
+		Widget editBtn = getButton(
+			'edit',
+			Icons.assignment,
+			Colors.lightBlue,
+			() => Navigator.of(context).pushNamed('editfile', arguments:medicalFile)
+		);
+		Widget viewBtn = getButton(
+			'view',
+			Icons.description,
+			Color.fromARGB(255, 76, 209, 55),
+			() => Navigator.of(context).pushNamed('viewfile', arguments:medicalFile)
+		);
+
+		if (Globals.user.role == Globals.recepId)
+			return Row(
+				mainAxisAlignment: MainAxisAlignment.spaceBetween,
+				children: [
+					deleteBtn,
+					editBtn,
+				],
+			);
+		return Row(
+			mainAxisAlignment: MainAxisAlignment.end,
+			children:[
+				viewBtn
+			]
 		);
 	}
 

@@ -5,13 +5,16 @@ import 'package:PatientMonitorMobileApp/DateTextField.dart';
 import 'package:PatientMonitorMobileApp/StyledTextView.dart';
 import 'package:PatientMonitorMobileApp/TimePicker.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
+import 'package:PatientMonitorMobileApp/models/Doctor.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/insurance.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:requests/requests.dart';
 
 class EditMedicalFile extends StatefulWidget{
 
@@ -30,6 +33,7 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 	TimeOfDay			time = TimeOfDay.now();
 	bool					rendezVous = true;
 	int					_selected;
+	int					_doctor;
 
 	TextEditingController titleController = TextEditingController();
 	TextEditingController motifController = TextEditingController();
@@ -43,7 +47,10 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 		{
 			titleController.text = medicalFile.title.toString();
 			motifController.text = medicalFile.motif.toString();
-			doctorController.text = medicalFile.doctor.toString();
+			if (medicalFile.doctor != null)
+				doctorController.text = medicalFile.doctor.user.firstName.toString();
+			_selected = medicalFile.insuranceType;
+			Globals.insuarnces.firstWhere((element) => element.id == medicalFile.insuranceType).controller.text = medicalFile.insurance;
 		}
 	}
 
@@ -101,10 +108,43 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 											icon:Icon(Icons.article)
 										),
 										SizedBox(height: 20,),
-										textField(
-											hint:'doctor',
-											label:'doctor',
-											controller: doctorController
+										TypeAheadField(
+											textFieldConfiguration: TextFieldConfiguration(
+												style: TextStyle(fontSize: 15),
+												decoration: InputDecoration(
+													prefixIcon: CircleAvatar(backgroundImage: Image.asset('images/doctor.jpg').image,radius: 10,),
+													prefixText: ' ',
+													border: OutlineInputBorder()
+												),
+												controller: doctorController,
+											),
+											suggestionsCallback: (pattern) async {
+												var list = Globals.doctors.where((doctor) {
+													if (doctor.speciality.toString().startsWith(pattern))
+														return true;
+													if (doctor.user.firstName.startsWith(pattern))
+														return true;
+													if (doctor.user.lastName.startsWith(pattern))
+														return true;
+													return false;
+												}).toList();
+
+												list.forEach((element) {print(element.user.email);});
+												return list;
+											},
+											itemBuilder: (context, Doctor doctor) {
+												return ListTile(
+													leading: CircleAvatar(backgroundImage: Image.asset('images/doctor.jpg').image,),
+													title: Text(doctor.user.firstName + ' ' + doctor.user.lastName),
+													subtitle: Text(doctor.speciality.toString()),
+												);
+											},
+											onSuggestionSelected: (Doctor doctor) {
+												setState((){
+													_doctor = doctor.id;
+													doctorController.text = doctor.user.firstName + ' ' + doctor.user.lastName;
+												});
+											},
 										),
 										SizedBox(height: 10,),
 										Stack(
@@ -223,7 +263,7 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 													),
 													SizedBox(height: 20,),
 													Column(children: widgets,),
-													SizedBox(height: 30,),
+													//SizedBox(height: 30,),
 												]
 											)
 										),
@@ -242,16 +282,15 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 													color: Colors.blue,
 													shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
 												),
-												SizedBox(width: 40,),
+												SizedBox(width: 20,),
 												RaisedButton(
 													child: Row(
 														children:[
-															Text('next', style: TextStyle(color: Color.fromARGB(255, 245, 246, 250)),),
+															Text('Save', style: TextStyle(color: Color.fromARGB(255, 245, 246, 250)),),
 															SizedBox(width: 5,),
-															Icon(Icons.arrow_forward),
 														]
 													),
-													onPressed: (){},
+													onPressed: (){editMedicalFile(medicalFile.id);},
 													color: Colors.green,
 													shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
 												)
@@ -270,6 +309,7 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 	Widget getCard(Insurance element){
 		return
 			Card(
+				color: Colors.white,
 				child: ListTile(
 					onTap: (){
 						setState(() {
@@ -344,4 +384,25 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 			)
 		);
 	}
+
+	void editMedicalFile(int fileId)
+	{
+		var body = {
+			'insurance_type':_selected.toString(),
+			'title':titleController.text,
+			'motif':motifController.text,
+			'doctor':_doctor,
+			'insurance':Globals.insuarnces.where((element) => element.id == _selected).first.controller.text.toString()
+		};
+		body.removeWhere((key,val)=>key=='doctor' && val == null);
+		Requests.post(Globals.url + '/api/file/' + fileId.toString(), body: body)
+		.then((value){
+			print('edit file = ' + value.content());
+			if (value.statusCode == 200)
+				Navigator.of(context).pop();
+		}).catchError((e){
+			print('edit file error : ' + e.toString());
+		});
+	}
+
 }
