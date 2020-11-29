@@ -41,5 +41,8 @@ Future<Response> listUsers()
 }
 
 Future<Response> logout(){
-  return Requests.delete(Globals.url.toString() + '/api/logout');
+	Globals.patientsList = null;
+	Globals.usersList  = null;
+	Globals.user = null;
+	return Requests.delete(Globals.url.toString() + '/api/logout');
 }

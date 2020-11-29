@@ -51,10 +51,17 @@ class LoginPageState extends State<LoginPage>{
 				Globals.getInsurances();
 				var json = value.json();
 				Globals.user = User.fromjson(json);
+				StatefulWidget page;
 				if (json['role'] == Globals.adminId)
-					Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminHomePage()));
+					page = AdminHomePage();
 				else if (json['role'] == Globals.recepId)
-					Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RecepHomePage()));
+					page = RecepHomePage();
+				else if (json['role'] == Globals.doctorId)
+					page = DoctorHomePage();
+				Navigator.pushReplacement(
+					context,
+					MaterialPageRoute(builder: (context) => page)
+				);
 			}
 			else {
 				setState(() {
@@ -254,9 +261,9 @@ class LoginPageState extends State<LoginPage>{
 				else if (json['role'] == Globals.doctorId)
 					page = DoctorHomePage();
 				Navigator.pushReplacement(
-						context,
-						MaterialPageRoute(builder: (context) => page)
-					);
+					context,
+					MaterialPageRoute(builder: (context) => page)
+				);
 			}
 		})
 		.catchError((e) => print(e))
