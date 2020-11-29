@@ -100,7 +100,6 @@ class FileListViewState  extends State<FileListView>{
 						Padding(
 							padding: EdgeInsets.symmetric(vertical: 20, horizontal:20),
 							child:Column(
-								mainAxisAlignment: MainAxisAlignment.start,
 								crossAxisAlignment: CrossAxisAlignment.start,
 								children: [
 									getKeyValue('motif de consultation', medicalFile.motif.toString()),
@@ -114,11 +113,14 @@ class FileListViewState  extends State<FileListView>{
 									Row(
 										mainAxisAlignment: MainAxisAlignment.spaceBetween,
 										children: [
-											getButton(
-												'delete',
-												Icons.delete,
-												Color.fromARGB(255, 232, 65, 24),
-												() => delete(medicalFile.id)
+											Visibility(
+												visible: Globals.user.role == Globals.recepId,
+												child:getButton(
+													'delete',
+													Icons.delete,
+													Color.fromARGB(255, 232, 65, 24),
+													() => delete(medicalFile.id)
+												)
 											),
 											getButton(
 												'edit',
@@ -130,7 +132,7 @@ class FileListViewState  extends State<FileListView>{
 												'view',
 												Icons.description,
 												Color.fromARGB(255, 76, 209, 55),
-												(){}
+												() => Navigator.of(context).pushNamed('viewfile', arguments:medicalFile)
 											),
 										],
 									)

@@ -7,6 +7,7 @@ Widget textField({
 	String hint = '',
 	String label = '',
 	String prefix = '',
+	bool	 readOnly = false,
 	Icon icon,
 	TextEditingController controller,
 	Widget suffix,
@@ -24,6 +25,7 @@ Widget textField({
       ),
       child:
       TextField(
+			readOnly: readOnly,
 			keyboardType: inputtype,
 			maxLines: maxlines,
 			obscureText: obscure,

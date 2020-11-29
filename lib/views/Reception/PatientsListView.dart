@@ -87,18 +87,24 @@ class PatientsListViewState extends State<PatientsListView>{
 									child:Row(
 										mainAxisAlignment: MainAxisAlignment.spaceBetween,
 										children: [
-											getButton(
-												'delete',
-												Icons.delete,
-												Color.fromARGB(255, 232, 65, 24),
-												() => showAlertDialog(context, patients[index])
+											Visibility(
+												visible: Globals.user.role == Globals.recepId,
+												child:getButton(
+													'delete',
+													Icons.delete,
+													Color.fromARGB(255, 232, 65, 24),
+													() => showAlertDialog(context, patients[index])
+												)
 											),
-											getButton(
-												'edit',
-												Icons.assignment,
-												Colors.lightBlue,
-												() => Navigator.of(context)
-													.pushNamed('addpatient', arguments:patients[index])
+											Visibility(
+												visible: Globals.user.role == Globals.recepId,
+												child:getButton(
+													'edit',
+													Icons.assignment,
+													Colors.lightBlue,
+													() => Navigator.of(context)
+														.pushNamed('addpatient', arguments:patients[index])
+												)
 											),
 											getButton(
 												'view',
