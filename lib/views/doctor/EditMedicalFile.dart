@@ -103,19 +103,25 @@ class ViewMedicalFileState extends State<ViewMedicalFile> {
 											icon:Icon(Icons.article)
 										),
 										SizedBox(height: 20,),
-										Container(
-											width:double.infinity,
-											child:Center(
-												child:Text(
-													'Notes',
-													style: TextStyle(
-														fontSize: 25,
-														fontWeight: FontWeight.w700
-													),
-												)
+										Card(
+											color: Color.fromARGB(255, 140, 122, 230),
+											child:ListTile(
+												title:Text('View Notes',style:TextStyle(color: Colors.white)),
+												leading: Icon(Icons.note,color: Colors.yellow[600],),
+												trailing: Icon(Icons.keyboard_arrow_right),
+												onTap: () => Navigator.of(context).pushNamed('viewnotes', arguments: medicalFile),
 											)
 										),
-										Column(children:[getNotes(),getNotes()])
+										SizedBox(height: 20,),
+										Card(
+											color: Color.fromARGB(255, 140, 122, 230),
+											child:ListTile(
+												title:Text('View Attachments',style:TextStyle(color: Colors.white)),
+												leading: Icon(Icons.attachment,color: Colors.yellow[600],),
+												trailing: Icon(Icons.keyboard_arrow_right),
+												onTap: () => Navigator.of(context).pushNamed('viewnotes', arguments: medicalFile),
+											)
+										)
 									]
 								)
 							)
@@ -126,148 +132,6 @@ class ViewMedicalFileState extends State<ViewMedicalFile> {
 		);
 	}
 
-	Widget getNotes()
-	{
-		return (Column(
-			children: [
-				Card(
-					elevation: 20,
-					color: Color.fromARGB(255, 251, 197, 49),
-					child:Column(
-						children: [
-							Card(
-								color: Color.fromARGB(255, 140, 122, 230),
-								elevation: 5,
-								margin: EdgeInsets.zero,
-								child:Padding(
-									padding: EdgeInsets.all(10),
-									child:Row(
-										crossAxisAlignment: CrossAxisAlignment.center,
-										mainAxisAlignment: MainAxisAlignment.spaceBetween,
-										children: [
-											SizedBox(
-												width: 50,
-												child:CircleAvatar(
-													backgroundImage:Image.asset('images/doctor.jpg').image
-												)
-											),
-											
-											Column(
-												crossAxisAlignment: CrossAxisAlignment.start,
-												children:[
-													Text(
-														"Dr. Said Id-bella Ali",
-														style: TextStyle(
-															fontWeight: FontWeight.w800,
-															color: Colors.white
-														),
-													),
-													Text(
-														"tabib mokhtass fi alwilada",
-														style: TextStyle(
-															fontWeight: FontWeight.w300,
-															color: Colors.white
-														),
-													)
-												]
-											),
-											SizedBox(width: 20,),
-											Icon(Icons.arrow_drop_up,color: Colors.white,)
-											
-										],
-									)
-								)
-							),
-							Padding(
-								padding: EdgeInsets.all(20),
-								child: Column(
-									crossAxisAlignment: CrossAxisAlignment.start,
-									children:[
-										Text('2010/12/12 23:22',
-											style: TextStyle(fontSize: 13),
-										),
-										SizedBox(height: 10,),
-										Text(
-											'This is a simple widget that allows your users to create tags by entering the tags name inside of textfield and make the tags appear in the textfield. After entering the tag, the user can press the spacebar or enter button to save the tag and move on to enter another tag.',
-											style:TextStyle(
-												fontSize: 17,
-												fontWeight: FontWeight.w300,
-												color: Colors.black
-											),
-										),
-									]
-								)
-							)
-						],
-					),
-				),
-				SizedBox(height: 10,),
-				Card(
-					elevation: 20,
-					color: Color.fromARGB(255, 251, 197, 49),
-					child:Column(
-						children: [
-							Card(
-								color: Color.fromARGB(255, 39, 60, 117),
-								elevation: 5,
-								margin: EdgeInsets.zero,
-								child:Padding(
-									padding: EdgeInsets.all(10),
-									child:Row(
-										crossAxisAlignment: CrossAxisAlignment.center,
-										mainAxisAlignment: MainAxisAlignment.spaceBetween,
-										children: [
-											SizedBox(
-												width: 50,
-												child:CircleAvatar(
-													backgroundImage:Image.asset('images/avatar.png').image
-												)
-											),
-											
-											Column(
-												crossAxisAlignment: CrossAxisAlignment.start,
-												children:[
-													Text(
-														"Nurse Youssef Yassine",
-														style: TextStyle(
-															fontWeight: FontWeight.w800,
-															color: Colors.white
-														),
-													),
-													Text(
-														"momarid mokhtass fi alwilada",
-														style: TextStyle(
-															fontWeight: FontWeight.w300,
-															color: Colors.white
-														),
-													)
-												]
-											),
-											SizedBox(width: 20,),
-											Icon(Icons.arrow_drop_up,color: Colors.white,)
-											
-										],
-									)
-								)
-							),
-							Padding(
-								padding: EdgeInsets.all(20),
-								child: Text(
-									'This is a simple widget that allows your users to create tags by entering the tags name inside of textfield and make the tags appear in the textfield. After entering the tag, the user can press the spacebar or enter button to save the tag and move on to enter another tag.',
-									style:TextStyle(
-										fontSize: 16,
-										fontWeight: FontWeight.w300,
-										color: Colors.black
-									),
-								),
-							)
-						],
-					),
-				)
-			]
-		)
-		);
-	}
 	Widget getCard(Insurance element){
 		return
 			Card(

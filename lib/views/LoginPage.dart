@@ -14,9 +14,7 @@ import 'package:requests/requests.dart';
 
 class LoginPage extends StatefulWidget{
   final bool checkLogin;
-  LoginPage({this.title,Key key,this.checkLogin = true}) : super(key: key);
-
-  final String title;
+  LoginPage({Key key,this.checkLogin = true}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => LoginPageState(this.checkLogin);

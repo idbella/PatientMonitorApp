@@ -9,9 +9,7 @@ import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
 
 class AdminHomePage extends StatefulWidget{
 
-	AdminHomePage({Key key, this.title}) : super(key: key);
-	
-	final String title;
+	AdminHomePage({Key key}) : super(key: key);
 	
 	@override
 	State<StatefulWidget> createState() => AdminHomePageState();

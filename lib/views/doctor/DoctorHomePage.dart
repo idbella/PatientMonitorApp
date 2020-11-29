@@ -4,6 +4,7 @@ import 'package:PatientMonitorMobileApp/Clipper.dart';
 import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
+import 'package:PatientMonitorMobileApp/views/Drawer.dart';
 import 'package:PatientMonitorMobileApp/views/LoginPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class DoctorHomePageState extends State<DoctorHomePage> {
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
+			drawer: UserDrawer(),
 			floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
 			backgroundColor:Globals.backgroundColor,
 			body:SafeArea(
@@ -77,7 +79,10 @@ class DoctorHomePageState extends State<DoctorHomePage> {
 										SizedBox(height: 10,),
 										Row(
 											children: [
-												Image.asset('images/doctor.jpg', width: 100, height: 100,),
+												CircleAvatar(
+													radius: 50,
+													backgroundImage:Image.asset('images/doctor.jpg',).image,
+												),
 												SizedBox(width: 10,),
 												Column(
 													mainAxisAlignment: MainAxisAlignment.center,

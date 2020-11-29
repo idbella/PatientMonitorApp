@@ -53,6 +53,7 @@ class FileListViewState  extends State<FileListView>{
 
 		extractArgs();
 		getMedicalFiles();
+		bool editable = Globals.user.role == Globals.recepId;
 
 		List<Widget> list = List();
 		
@@ -113,14 +114,11 @@ class FileListViewState  extends State<FileListView>{
 									Row(
 										mainAxisAlignment: MainAxisAlignment.spaceBetween,
 										children: [
-											Visibility(
-												visible: Globals.user.role == Globals.recepId,
-												child:getButton(
-													'delete',
-													Icons.delete,
-													Color.fromARGB(255, 232, 65, 24),
-													() => delete(medicalFile.id)
-												)
+											getButton(
+												'delete',
+												Icons.delete,
+												Color.fromARGB(255, 232, 65, 24),
+												editable ? () => delete(medicalFile.id) : null
 											),
 											getButton(
 												'edit',
@@ -175,7 +173,7 @@ class FileListViewState  extends State<FileListView>{
 	Widget getButton(String title, IconData icon, Color color, Function onClick)
 	{
 		return RaisedButton(
-			elevation: 5,
+			elevation: 8,
 			color: color,
 			onPressed: onClick,
 			child: Row(

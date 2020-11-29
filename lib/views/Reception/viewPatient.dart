@@ -74,7 +74,7 @@ class ViewPatientPageState extends State<ViewPatientPage> {
 												fillColor: Colors.white,
 												filled: true,
 												suffix: Icon(Icons.search),
-												hintText: 'search'
+												hintText: 'Search for medical file'
 											),
 										),
 										SizedBox(height: 15,),

@@ -3,8 +3,10 @@ import 'package:PatientMonitorMobileApp/views/Reception/EditMedicalFile.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/ListPatients.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/addPatientExtra.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/viewPatient.dart';
+import 'package:PatientMonitorMobileApp/views/doctor/AddNote.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/DoctorHomePage.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/EditMedicalFile.dart';
+import 'package:PatientMonitorMobileApp/views/doctor/ViewNotes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -49,20 +51,22 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: 'login',
       routes: {
-			'login' :(context) => LoginPage(title:'login Page'),
-			'admin' :(context) => AdminHomePage(title: 'Admin',),
-			'edit'  :(context) => EditUserPage(),
-			'adduser':(context) => AddUserPage(),
-			'recep' :(context) => RecepHomePage(),
-			'addpatient':(context) => AddPatientPage(),
-			'addpatientextra':(context)=>AddPatientExtraPage(),
-			'editpatient':(context) => EditPatientPage(),
-			'insurance':(context) => InsurancePage(),
-			'listpatients':(contect)=>ListPatientsPage(),
-			'viewpatient':(context)=>ViewPatientPage(),
-			'editfile':(context)=>EditMedicalFile(),
-			'doctor':(context)=>DoctorHomePage(),
-			'viewfile':(context)=>ViewMedicalFile()
+			'login'				:(context) => LoginPage(),
+			'admin' 				:(context) => AdminHomePage(),
+			'edit'  				:(context) => EditUserPage(),
+			'adduser'			:(context) => AddUserPage(),
+			'recep' 				:(context) => RecepHomePage(),
+			'addpatient'		:(context) => AddPatientPage(),
+			'addpatientextra'	:(context) => AddPatientExtraPage(),
+			'editpatient'		:(context) => EditPatientPage(),
+			'insurance'			:(context) => InsurancePage(),
+			'listpatients'		:(contect) => ListPatientsPage(),
+			'viewpatient'		:(context) => ViewPatientPage(),
+			'editfile'			:(context) => EditMedicalFile(),
+			'doctor'				:(context) => DoctorHomePage(),
+			'viewfile'			:(context) => ViewMedicalFile(),
+			'viewnotes'			:(context) => ViewNotes(),
+			'addnote'			:(context) => AddNote()
       },
     );
   }
