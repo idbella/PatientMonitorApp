@@ -11,7 +11,6 @@ import 'package:PatientMonitorMobileApp/views/doctor/DoctorHomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget{
   final bool checkLogin;
@@ -41,14 +40,22 @@ class LoginPageState extends State<LoginPage>{
 		passwordTextController.text = 'admin';
 	}
 
-	void connect(BuildContext context){
+	@override
+	void initState() {
+		super.initState();
+		
+	}
+
+	void signIn()
+	{
 		Requests.get(Globals.url + '/api/profile')
 		.then((value) {
-			print('check : ' + value.statusCode.toString());
+			print('check : ' + value.content().toString());
 			var status = value.statusCode;
 			if (status == 200){
 				Globals.init();
 				var json = value.json();
+				Globals.user = User.fromjson(json);
 				StatefulWidget page;
 				if (json['role'] == Globals.adminId)
 					page = AdminHomePage();
@@ -72,6 +79,19 @@ class LoginPageState extends State<LoginPage>{
 			setState(() {
 				errorString = 'network Error please verify you internet connection';
 				errorVisibility = true;
+			});
+		});
+	}
+
+	void connect(BuildContext context){
+
+		Globals.storageGet('token').then((value) {
+			Globals.token = value;
+			print('value = ' + value);
+			signIn();
+		}).catchError((e){
+			setState(() {
+				showLoginPage = true;
 			});
 		});
 	}
@@ -247,12 +267,14 @@ class LoginPageState extends State<LoginPage>{
 				});
 			}
 			else if (value.statusCode == 200){
-				Globals.init();
 				pr.hide();
 				var json = value.json();
 				String token =  json['token'].toString();
 				Globals.storageSet('token', token);
 				Globals.token = token;
+
+				Globals.init();
+				
 				Globals.user = User.fromjson(json);
 				StatefulWidget page;
 				if (json['role'] == Globals.adminId)

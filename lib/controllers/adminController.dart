@@ -2,6 +2,7 @@ import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
   void refreshUserList(BuildContext context, Function setState, [bool reload=false])
@@ -41,9 +42,10 @@ Future<Response> listUsers()
   return Requests.get(Globals.url.toString() + '/api/admin/users/');
 }
 
-Future<Response> logout(){
+Future<SharedPreferences> logout(){
 	Globals.patientsList = null;
 	Globals.usersList  = List();
 	Globals.user = null;
-	return Requests.delete(Globals.url.toString() + '/api/logout');
+	Globals.token = null;
+	return SharedPreferences.getInstance();
 }

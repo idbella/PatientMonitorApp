@@ -40,12 +40,14 @@ class _UserDrawerState extends State<UserDrawer> {
 									leading: Icon(Icons.keyboard_arrow_left),
 									onTap: (){
 										logout().then((value) {
-											if (value.statusCode == 200)
-												print('logged out');
-												Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(checkLogin: false,)));
-											}
-										).catchError((err){
-											print(err.toString());
+											value.remove('token').then((value) {
+												Navigator.pushReplacement(
+													context,
+													MaterialPageRoute(
+														builder: (context) => LoginPage(checkLogin: false,)
+													)
+												);
+											});
 										});
 									},
 								)

@@ -26,10 +26,10 @@ class RecepHomePage extends StatefulWidget{
 class RecepHomePageState extends State<RecepHomePage> {
   
 	ProgressDialog pr;
-	User				user = Globals.user;
 	
 	@override
 	Widget build(BuildContext context) {
+		User user = Globals.user;
 		return Scaffold(
 			bottomNavigationBar: BottomMenu(selectedIndex: 0),
 			drawer: UserDrawer(),

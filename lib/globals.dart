@@ -86,7 +86,7 @@ class Globals {
    	await sharedPreferences.setString(key, value);
 	}
 
-	static storageGet(String key) async {
+	static Future<String> storageGet(String key) async {
 		SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 		return sharedPreferences.getString(key);
 	}
