@@ -7,7 +7,7 @@ import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/NotesListView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:requests/requests.dart';
+import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 
 class AddNote extends StatefulWidget
 {

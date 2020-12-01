@@ -3,7 +3,7 @@ import 'package:PatientMonitorMobileApp/controllers/RecepController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:flutter/material.dart';
-import 'package:requests/requests.dart';
+import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 
 class PatientsListView extends StatefulWidget{
   

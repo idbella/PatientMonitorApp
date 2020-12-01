@@ -1,7 +1,7 @@
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:flutter/material.dart';
-import 'package:requests/requests.dart';
+import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 
 
   void refreshPatientsList(BuildContext context, Function setState, [bool reload=false,])

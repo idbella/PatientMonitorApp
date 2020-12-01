@@ -7,7 +7,7 @@ import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:PatientMonitorMobileApp/StyledTextView.dart';
-import 'package:requests/requests.dart';
+import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 import 'package:flutter_country_picker/flutter_country_picker.dart';
 import 'dart:math';
 import 'package:intl/intl.dart';

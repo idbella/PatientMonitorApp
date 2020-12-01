@@ -10,7 +10,8 @@ import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/DoctorHomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:requests/requests.dart';
+import 'package:PatientMonitorMobileApp/Requests/requests.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget{
   final bool checkLogin;
@@ -48,8 +49,6 @@ class LoginPageState extends State<LoginPage>{
 			if (status == 200){
 				Globals.init();
 				var json = value.json();
-				Globals.storageSet('token', json['token']);
-				Globals.user = User.fromjson(json);
 				StatefulWidget page;
 				if (json['role'] == Globals.adminId)
 					page = AdminHomePage();
@@ -251,6 +250,9 @@ class LoginPageState extends State<LoginPage>{
 				Globals.init();
 				pr.hide();
 				var json = value.json();
+				String token =  json['token'].toString();
+				Globals.storageSet('token', token);
+				Globals.token = token;
 				Globals.user = User.fromjson(json);
 				StatefulWidget page;
 				if (json['role'] == Globals.adminId)

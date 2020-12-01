@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:PatientMonitorMobileApp/StyledTextView.dart';
 import 'package:flutter_country_picker/flutter_country_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:requests/requests.dart';
+import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 
 class AddPatientExtraPage extends StatefulWidget{
 

@@ -4,7 +4,7 @@ import 'package:PatientMonitorMobileApp/models/insurance.dart';
 import 'package:flutter/material.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
-import 'package:requests/requests.dart';
+import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountType{
@@ -15,7 +15,7 @@ class AccountType{
 
 class Globals {
 
-	static String				url					= 'https://idbella.herokuapp.com';
+	static String				url					= 'http://172.16.176.97:8080';
 	static List<User>			usersList			= List();
 	static List<Patient>		patientsList;
 	static List<Insurance>	insuarnces			= List();
@@ -27,6 +27,7 @@ class Globals {
 	static int					patientId			= 4;
 	static User					user					= User(title: '');
 	static Color				backgroundColor	= Color.fromARGB(255, 0xd1,0xee,0xfe);
+	static String				token;
 
 	static List<AccountType> accountTypes = List.from(
 		[
@@ -84,7 +85,7 @@ class Globals {
    	SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
    	await sharedPreferences.setString(key, value);
 	}
-	
+
 	static storageGet(String key) async {
 		SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 		return sharedPreferences.getString(key);

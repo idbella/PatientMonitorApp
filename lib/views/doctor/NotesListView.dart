@@ -6,7 +6,7 @@ import 'package:PatientMonitorMobileApp/models/Note.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:requests/requests.dart';
+import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 
 class NotesListView extends StatefulWidget {
 	final MedicalFile medicalFile;
