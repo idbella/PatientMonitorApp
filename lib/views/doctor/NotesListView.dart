@@ -1,7 +1,9 @@
 
 import 'package:PatientMonitorMobileApp/globals.dart';
+import 'package:PatientMonitorMobileApp/models/Doctor.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/Note.dart';
+import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:requests/requests.dart';
@@ -56,7 +58,18 @@ class NotesListViewState  extends State<NotesListView>{
 			return Center(child:Column(children:[SizedBox(height:100),Text('Loading...')]));
 		if (notes.isEmpty)
 			return Center(child:Column(children:[SizedBox(height:100),Text('No Notes to show...')]));
+		Doctor  doctor = medicalFile.doctor;
+		User		user;
+		String docName;
+		String docTitle;
 
+		if (doctor != null)
+			user = doctor.user;
+		if (user != null)
+		{
+			docName = user.firstName + ' ' + user.lastName;
+			docTitle = user.title;
+		}
 		notes.forEach((Note note) {
 
 			Widget wi = Card(
@@ -75,35 +88,44 @@ class NotesListViewState  extends State<NotesListView>{
 									crossAxisAlignment: CrossAxisAlignment.center,
 									mainAxisAlignment: MainAxisAlignment.spaceBetween,
 									children: [
-										SizedBox(
-											width: 50,
-											child:CircleAvatar(
-												backgroundImage:Image.asset('images/doctor.jpg').image
-											)
-										),
-										
-										Column(
-											crossAxisAlignment: CrossAxisAlignment.start,
+										Row(
 											children:[
-												Text(
-													"Dr. Said Id-bella Ali",
-													style: TextStyle(
-														fontWeight: FontWeight.w800,
-														color: Colors.white
-													),
+												SizedBox(
+													width: 50,
+													child:CircleAvatar(
+														backgroundImage:Image.asset('images/doctor.jpg').image
+													)
 												),
-												Text(
-													"tabib mokhtass fi alwilada",
-													style: TextStyle(
-														fontWeight: FontWeight.w300,
-														color: Colors.white
-													),
-												)
+												
+												Column(
+													crossAxisAlignment: CrossAxisAlignment.start,
+													children:[
+														Text(
+															docName.toString(),
+															style: TextStyle(
+																fontWeight: FontWeight.w800,
+																color: Colors.white
+															),
+														),
+														Text(
+															docTitle.toString(),
+															style: TextStyle(
+																fontWeight: FontWeight.w300,
+																color: Colors.white
+															),
+														)
+													]
+												),
 											]
 										),
-										SizedBox(width: 20,),
-										Icon(Icons.arrow_drop_up,color: Colors.white,)
-										
+										Row(
+											children: [
+												Icon(Icons.edit,color: Colors.white),
+												SizedBox(width: 20,),
+												Icon(Icons.delete,color: Colors.white,)
+											],	
+										),
+										//Icon(Icons.arrow_drop_up,color: Colors.white,)
 									],
 								)
 							)
@@ -134,54 +156,6 @@ class NotesListViewState  extends State<NotesListView>{
 			list.add(wi);
 		});
 		return Column(children: list,);
-	}
-
-	Widget getKeyValue(title, value){
-		return (
-			RichText(
-				text: TextSpan(
-					style: TextStyle(
-						fontSize: 15.0,
-						color: Colors.black,
-					),
-					children: <TextSpan>[
-						TextSpan(
-							text:title + ' : ',
-							style:TextStyle(
-								fontWeight: FontWeight.bold,
-								fontSize: 18
-							)
-						),
-						TextSpan(
-							text: value,
-						),
-					],
-				),
-			)
-		);
-	}
-
-	Widget getButton(String title, IconData icon, Color color, Function onClick)
-	{
-		return RaisedButton(
-			elevation: 5,
-			color: color,
-			onPressed: onClick,
-			child: Row(
-				children:[
-					Icon(
-						icon,
-						color: Colors.white
-					),
-					SizedBox(width: 5,),
-					Text(title,
-						style:TextStyle(
-							color: Colors.white
-						)
-					)
-				]
-			),
-		);
 	}
 
 	void  delete(noteId)

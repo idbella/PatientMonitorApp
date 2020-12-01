@@ -39,8 +39,7 @@ class UsersListState extends State<UsersList>{
         child:ListTile(
             onTap: () {
               Navigator.of(context)
-              .pushNamed('edit', arguments:users[index])
-              .whenComplete(() => refreshUserList(context, setState, true));
+              .pushNamed('edit', arguments:users[index]);
             },
             leading: Image.asset('images/avatar.png'),
             title: Text(users[index].firstName + ' ' + users[index].lastName),

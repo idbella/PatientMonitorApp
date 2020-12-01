@@ -24,8 +24,9 @@ class PatientsListViewState extends State<PatientsListView>{
 		if (patients.isEmpty)
 			return (Text('empty list'));
    	return ListView.builder(
-			itemCount: patients.length,
+			itemCount: patients.length + 10,
 			itemBuilder: (BuildContext ctx, int index) {
+				index = 0;
 				return Padding(
 					padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
 					child:Card(

@@ -4,6 +4,7 @@ import 'package:PatientMonitorMobileApp/Clipper.dart';
 import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
+import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/Drawer.dart';
 import 'package:PatientMonitorMobileApp/views/LoginPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,6 +31,7 @@ class RecepHomePageState extends State<RecepHomePage> {
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
+			bottomNavigationBar: BottomMenu(selectedIndex: 0),
 			drawer: UserDrawer(),
 			backgroundColor:Globals.backgroundColor,
 			body:Builder(
@@ -93,7 +95,7 @@ class RecepHomePageState extends State<RecepHomePage> {
 													)
 												]
 											),
-											SizedBox(height: 50,),
+											SizedBox(height: 150,),
 											Column(
 												children: [
 													Row(
@@ -111,7 +113,7 @@ class RecepHomePageState extends State<RecepHomePage> {
 																}
 															),
 															getCard(
-																'List Patients',
+																'Patients List',
 																Icon(
 																	Icons.find_in_page,
 																	size: 70,
@@ -124,29 +126,29 @@ class RecepHomePageState extends State<RecepHomePage> {
 														],
 													),
 													SizedBox(height: 20,),
-													Row(
-														mainAxisAlignment: MainAxisAlignment.spaceBetween,
-														children: [
-															getCard(
-																' new Questionnaire  ',
-																Icon(
-																	Icons.list,
-																	size: 70,
-																),
-																EdgeInsets.symmetric(horizontal: 15, vertical:40),
-																(){}
-															),
-															getCard(
-																'List Questionnaire',
-																Icon(
-																	FontAwesome.list,
-																	size: 70,
-																),
-																EdgeInsets.symmetric(horizontal: 20,vertical: 40),
-																(){}
-															),
-														],
-													),
+													// Row(
+													// 	mainAxisAlignment: MainAxisAlignment.spaceBetween,
+													// 	children: [
+													// 		getCard(
+													// 			' new Questionnaire  ',
+													// 			Icon(
+													// 				Icons.list,
+													// 				size: 70,
+													// 			),
+													// 			EdgeInsets.symmetric(horizontal: 15, vertical:40),
+													// 			(){}
+													// 		),
+													// 		getCard(
+													// 			'List Questionnaire',
+													// 			Icon(
+													// 				FontAwesome.list,
+													// 				size: 70,
+													// 			),
+													// 			EdgeInsets.symmetric(horizontal: 20,vertical: 40),
+													// 			(){}
+													// 		),
+													// 	],
+													// ),
 													SizedBox(height: 20,),
 													Row(
 														mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,17 +164,17 @@ class RecepHomePageState extends State<RecepHomePage> {
 																	Navigator.of(context).pushNamed('addpatient');
 																}
 															),
-															getCard(
-																'List Patients',
-																Icon(
-																	Icons.find_in_page,
-																	size: 70,
-																),
-																EdgeInsets.symmetric(horizontal: 40,vertical: 40),
-																(){
-																	Navigator.of(context).pushNamed('listpatients');
-																}
-															),
+															// getCard(
+															// 	'List Patients',
+															// 	Icon(
+															// 		Icons.find_in_page,
+															// 		size: 70,
+															// 	),
+															// 	EdgeInsets.symmetric(horizontal: 40,vertical: 40),
+															// 	(){
+															// 		Navigator.of(context).pushNamed('listpatients');
+															// 	}
+															// ),
 														],
 													),
 												],

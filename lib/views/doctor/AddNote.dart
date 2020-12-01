@@ -3,6 +3,7 @@ import 'package:PatientMonitorMobileApp/Clipper.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
+import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/NotesListView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,7 @@ class AddNoteState extends State<AddNote>{
 	
 		return (
 			Scaffold(
+				bottomNavigationBar: BottomMenu(selectedIndex: 1),
 				backgroundColor:Globals.backgroundColor,
 				body:SafeArea(
 					child:SingleChildScrollView(

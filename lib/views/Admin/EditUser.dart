@@ -135,7 +135,8 @@ class EditUserPageState extends State<EditUserPage> {
 											print('success');
 										else
 											print(value.statusCode.toString());
-										Navigator.of(context).pop();
+										   Globals.usersList = List();
+                    					Navigator.of(context).pushReplacementNamed('admin');
 									}).catchError((e){print(e.toString());});
 								},
 								color: Colors.green,

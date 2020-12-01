@@ -4,6 +4,7 @@ import 'package:PatientMonitorMobileApp/Clipper.dart';
 import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
+import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/Drawer.dart';
 import 'package:PatientMonitorMobileApp/views/LoginPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,6 +31,7 @@ class DoctorHomePageState extends State<DoctorHomePage> {
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
+			bottomNavigationBar: BottomMenu(selectedIndex: 0),
 			drawer: UserDrawer(),
 			floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
 			backgroundColor:Globals.backgroundColor,

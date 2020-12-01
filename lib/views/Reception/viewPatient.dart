@@ -5,6 +5,7 @@ import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
+import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/LoginPage.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/FileListView.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/PatientsListView.dart';
@@ -37,9 +38,18 @@ class ViewPatientPageState extends State<ViewPatientPage> {
 	Widget build(BuildContext context) {
 		
 		extractArgs();
+		FloatingActionButton floatingActionButton;
+		if (Globals.user.role == Globals.recepId)
+			floatingActionButton = FloatingActionButton(
+				backgroundColor: Colors.green,
+				onPressed: ()=>Navigator.of(context).pushNamed('addfile', arguments: patient),
+				child: Icon(Icons.add),
+			);
 		
 		return Scaffold(
+			bottomNavigationBar: BottomMenu(selectedIndex: 1),
 			backgroundColor:Globals.backgroundColor,
+			floatingActionButton: floatingActionButton,
 			body:SafeArea(
 				child:SingleChildScrollView(
 					child: Stack(
@@ -78,7 +88,8 @@ class ViewPatientPageState extends State<ViewPatientPage> {
 											),
 										),
 										SizedBox(height: 15,),
-										FileListView()
+										FileListView(),
+										SizedBox(height: 50,)
 									]
 								)
 							)

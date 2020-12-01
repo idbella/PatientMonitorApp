@@ -3,6 +3,7 @@ import 'package:PatientMonitorMobileApp/Clipper.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
+import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/NotesListView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class ViewNotesState extends State<ViewNotes>{
 	
 		return (
 			Scaffold(
+				bottomNavigationBar: BottomMenu(selectedIndex: 1),
 				backgroundColor:Globals.backgroundColor,
 				floatingActionButton: FloatingActionButton(
 					onPressed: ()=>Navigator.of(context).pushNamed('addnote', arguments:medicalFile),

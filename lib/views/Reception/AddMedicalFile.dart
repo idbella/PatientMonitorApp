@@ -1,12 +1,10 @@
 
-
 import 'package:PatientMonitorMobileApp/Clipper.dart';
 import 'package:PatientMonitorMobileApp/DateTextField.dart';
 import 'package:PatientMonitorMobileApp/StyledTextView.dart';
 import 'package:PatientMonitorMobileApp/TimePicker.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/Doctor.dart';
-import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/insurance.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
@@ -17,19 +15,19 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:requests/requests.dart';
 
-class EditMedicalFile extends StatefulWidget{
+class AddMedicalFilePage extends StatefulWidget{
 
-	EditMedicalFile({Key key, this.title}) : super(key: key);
+	AddMedicalFilePage({Key key, this.title}) : super(key: key);
 	
 	final String title;
 	@override
-	State<StatefulWidget> createState() => EditMedicalFileState();
+	State<StatefulWidget> createState() => AddMedicalFilePageState();
 }
 
-class EditMedicalFileState extends State<EditMedicalFile> {
+class AddMedicalFilePageState extends State<AddMedicalFilePage> {
   
 	ProgressDialog		pr;
-	MedicalFile			medicalFile;
+	Patient				patient;
 	DateTime				date = DateTime.now();
 	TimeOfDay			time = TimeOfDay.now();
 	bool					rendezVous = true;
@@ -41,18 +39,9 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 	TextEditingController doctorController = TextEditingController();
 
 	void extractArgs(){
-		if (medicalFile != null)
+		if (patient != null)
 			return;
-		medicalFile = ModalRoute.of(context).settings.arguments;
-		if (medicalFile != null)
-		{
-			titleController.text = medicalFile.title.toString();
-			motifController.text = medicalFile.motif.toString();
-			if (medicalFile.doctor != null)
-				doctorController.text = medicalFile.doctor.user.firstName.toString();
-			_selected = medicalFile.insuranceType;
-			Globals.insuarnces.firstWhere((element) => element.id == medicalFile.insuranceType).controller.text = medicalFile.insurance;
-		}
+		patient = ModalRoute.of(context).settings.arguments;
 	}
 
 	@override
@@ -115,7 +104,7 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 												style: TextStyle(fontSize: 15),
 												decoration: InputDecoration(
 													prefixIcon: CircleAvatar(backgroundImage: Image.asset('images/doctor.jpg').image,radius: 10,),
-													prefixText: ' doctor : ',
+													prefixText: ' ',
 													border: OutlineInputBorder()
 												),
 												controller: doctorController,
@@ -138,7 +127,7 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 												return ListTile(
 													leading: CircleAvatar(backgroundImage: Image.asset('images/doctor.jpg').image,),
 													title: Text(doctor.user.firstName + ' ' + doctor.user.lastName),
-													subtitle: Text(doctor.user.title.toString()),
+													subtitle: Text(doctor.speciality.toString()),
 												);
 											},
 											onSuggestionSelected: (Doctor doctor) {
@@ -291,7 +280,7 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 															SizedBox(width: 5,),
 														]
 													),
-													onPressed: (){editMedicalFile(medicalFile.id);},
+													onPressed: (){addMedicalFile(patient.id);},
 													color: Colors.green,
 													shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
 												)
@@ -356,7 +345,6 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 	
 	Widget patientInfo()
 	{
-		Patient patient = medicalFile.patient;
 		return (
 			Row(
 				children: [
@@ -386,7 +374,7 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 		);
 	}
 
-	void editMedicalFile(int fileId)
+	void addMedicalFile(int patientId)
 	{
 		var body = {
 			'insurance_type':_selected.toString(),
@@ -396,13 +384,14 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 			'insurance':Globals.insuarnces.where((element) => element.id == _selected).first.controller.text.toString()
 		};
 		body.removeWhere((key,val)=>key=='doctor' && val == null);
-		Requests.post(Globals.url + '/api/file/' + fileId.toString(), body: body)
+		body.removeWhere((key,val)=>key=='insurance_type' && val == null);
+		Requests.post(Globals.url + '/api/patients/' + patientId.toString() + '/file', body: body)
 		.then((value){
-			print('edit file = ' + value.content());
+			print('add file = ' + value.content());
 			if (value.statusCode == 200)
 				Navigator.of(context).pop();
 		}).catchError((e){
-			print('edit file error : ' + e.toString());
+			print('add file error : ' + e.toString());
 		});
 	}
 

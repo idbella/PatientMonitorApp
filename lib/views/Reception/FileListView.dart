@@ -39,18 +39,21 @@ class FileListViewState  extends State<FileListView>{
 							print('element : ' + element.toString());
 							if (element['doctor'] != null)
 							{
-								Doctor doc = Globals.doctors.firstWhere((doctor) => doctor.id == element['doctor']);
-								if (doc != null)
-									medicalFile.doctor = doc;
-								print(doc.toString());
+								if (Globals.doctors != null && Globals.doctors.isNotEmpty)
+								{
+									Doctor doc = Globals.doctors.firstWhere((doctor) => doctor.id == element['doctor']);
+									if (doc != null)
+										medicalFile.doctor = doc;
+									print(doc.toString());
+								}
 							}
 						});
 						setState(() {});
 					}
 				}
-			}).catchError((err){
-				print('files err = ' + err.toString());
-			});
+			});//.catchError((err){
+			// 	print('files err = ' + err.toString());
+			// });
 	}
 
 	void extractArgs(){
@@ -127,7 +130,7 @@ class FileListViewState  extends State<FileListView>{
 									SizedBox(height: 8,),
 									getKeyValue('Inusrance', insurance.toString()),
 									SizedBox(height: 8,),
-									getKeyValue('Rendez-vous', medicalFile.doctor.toString()),
+									getKeyValue('Rendez-vous', 'not set'),
 									SizedBox(height: 8,),
 									getKeyValue('Status', 'Active'),
 									SizedBox(height: 10,),

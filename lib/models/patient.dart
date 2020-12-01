@@ -38,6 +38,7 @@ class Patient{
 			email: json['email'],
 			firstName: json['first_name'],
 			lastName: json['last_name'],
+			title: json['title']
       );
 		return patient;
 	}

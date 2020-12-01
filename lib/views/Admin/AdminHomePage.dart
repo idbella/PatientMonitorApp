@@ -21,14 +21,14 @@ class AdminHomePageState extends State<AdminHomePage> {
   ProgressDialog pr;
 
   void logoutButton(){
-    logout().then((value) {
-      if (value.statusCode == 200)
-        print('logged out');
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(checkLogin: false,)));
-      }
-    ).catchError((err){
-      print(err.toString());
-    });
+		logout().then((value) {
+			if (value.statusCode == 200)
+				print('logged out');
+				Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(checkLogin: false,)));
+			}
+			).catchError((err){
+				print(err.toString());
+			});
   }
 
 	@override

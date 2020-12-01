@@ -3,6 +3,7 @@ import 'package:PatientMonitorMobileApp/DateTextField.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
+import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:PatientMonitorMobileApp/StyledTextView.dart';
@@ -77,6 +78,7 @@ class EditPatientPageState extends State<EditPatientPage> {
   
 		return
     Scaffold(
+		 bottomNavigationBar: BottomMenu(selectedIndex: 0),
 			backgroundColor:Globals.backgroundColor,
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 64, 115, 158),

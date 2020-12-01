@@ -18,7 +18,8 @@ class Doctor{
 			firstName: json['first_name'],
 			lastName: json['last_name'],
 			phone: json['phone'],
-			email: json['email']
+			email: json['email'],
+			title: json['title']
 		);
 		return doctor;
 	}

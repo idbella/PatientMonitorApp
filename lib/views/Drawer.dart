@@ -14,7 +14,9 @@ User user = Globals.user;
 class _UserDrawerState extends State<UserDrawer> {
   	@override
   	Widget build(BuildContext context) {
-		return Drawer(
+		return SizedBox(
+			width: 200,
+			child:Drawer(
 			child:Container(
 				color: Color.fromARGB(255, 220, 221, 225),
 				child: SafeArea(
@@ -24,7 +26,7 @@ class _UserDrawerState extends State<UserDrawer> {
 								width: double.infinity,
 								color: Colors.white,
 								child:Container(
-									height: 250,
+									height: 180,
 									child:Image.asset('images/doctor.jpg',fit: BoxFit.fill,),
 									decoration: BoxDecoration(
 										borderRadius: BorderRadius.circular(100),
@@ -39,8 +41,8 @@ class _UserDrawerState extends State<UserDrawer> {
 									onTap: (){
 										logout().then((value) {
 											if (value.statusCode == 200)
-											print('logged out');
-											Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(checkLogin: false,)));
+												print('logged out');
+												Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(checkLogin: false,)));
 											}
 										).catchError((err){
 											print(err.toString());
@@ -52,6 +54,6 @@ class _UserDrawerState extends State<UserDrawer> {
 					)
 				)
 			)
-		);
+		));
 	}
 }

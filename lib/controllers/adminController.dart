@@ -23,7 +23,8 @@ import 'package:requests/requests.dart';
             User user = User.fromjson(element);
             Globals.usersList.add(user);
           });
-          setState((){});
+			 if (setState != null)
+          	setState((){});
         }
         else if (value.statusCode == 401)
           Navigator.pushNamed(context, 'login');
@@ -42,7 +43,7 @@ Future<Response> listUsers()
 
 Future<Response> logout(){
 	Globals.patientsList = null;
-	Globals.usersList  = null;
+	Globals.usersList  = List();
 	Globals.user = null;
 	return Requests.delete(Globals.url.toString() + '/api/logout');
 }

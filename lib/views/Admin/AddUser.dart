@@ -1,4 +1,5 @@
 
+import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,14 +21,15 @@ class AddUserPageState extends State<AddUserPage> {
 
 	User user;
 
-  int dropdownValue = Globals.accountTypes[0].id;
+	int dropdownValue = Globals.accountTypes[0].id;
 	TextEditingController emailController = TextEditingController();
-  TextEditingController fnameController = TextEditingController();
-  TextEditingController lnameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController passController = TextEditingController();
+	TextEditingController fnameController = TextEditingController();
+	TextEditingController lnameController = TextEditingController();
+	TextEditingController phoneController = TextEditingController();
+	TextEditingController passController = TextEditingController();
+	TextEditingController titleController = TextEditingController();
 
-  @override
+	@override
 	Widget build(BuildContext context) {
     
     List<DropdownMenuItem<int>> c = Globals.accountTypes.map((value) {
@@ -50,7 +52,7 @@ class AddUserPageState extends State<AddUserPage> {
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(children: [
-            Icon(Icons.person, size:150,color: Color.fromARGB(255, 25, 42, 86)),
+            Image.asset('images/avatar.png', width: 150,),
             Divider(height: 30,),
             Container(
               padding: EdgeInsets.only(top:5,bottom: 5,right: 20,left: 10),
@@ -85,8 +87,10 @@ class AddUserPageState extends State<AddUserPage> {
             ),
             SizedBox(height: 20,),
             textField(hint:'enter email', icon:Icon(Icons.mail), label: 'email', controller: emailController),
-            SizedBox(height: 20,),
-            textField(hint:'enter password', icon:Icon(Icons.lock), label: 'password', controller: passController),
+				SizedBox(height: 20,),
+				textField(hint:'title', icon:Icon(Icons.description), label: 'title', controller: titleController),
+				SizedBox(height: 20,),
+				textField(obscure: true, hint:'enter password', icon:Icon(Icons.lock), label: 'password', controller: passController),
             SizedBox(height: 20,),
             textField(hint:'enter first name', icon:Icon(Icons.person), label: 'first name', controller: fnameController),
             SizedBox(height: 20,),
@@ -103,7 +107,8 @@ class AddUserPageState extends State<AddUserPage> {
                       'last_name':lnameController.text,
                       'phone':phoneController.text,
                       'role':dropdownValue,
-                      'password':passController.text
+                      'password':passController.text,
+							 'title':titleController.text.toString()
                     };
 
                 Requests.post(
@@ -113,7 +118,7 @@ class AddUserPageState extends State<AddUserPage> {
                   if (value.statusCode == 200)
                   {
                     Globals.usersList = List();
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacementNamed('admin');
                     print('success');
                   }
                   else

@@ -1,13 +1,16 @@
 
 
+import 'package:flutter/material.dart';
+
 class User{
 
-	User({this.id,this.email,this.firstName,this.lastName,this.role,this.phone});
+	User({this.id,this.email,this.firstName,this.lastName,this.role,this.phone,@required this.title});
 	int id;
 	String firstName;
 	String lastName;
 	String email;
 	String phone;
+	String title;
 	int	 role;
 
 	static User fromjson(Map<String, dynamic> json){
@@ -16,8 +19,9 @@ class User{
 				firstName: json['first_name'] as String,
 				lastName: json['last_name'] as String,
 				email:json['email'] as String,
-        phone:json['phone'] as String,
-				role:json['role'] as int
+      		phone:json['phone'] as String,
+				role:json['role'] as int,
+				title: json['title']
 			);
 		return user;
 	}

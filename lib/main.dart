@@ -1,4 +1,5 @@
 
+import 'package:PatientMonitorMobileApp/views/Reception/AddMedicalFile.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/EditMedicalFile.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/ListPatients.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/addPatientExtra.dart';
@@ -66,7 +67,8 @@ class MyApp extends StatelessWidget {
 			'doctor'				:(context) => DoctorHomePage(),
 			'viewfile'			:(context) => ViewMedicalFile(),
 			'viewnotes'			:(context) => ViewNotes(),
-			'addnote'			:(context) => AddNote()
+			'addnote'			:(context) => AddNote(),
+			'addfile'			:(context) => AddMedicalFilePage()
       },
     );
   }

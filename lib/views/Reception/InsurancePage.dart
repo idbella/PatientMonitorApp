@@ -1,5 +1,6 @@
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/insurance.dart';
+import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ class InsurancePageState extends State<InsurancePage> {
 
 		return
 			Scaffold(
+				bottomNavigationBar: BottomMenu(selectedIndex: 1),
 				backgroundColor:Globals.backgroundColor,
       		body: SingleChildScrollView(
       			child: Stack(children: [

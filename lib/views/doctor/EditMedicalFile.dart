@@ -8,6 +8,7 @@ import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/insurance.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
+import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -59,6 +60,7 @@ class ViewMedicalFileState extends State<ViewMedicalFile> {
 		});
 		
 		return Scaffold(
+			bottomNavigationBar: BottomMenu(selectedIndex: 1),
 			backgroundColor:Globals.backgroundColor,
 			body:SafeArea(
 				child:SingleChildScrollView(

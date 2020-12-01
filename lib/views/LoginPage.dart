@@ -48,6 +48,7 @@ class LoginPageState extends State<LoginPage>{
 			if (status == 200){
 				Globals.init();
 				var json = value.json();
+				Globals.storageSet('token', json['token']);
 				Globals.user = User.fromjson(json);
 				StatefulWidget page;
 				if (json['role'] == Globals.adminId)

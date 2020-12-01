@@ -1,6 +1,7 @@
 
 import 'package:PatientMonitorMobileApp/controllers/RecepController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
+import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/PatientsListView.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +23,7 @@ class ListPatientsPageState extends State<ListPatientsPage> {
 		refreshPatientsList(context, setState);
 
 		return Scaffold(
+			bottomNavigationBar: BottomMenu(selectedIndex: 1),
 			backgroundColor:Color.fromARGB(255, 0, 168, 255),
 			body:DefaultTabController(
 				length: 3,
