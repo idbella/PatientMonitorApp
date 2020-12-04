@@ -15,7 +15,7 @@ class AccountType{
 
 class Globals {
 
-	static String				url					= 'http://172.16.176.97:8080';
+	static String				url					= 'https://idbella.herokuapp.com';
 	static List<User>			usersList			= List();
 	static List<Patient>		patientsList;
 	static List<Insurance>	insuarnces			= List();
@@ -90,4 +90,28 @@ class Globals {
 		SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 		return sharedPreferences.getString(key);
 	}
+
+	static void showAlertDialog(BuildContext context, String title, String body) {
+
+		Widget okButton = FlatButton(
+			child: Text("Ok"),
+			onPressed: () => Navigator.of(context).pop(),
+		);
+
+		AlertDialog alert = AlertDialog(
+			title: Text(title),
+			content: Text(body),
+			actions: [
+				okButton
+			],
+		);
+
+		showDialog(
+			context: context,
+			builder: (BuildContext context) {
+			return alert;
+			},
+		);
+	}
+
 }

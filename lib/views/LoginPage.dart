@@ -11,6 +11,7 @@ import 'package:PatientMonitorMobileApp/views/doctor/DoctorHomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget{
   final bool checkLogin;
@@ -69,8 +70,12 @@ class LoginPageState extends State<LoginPage>{
 				);
 			}
 			else {
-				setState(() {
-				  showLoginPage = true;
+				Globals.token = null;
+				SharedPreferences.getInstance().then((value){
+					value.remove('token');
+					setState(() {
+						showLoginPage = true;
+					});
 				});
 			}
 		})
@@ -206,10 +211,10 @@ class LoginPageState extends State<LoginPage>{
 							style: TextStyle(
 								color: Color.fromARGB(255, 25, 42, 86),
 								fontSize: 32,
-								fontWeight: FontWeight.w500
+								fontWeight: FontWeight.w400
 							),
 						),
-						SizedBox(height: 30,),
+						SizedBox(height: 50,),
 						textField(
 							hint:'email',
 							label:'email',
@@ -224,7 +229,7 @@ class LoginPageState extends State<LoginPage>{
 							controller: passwordTextController,
 							icon: Icon(Icons.vpn_key)
 						),
-						SizedBox(height: 25,),
+						SizedBox(height: 40,),
 						FlatButton(
 							child: Text(
 								'Connexion',
@@ -237,6 +242,17 @@ class LoginPageState extends State<LoginPage>{
 							onPressed: disableButton ? null : loginButtonOnClick,
 							color: Colors.blue,
 							shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50))),
+						),
+						SizedBox(height: 20,),
+						FlatButton(
+							onPressed: (){print('ok');},
+							child:Text(
+								'Forgot Password ?',
+								style: TextStyle(
+									fontSize: 14,
+									fontWeight: FontWeight.w300
+								),
+							)
 						)
 					],
 				),

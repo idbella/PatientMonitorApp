@@ -121,7 +121,7 @@ class ViewMedicalFileState extends State<ViewMedicalFile> {
 												title:Text('View Attachments',style:TextStyle(color: Colors.white)),
 												leading: Icon(Icons.attachment,color: Colors.yellow[600],),
 												trailing: Icon(Icons.keyboard_arrow_right),
-												onTap: () => Navigator.of(context).pushNamed('viewnotes', arguments: medicalFile),
+												onTap: () => Navigator.of(context).pushNamed('viewattachments', arguments: medicalFile),
 											)
 										)
 									]

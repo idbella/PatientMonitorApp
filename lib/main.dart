@@ -1,4 +1,5 @@
 
+import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/AddMedicalFile.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/EditMedicalFile.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/ListPatients.dart';
@@ -7,6 +8,7 @@ import 'package:PatientMonitorMobileApp/views/Reception/viewPatient.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/AddNote.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/DoctorHomePage.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/EditMedicalFile.dart';
+import 'package:PatientMonitorMobileApp/views/doctor/ViewAttachments.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/ViewNotes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +26,7 @@ import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/addPatient.dart';
 
 void main() {
+	Globals.url = 'http://172.16.176.29:8080';
   runApp(MyApp());
 }
 
@@ -68,7 +71,8 @@ class MyApp extends StatelessWidget {
 			'viewfile'			:(context) => ViewMedicalFile(),
 			'viewnotes'			:(context) => ViewNotes(),
 			'addnote'			:(context) => AddNote(),
-			'addfile'			:(context) => AddMedicalFilePage()
+			'addfile'			:(context) => AddMedicalFilePage(),
+			'viewattachments' :(context) => ViewAttachments()
       },
     );
   }

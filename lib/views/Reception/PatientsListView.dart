@@ -1,5 +1,4 @@
 
-import 'package:PatientMonitorMobileApp/controllers/RecepController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:flutter/material.dart';
@@ -180,6 +179,7 @@ class PatientsListViewState extends State<PatientsListView>{
 
 	void deletePatient(Patient patient)
 	{
+		print('delete patient ' + patient.id.toString());
 		Requests.delete(Globals.url + '/api/patients/' + patient.id.toString())
 		.then((value) {
 			if (value.statusCode == 200)
@@ -189,11 +189,13 @@ class PatientsListViewState extends State<PatientsListView>{
 					Globals.patientsList.removeWhere((element) => element.user.id == patient.id);
 				});
 				print('success');
-			}
-			else
-				print(value.statusCode.toString());
+			} else {
+					Navigator.of(context).pop();
+					Globals.showAlertDialog(context, 'error', value.content().toString());
+				}
 		}).catchError((e){
-			print(e.toString());
+			Navigator.of(context).pop();
+			Globals.showAlertDialog(context, 'error', e.toString());
 		});
 	}
 }
