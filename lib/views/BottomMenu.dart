@@ -24,6 +24,8 @@ class _BottomMenuState extends State<BottomMenu> {
 			page = RecepHomePage();
 		else if (Globals.user.role == Globals.doctorId)
 			page = DoctorHomePage();
+		else if (Globals.user.role == Globals.nurseId)
+			page = DoctorHomePage();
 		Navigator.push(
 			context,
 			MaterialPageRoute(builder: (context) => page)

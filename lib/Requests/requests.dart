@@ -33,7 +33,7 @@ class Response {
   throwForStatus() {
     if (!success) {
       throw HTTPException(
-          'Invalid HTTP status code $statusCode for url ${url}', this);
+          'Invalid HTTP status code $statusCode for url $url', this);
     }
   }
 
@@ -240,7 +240,7 @@ class Requests {
           "invalid url, must start with 'http://' or 'https://' sheme (e.g. 'http://example.com')");
     }
 
-    headers = await _constructRequestHeaders(headers);
+    headers = _constructRequestHeaders(headers);
     String requestBody;
 
     if (body != null && json != null) {

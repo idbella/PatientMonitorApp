@@ -38,7 +38,7 @@ class Common {
     return data.keys.map((key) {
       var k = Uri.encodeComponent(key.toString());
       var v = Uri.encodeComponent(data[key].toString());
-      return '${k}=${v}';
+      return '$k=$v';
     }).join('&');
   }
 

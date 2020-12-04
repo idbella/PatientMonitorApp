@@ -1,12 +1,10 @@
 
 
 import 'package:PatientMonitorMobileApp/Clipper.dart';
-import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/Drawer.dart';
-import 'package:PatientMonitorMobileApp/views/LoginPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';

@@ -1,31 +1,33 @@
 
 import 'package:PatientMonitorMobileApp/Clipper.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
-import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
+import 'package:PatientMonitorMobileApp/models/Note.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 
-class AddNote extends StatefulWidget
+class EditNote extends StatefulWidget
 {
 	@override
-	State<StatefulWidget> createState() => AddNoteState();
+	State<StatefulWidget> createState() => EditNoteState();
 }
 
-class AddNoteState extends State<AddNote>{
+class EditNoteState extends State<EditNote>{
 
 	TextEditingController	noteController = TextEditingController();
-	MedicalFile					medicalFile;
+	Note							note;
 	Patient						patient;
 	int							_visibleTo = 6;
 
 	void extractArgs(){
-		if (medicalFile != null)
+		if (note != null)
 			return;
-		medicalFile = ModalRoute.of(context).settings.arguments;
-		patient = medicalFile.patient;
+		note = ModalRoute.of(context).settings.arguments;
+		patient = note.medicalFile.patient;
+		noteController.text = note.note.toString();
+		_visibleTo = note.permissions;
 	}
 
 	@override
@@ -211,7 +213,7 @@ class AddNoteState extends State<AddNote>{
 														),
 														RaisedButton(
 															child: Text('Save', style: TextStyle(color: Color.fromARGB(255, 245, 246, 250)),),
-															onPressed: ()=>saveNote(medicalFile.id),
+															onPressed: ()=>saveNote(note.id),
 															color: Color.fromARGB(255, 0, 151, 230),
 															shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)))
 														)
@@ -229,19 +231,16 @@ class AddNoteState extends State<AddNote>{
 		);
 		}
 
-		void saveNote(int fileId)
+		void saveNote(int noteId)
 		{
-			String url = Globals.url + '/api/file/' + fileId.toString() + '/notes';
+			String url = Globals.url + '/api/notes/' + noteId.toString();
 			var body = {
 				'notes':noteController.text.toString(),
 				'permissions':_visibleTo.toString()
 			};
 			Requests.post(url, body: body).then((value) {
 				if (value.statusCode == 200)
-				{
-					medicalFile.notes = null;
 					Navigator.pop(context);
-				}
 				print(value.content());
 			}).catchError((e){
 				print('note error : ' + e.toString());

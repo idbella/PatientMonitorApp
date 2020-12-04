@@ -1,17 +1,12 @@
 
 
 import 'package:PatientMonitorMobileApp/Clipper.dart';
-import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
-import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
-import 'package:PatientMonitorMobileApp/views/LoginPage.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/FileListView.dart';
-import 'package:PatientMonitorMobileApp/views/Reception/PatientsListView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 class ViewPatientPage extends StatefulWidget{

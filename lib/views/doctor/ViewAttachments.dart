@@ -7,6 +7,7 @@ import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/AttachmentsListView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ViewAttachments extends StatefulWidget
 {
@@ -26,6 +27,15 @@ class ViewAttachmentsState extends State<ViewAttachments>{
 		patient = medicalFile.patient;
 	}
 
+	@override
+	void initState() {
+		Permission.storage.request().then((value) {
+			if (value.isDenied)
+				Navigator.of(context).pop();
+		});
+   	super.initState();
+	}
+	
 	@override
 	Widget build(BuildContext context) {
 

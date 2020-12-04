@@ -2,7 +2,6 @@
 import 'package:PatientMonitorMobileApp/DateTextField.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
-import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

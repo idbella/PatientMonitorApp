@@ -8,6 +8,7 @@ import 'package:PatientMonitorMobileApp/views/Reception/viewPatient.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/AddNote.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/DoctorHomePage.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/EditMedicalFile.dart';
+import 'package:PatientMonitorMobileApp/views/doctor/EditNote.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/ViewAttachments.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/ViewNotes.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,8 @@ class MyApp extends StatelessWidget {
 			'viewnotes'			:(context) => ViewNotes(),
 			'addnote'			:(context) => AddNote(),
 			'addfile'			:(context) => AddMedicalFilePage(),
-			'viewattachments' :(context) => ViewAttachments()
+			'viewattachments' :(context) => ViewAttachments(),
+			'editnote'			:(context) => EditNote()
       },
     );
   }

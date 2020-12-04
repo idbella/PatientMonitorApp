@@ -54,20 +54,8 @@ class LoginPageState extends State<LoginPage>{
 			print('check : ' + value.content().toString());
 			var status = value.statusCode;
 			if (status == 200){
-				Globals.init();
 				var json = value.json();
-				Globals.user = User.fromjson(json);
-				StatefulWidget page;
-				if (json['role'] == Globals.adminId)
-					page = AdminHomePage();
-				else if (json['role'] == Globals.recepId)
-					page = RecepHomePage();
-				else if (json['role'] == Globals.doctorId)
-					page = DoctorHomePage();
-				Navigator.pushReplacement(
-					context,
-					MaterialPageRoute(builder: (context) => page)
-				);
+				authenticated(json);
 			}
 			else {
 				Globals.token = null;
@@ -285,24 +273,7 @@ class LoginPageState extends State<LoginPage>{
 			else if (value.statusCode == 200){
 				pr.hide();
 				var json = value.json();
-				String token =  json['token'].toString();
-				Globals.storageSet('token', token);
-				Globals.token = token;
-
-				Globals.init();
-				
-				Globals.user = User.fromjson(json);
-				StatefulWidget page;
-				if (json['role'] == Globals.adminId)
-					page = AdminHomePage();
-				else if (json['role'] == Globals.recepId)
-					page = RecepHomePage();
-				else if (json['role'] == Globals.doctorId)
-					page = DoctorHomePage();
-				Navigator.pushReplacement(
-					context,
-					MaterialPageRoute(builder: (context) => page)
-				);
+				authenticated(json);
 			}
 		})
 		.catchError((e) => print(e))
@@ -312,5 +283,24 @@ class LoginPageState extends State<LoginPage>{
 			}),
 			pr.hide()
 		});
+	}
+
+	void authenticated(json)
+	{
+		Globals.init();
+		Globals.user = User.fromjson(json);
+		StatefulWidget page;
+		if (json['role'] == Globals.adminId)
+			page = AdminHomePage();
+		else if (json['role'] == Globals.recepId)
+			page = RecepHomePage();
+		else if (json['role'] == Globals.doctorId)
+			page = DoctorHomePage();
+		else if (json['role'] == Globals.nurseId)
+			page = DoctorHomePage();
+		Navigator.pushAndRemoveUntil(context,
+			MaterialPageRoute(builder: (BuildContext context) => page),
+			(Route<dynamic> route) => false,
+		);
 	}
 }

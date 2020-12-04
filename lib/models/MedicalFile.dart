@@ -1,7 +1,7 @@
 
 import 'package:PatientMonitorMobileApp/models/Doctor.dart';
+import 'package:PatientMonitorMobileApp/models/Note.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
-import 'package:PatientMonitorMobileApp/models/user.dart';
 
 class MedicalFile{
 
@@ -13,7 +13,7 @@ class MedicalFile{
 	int			insuranceType;
 	String		insurance;
 	Doctor		doctor;
-
+	List<Note>	notes;
 	MedicalFile({
 		this.id,
 		this.title,

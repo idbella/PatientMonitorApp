@@ -1,12 +1,10 @@
 
 
 import 'package:PatientMonitorMobileApp/Clipper.dart';
-import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/Drawer.dart';
-import 'package:PatientMonitorMobileApp/views/LoginPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -80,17 +78,24 @@ class DoctorHomePageState extends State<DoctorHomePage> {
 															mainAxisAlignment: MainAxisAlignment.center,
 															crossAxisAlignment: CrossAxisAlignment.start,
 															children: [
+																Divider(height: 8,),
 																Text(
-																	'Doctor',
+																	user.lastName.toString() + ' ' + user.firstName.toString(),
 																	style: TextStyle(
-																		fontSize: 18,
-																		fontWeight: FontWeight.w700
+																		fontSize: 16,
+																		fontWeight: FontWeight.w500
 																	),
 																),
-																Divider(height: 8,),
-																Text(user.lastName.toString() + ' ' + user.firstName.toString()),
+																Text(
+																	user.title.toString(),
+																	style: TextStyle(
+																		fontSize: 15,
+																		//fontWeight: FontWeight.w200
+																	),
+																	overflow: TextOverflow.ellipsis,
+																),
 																SizedBox(height: 5,),
-																Text(user.email.toString()),
+																Text(user.email.toString() + '@gmail.com'),
 																SizedBox(height: 5,),
 																Text(user.phone.toString())
 															]

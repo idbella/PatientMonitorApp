@@ -36,7 +36,7 @@ class ViewNotesState extends State<ViewNotes>{
 				bottomNavigationBar: BottomMenu(selectedIndex: 1),
 				backgroundColor:Globals.backgroundColor,
 				floatingActionButton: FloatingActionButton(
-					onPressed: ()=>Navigator.of(context).pushNamed('addnote', arguments:medicalFile),
+					onPressed: () => Navigator.of(context).pushNamed('addnote', arguments:medicalFile),
 					child:Icon(Icons.add)
 				),
 				body:SafeArea(

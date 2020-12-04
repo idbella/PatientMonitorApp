@@ -13,6 +13,7 @@ class User{
 	String title;
 	int	 role;
 
+	String fullName()=>this.firstName.toString() + ' ' + this.lastName.toString();
 	static User fromjson(Map<String, dynamic> json){
 		User user = new User(
 				id:json['id'] as int,

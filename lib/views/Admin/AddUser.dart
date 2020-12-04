@@ -1,5 +1,4 @@
 
-import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:flutter/cupertino.dart';

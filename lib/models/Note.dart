@@ -8,8 +8,9 @@ class Note{
 	User							user;
 	DateTime						date;
 	MedicalFile					medicalFile;
+	int							permissions;
 
-	Note(this.id,this.note,this.date);
+	Note(this.id,this.note,this.date,this.permissions);
 
 	static Note fromJson(var json)
 	{
@@ -17,6 +18,7 @@ class Note{
 			json['id'],
 			json['notes'],
 			DateTime.parse(json['date']),
+			json['permissions']
 		);
 		return note;
 	}

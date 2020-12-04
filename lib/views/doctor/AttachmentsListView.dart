@@ -7,6 +7,7 @@ import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
+import 'package:ext_storage/ext_storage.dart';
 
 class AttachmentsListView extends StatefulWidget {
 	final MedicalFile medicalFile;
@@ -154,7 +155,10 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 											]
 										),
 										trailing: IconButton(
-											onPressed: (){},
+											onPressed: () async {
+												String path = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
+												String filePath = path + '/' + attachment.fileName;
+											},
 											icon:Icon(Icons.download_outlined)
 										),
 									)

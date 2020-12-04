@@ -1,6 +1,5 @@
 
 import 'package:PatientMonitorMobileApp/globals.dart';
-import 'package:PatientMonitorMobileApp/models/Doctor.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/Note.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
@@ -25,7 +24,7 @@ class NotesListViewState  extends State<NotesListView>{
 
 	void getNotes()
 	{
-		if (notes != null)
+		if (medicalFile.notes != null)
 			return ;
 		Requests.get(Globals.url + '/api/file/' + medicalFile.id.toString() + '/notes')
 			.then((response) {
@@ -33,13 +32,20 @@ class NotesListViewState  extends State<NotesListView>{
 				if (response.statusCode == 200)
 				{
 					List<dynamic> list = response.json();
-					notes = List();
+					medicalFile.notes = List();
 					if (list.isNotEmpty)
 					{
 						list.forEach((element) {
 							Note note = Note.fromJson(element);
 							note.medicalFile = medicalFile;
-							notes.add(note);
+							medicalFile.notes.add(note);
+							note.user = User(
+								id:element['userId'],
+								title: element['title'],
+								firstName: element['first_name'],
+								lastName: element['last_name'],
+								role: element['fk_role']
+								);
 						});
 						
 					}
@@ -54,23 +60,24 @@ class NotesListViewState  extends State<NotesListView>{
 		getNotes();
 		List<Widget> list = List();
 		
-		if (notes == null)
+		if (medicalFile.notes == null)
 			return Center(child:Column(children:[SizedBox(height:100),Text('Loading...')]));
-		if (notes.isEmpty)
+		if (medicalFile.notes.isEmpty)
 			return Center(child:Column(children:[SizedBox(height:100),Text('No Notes to show...')]));
-		Doctor  doctor = medicalFile.doctor;
-		User		user;
-		String docName;
-		String docTitle;
 
-		if (doctor != null)
-			user = doctor.user;
-		if (user != null)
-		{
-			docName = user.firstName + ' ' + user.lastName;
-			docTitle = user.title;
-		}
-		notes.forEach((Note note) {
+		medicalFile.notes.forEach((Note note) {
+			ImageProvider image;
+			Color bgColor;
+			if (note.user.role == Globals.doctorId)
+			{
+				bgColor = Color.fromARGB(255, 140, 122, 230);
+				image = Image.asset('images/doctor.jpg').image;
+			}
+			else
+			{
+				image = Image.asset('images/avatar.png').image;
+				bgColor = Colors.lightBlue;
+			}
 
 			Widget wi = Card(
 				margin: EdgeInsets.symmetric(vertical:10),
@@ -79,7 +86,7 @@ class NotesListViewState  extends State<NotesListView>{
 				child:Column(
 					children: [
 						Card(
-							color: Color.fromARGB(255, 140, 122, 230),
+							color: bgColor,
 							elevation: 5,
 							margin: EdgeInsets.zero,
 							child:Padding(
@@ -93,7 +100,7 @@ class NotesListViewState  extends State<NotesListView>{
 												SizedBox(
 													width: 50,
 													child:CircleAvatar(
-														backgroundImage:Image.asset('images/doctor.jpg').image
+														backgroundImage:image
 													)
 												),
 												
@@ -101,14 +108,14 @@ class NotesListViewState  extends State<NotesListView>{
 													crossAxisAlignment: CrossAxisAlignment.start,
 													children:[
 														Text(
-															docName.toString(),
+															note.user.fullName(),
 															style: TextStyle(
 																fontWeight: FontWeight.w800,
 																color: Colors.white
 															),
 														),
 														Text(
-															docTitle.toString(),
+															note.user.title.toString(),
 															style: TextStyle(
 																fontWeight: FontWeight.w300,
 																color: Colors.white
@@ -118,14 +125,19 @@ class NotesListViewState  extends State<NotesListView>{
 												),
 											]
 										),
-										Row(
-											children: [
-												Icon(Icons.edit,color: Colors.white),
-												SizedBox(width: 20,),
-												Icon(Icons.delete,color: Colors.white,)
-											],	
-										),
-										//Icon(Icons.arrow_drop_up,color: Colors.white,)
+										Visibility(
+											visible: Globals.user.id == note.user.id,
+											child:Row(
+												children: [
+													IconButton(
+														icon:Icon(Icons.edit,color: Colors.white),
+														onPressed: () => Navigator.of(context).pushNamed('editnote', arguments:note)
+													),
+													SizedBox(width: 20,),
+													Icon(Icons.delete,color: Colors.white,)
+												],	
+											)
+										)
 									],
 								)
 							)
@@ -163,7 +175,7 @@ class NotesListViewState  extends State<NotesListView>{
 		Requests.delete(Globals.url + '/api/notes/$noteId').then((value) {
 			if (value.statusCode == 200)
 			setState(() {
-				notes = null;
+				medicalFile.notes.removeWhere((element) => element.id==noteId);
 			});
 		});
 	}
