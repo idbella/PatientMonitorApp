@@ -13,10 +13,10 @@ import 'event.dart';
 enum RequestBodyEncoding { JSON, FormURLEncoded, PlainText }
 enum HttpMethod { GET, PUT, PATCH, POST, DELETE, HEAD }
 
-class Response {
+class ResponseX {
   final http.Response _rawResponse;
 
-  Response(this._rawResponse);
+  ResponseX(this._rawResponse);
 
   int get statusCode => _rawResponse.statusCode;
 
@@ -56,7 +56,7 @@ class Response {
 
 class HTTPException implements Exception {
   final String message;
-  final Response response;
+  final ResponseX response;
 
   HTTPException(this.message, this.response);
 }
@@ -77,9 +77,9 @@ class Requests {
     return requestHeaders;
   }
 
-  static Future<Response> _handleHttpResponse(http.Response rawResponse) async {
+  static Future<ResponseX> _handleHttpResponse(http.Response rawResponse) async {
 
-    var response = Response(rawResponse);
+    var response = ResponseX(rawResponse);
 
     if (response.hasError) {
       var errorEvent = {'response': response};
@@ -89,7 +89,7 @@ class Requests {
     return response;
   }
 
-  static Future<Response> head(String url,
+  static Future<ResponseX> head(String url,
       {Map<String, String> headers,
       Map<String, dynamic> queryParameters,
       int port,
@@ -106,7 +106,7 @@ class Requests {
                 verify: verify);
   }
 
-  static Future<Response> get(String url,
+  static Future<ResponseX> get(String url,
       {Map<String, String> headers,
       Map<String, dynamic> queryParameters,
       int port,
@@ -126,7 +126,7 @@ class Requests {
                 verify: verify);
   }
 
-  static Future<Response> patch(String url,
+  static Future<ResponseX> patch(String url,
       {Map<String, String> headers,
       int port,
       dynamic json,
@@ -146,7 +146,7 @@ class Requests {
                 verify: verify);
   }
 
-  static Future<Response> delete(String url,
+  static Future<ResponseX> delete(String url,
       {Map<String, String> headers,
       dynamic json,
       dynamic body,
@@ -166,7 +166,7 @@ class Requests {
                 verify: verify);
   }
 
-  static Future<Response> post(String url,
+  static Future<ResponseX> post(String url,
       {dynamic json,
       int port,
       dynamic body,
@@ -186,7 +186,7 @@ class Requests {
                 verify: verify);
   }
 
-  static Future<Response> put(
+  static Future<ResponseX> put(
     String url, {
     int port,
     dynamic json,
@@ -211,7 +211,7 @@ class Requests {
     );
   }
 
-  static Future<Response> _httpRequest(HttpMethod method, String url,
+  static Future<ResponseX> _httpRequest(HttpMethod method, String url,
       {
         dynamic json,
         dynamic body,

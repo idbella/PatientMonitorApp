@@ -35,7 +35,7 @@ import 'package:PatientMonitorMobileApp/Requests/requests.dart';
    	}
 	}
 
-	Future<Response> listPatients()
+	Future<ResponseX> listPatients()
 	{
 		return Requests.get(Globals.url.toString() + '/api/patients/');
 	}

@@ -37,7 +37,7 @@ import 'package:shared_preferences/shared_preferences.dart';
     }
   }
   
-Future<Response> listUsers()
+Future<ResponseX> listUsers()
 {
   return Requests.get(Globals.url.toString() + '/api/admin/users/');
 }

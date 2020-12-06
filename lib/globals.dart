@@ -41,7 +41,7 @@ class Globals {
 	{
 		if (Globals.insuarnces.isNotEmpty)
 			return ;
-		Requests.get(Globals.url + '/api/insurance').then((Response response){
+		Requests.get(Globals.url + '/api/insurance').then((ResponseX response){
 			print('insyrance : ' + response.content().toString());
 			if (response.statusCode == 200)
 			{
@@ -59,7 +59,7 @@ class Globals {
 
 	static void getDoctors({Function callback})
 	{
-		Requests.get(Globals.url + '/api/doctors').then((Response response){
+		Requests.get(Globals.url + '/api/doctors').then((ResponseX response){
 			print('doctors : ' + response.content().toString());
 			if (response.statusCode == 200)
 			{
