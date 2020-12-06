@@ -273,7 +273,14 @@ class LoginPageState extends State<LoginPage>{
 			else if (value.statusCode == 200){
 				pr.hide();
 				var json = value.json();
-				authenticated(json);
+				SharedPreferences.getInstance()
+					.then((prefs){
+						Globals.token = json['token'];
+						prefs.setString('token', json['token'])
+							.then((value){
+								authenticated(json);
+							});
+					});
 			}
 		})
 		.catchError((e) => print(e))

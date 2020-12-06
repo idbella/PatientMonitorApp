@@ -4,6 +4,7 @@ import 'package:PatientMonitorMobileApp/models/Doctor.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/attachment.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
@@ -42,7 +43,6 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 							attachment.medicalFile = medicalFile;
 							attachments.add(attachment);
 						});
-						
 					}
 					setState(() {});
 				}
@@ -59,10 +59,10 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 			return Center(child:Column(children:[SizedBox(height:100),Text('Loading...')]));
 		if (attachments.isEmpty)
 			return Center(child:Column(children:[SizedBox(height:100),Text('No Notes to show...')]));
-		Doctor  doctor = medicalFile.doctor;
+		Doctor	doctor = medicalFile.doctor;
 		User		user;
-		String docName;
-		String docTitle;
+		String	docName;
+		String	docTitle;
 
 		if (doctor != null)
 			user = doctor.user;
@@ -137,13 +137,14 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 								crossAxisAlignment: CrossAxisAlignment.start,
 								children:[
 									ListTile(
+										leading: Icon(Icons.picture_as_pdf,size: 40,),
 										title:Column(
 											crossAxisAlignment: CrossAxisAlignment.start,
 											children:[
 												Text(attachment.date.toString(),
 													style: TextStyle(fontSize: 12),
 												),
-												SizedBox(height: 20,),
+												SizedBox(height: 10,),
 												Text(
 													attachment.title,
 													style:TextStyle(
@@ -158,6 +159,16 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 											onPressed: () async {
 												String path = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
 												String filePath = path + '/' + attachment.fileName;
+												print(filePath);
+												Dio(
+													BaseOptions(
+														headers: {'Authorization' : 'Bearer ${Globals.token}'}
+													)
+												).download(attachment.url, filePath).then((value){
+													print(value.statusCode.toString());
+												}).catchError((e){
+													print(e.toString());
+												});
 											},
 											icon:Icon(Icons.download_outlined)
 										),

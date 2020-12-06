@@ -207,7 +207,7 @@ class EditNoteState extends State<EditNote>{
 													children:[
 														RaisedButton(
 															child: Text('cancel', style: TextStyle(color: Color.fromARGB(255, 245, 246, 250)),),
-															onPressed: (){},
+															onPressed: ()=>Navigator.of(context).pop(),
 															color: Color.fromARGB(255, 0, 151, 230),
 															shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)))
 														),
