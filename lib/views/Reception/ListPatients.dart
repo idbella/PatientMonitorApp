@@ -116,7 +116,7 @@ class ListPatientsPageState extends State<ListPatientsPage> {
 														hintText: 'Search for patient'
 													),
 												),
-												SizedBox(height: 40,),
+												SizedBox(height: 10,),
 												getContent()
 											]
 										)

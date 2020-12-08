@@ -26,6 +26,7 @@ class PatientsListViewState extends State<PatientsListView>{
 
 		patients.forEach((patient) {
 			Widget w = Card(
+						margin: EdgeInsets.only(top:20),
 						elevation: 5,
 						child:Column(
 							children:[
