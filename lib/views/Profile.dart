@@ -42,7 +42,7 @@ class ProfileState extends State<Profile> {
 	Widget build(BuildContext context) {
 	
 		return Scaffold(
-			bottomNavigationBar: BottomMenu(selectedIndex: 0),
+			bottomNavigationBar: BottomMenu(selectedIndex: 2),
 			drawer: UserDrawer(),
 			backgroundColor:Globals.backgroundColor,
 			body:Builder(

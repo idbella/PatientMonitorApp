@@ -53,6 +53,8 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 					}
 					setState(() {});
 				}
+				if (response.statusCode == 404)
+					setState(() {attachments = List();});
 			});
 	}
 
@@ -65,7 +67,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 		if (attachments == null)
 			return Center(child:Column(children:[SizedBox(height:100),Text('Loading...')]));
 		if (attachments.isEmpty)
-			return Center(child:Column(children:[SizedBox(height:100),Text('No Notes to show...')]));
+			return Center(child:Column(children:[SizedBox(height:100),Text('No Attachments to show...')]));
 		Doctor	doctor = medicalFile.doctor;
 		User		user;
 		String	docName;
@@ -295,7 +297,6 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 			isDownloaded(file).then((value) {
 				if (value == true)
 					setState(() {
-						print('file ' + file.name + ' is downloaded');
 						file.downloaded = true;
 					});
 			});
@@ -358,11 +359,11 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 			),
 		);
 	}
-
-	int _selected = 3;
+	bool showLoading = false;
 	void showSelectDialog(Attachment attachment)
 	{
 		int id = attachment.id;
+		showLoading = false;
 		showDialog(
 			context: context,
 			builder: (BuildContext context) {
@@ -373,60 +374,52 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 							height: 120,
 							child:Padding(
 								padding: EdgeInsets.only(top: 30),
-								child:Row(
+								child:Column(
 									children: [
-										FlatButton(
-											onPressed: () async {
-												var pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-												if (pickedFile != null)
-												{
-													String url = Globals.url + '/api/attachments/$id/file';
-													String filename = pickedFile.path.split('/').last;
-													var formData = FormData.fromMap({
-														"title": filename,
-														"file": await MultipartFile.fromFile(pickedFile.path, filename: filename),
-													});
-													print('filename : ' + filename);
-													Dio(
-														BaseOptions(
-															headers: {'Authorization' : 'Bearer ${Globals.token}'}
-														)
-													).post(
-														url,
-														data:formData
-													).then((value) {
-														print(value.statusCode.toString());
-													}).catchError((e){
-														print(e);
-													});
-												}
-											},
-											child: Column(
-												children:[
-													Icon(AntDesign.camera,size: 60,),
-													Text('open camera')
-												]
-											)
+										Visibility(
+											visible: showLoading,
+											child:Text('please wait...')
 										),
-										SizedBox(height: 20,),
-										FlatButton(
-											onPressed: () async{
-												FilePickerResult result = await FilePicker.platform.pickFiles();
+										Visibility(
+											visible:!showLoading,
+											child:Row(
+												children: [
+													FlatButton(
+														onPressed: () async {
+															setState((){showLoading = true;});
+															var pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+															if (pickedFile != null)
+																uploadFile(pickedFile, id);
+														},
+														child: Column(
+															children:[
+																Icon(AntDesign.camera,size: 60,),
+																Text('open camera')
+															]
+														)
+													),
+													SizedBox(height: 20,),
+													FlatButton(
+														onPressed: () async{
+															setState((){showLoading = true;});
+															FilePickerResult result = await FilePicker.platform.pickFiles();
 
-												if(result != null) {
-													File file = File(result.files.single.path);
-													print('file = ' + file.toString());
-												}
-											},
-											child:
-												Column(
-													children:[
-														Icon(AntDesign.folder1,size: 60,),
-														Text('select file')
-													]
-												)
+															if(result != null) {
+																uploadFile(result.files.single.path, id);
+															}
+														},
+														child:
+															Column(
+																children:[
+																	Icon(AntDesign.folder1,size: 60,),
+																	Text('select file')
+																]
+															)
+													)
+												],
+											)
 										)
-									],
+									]
 								)
 							)
 						),
@@ -440,5 +433,33 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 				});
 			}
 		);
+	}
+
+
+	void uploadFile(file, id) async
+	{
+		String url = Globals.url + '/api/attachments/$id/file';
+		String filename = file.split('/').last;
+		var formData = FormData.fromMap({
+			"title": filename,
+			"file": await MultipartFile.fromFile(file, filename: filename),
+		});
+		print('filename : ' + filename);
+		Dio(
+			BaseOptions(
+				headers: {'Authorization' : 'Bearer ${Globals.token}'}
+			)
+		).post(
+			url,
+			data:formData
+		).then((value) {
+			print(value.statusCode.toString());
+		}).catchError((e){
+			print(e);
+		}).then((value){
+			showLoading = false;
+			if (ModalRoute.of(context).settings.name == 'viewattachments')
+				Navigator.of(context).pop();
+		});
 	}
 }

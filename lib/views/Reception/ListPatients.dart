@@ -25,7 +25,7 @@ class ListPatientsPageState extends State<ListPatientsPage> {
 		refreshPatientsList(context, setState);
 
 		return Scaffold(
-			bottomNavigationBar: BottomMenu(selectedIndex: 0),
+			bottomNavigationBar: BottomMenu(selectedIndex: 1),
 			drawer: UserDrawer(),
 			floatingActionButton: FloatingActionButton(
 				onPressed: ()=>refreshPatientsList(context, setState, true),
