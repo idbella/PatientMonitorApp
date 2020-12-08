@@ -22,12 +22,10 @@ class PatientsListViewState extends State<PatientsListView>{
    	List<Patient> patients = Globals.patientsList;
 		if (patients.isEmpty)
 			return (Text('empty list'));
-   	return ListView.builder(
-			itemCount: patients.length,
-			itemBuilder: (BuildContext ctx, int index) {
-				return Padding(
-					padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-					child:Card(
+		List<Widget> list = List();
+
+		patients.forEach((patient) {
+			Widget w = Card(
 						elevation: 5,
 						child:Column(
 							children:[
@@ -35,7 +33,7 @@ class PatientsListViewState extends State<PatientsListView>{
 									contentPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 0),
 									onTap: () {
 										Navigator.of(context)
-										.pushNamed('viewpatient', arguments:patients[index]);
+										.pushNamed('viewpatient', arguments:patient);
 									},
 									leading: CircleAvatar(
 										backgroundImage: Image.asset('images/avatar.png').image,
@@ -46,7 +44,7 @@ class PatientsListViewState extends State<PatientsListView>{
 										children:[
 											SizedBox(height: 10,),
 											Text(
-												patients[index].user.firstName.toString() + ' ' + patients[index].user.lastName.toString(),
+												patient.user.firstName.toString() + ' ' + patient.user.lastName.toString(),
 												style: TextStyle(
 													fontSize: 20,
 													fontWeight: FontWeight.w500
@@ -62,7 +60,7 @@ class PatientsListViewState extends State<PatientsListView>{
 													Icon(Icons.email, size: 15,),
 													VerticalDivider(width: 5,),
 													Flexible(child:
-													Text(patients[index].user.email.toString(), overflow: TextOverflow.ellipsis,),
+													Text(patient.user.email.toString(), overflow: TextOverflow.ellipsis,),
 													)
 												]
 											),
@@ -72,7 +70,7 @@ class PatientsListViewState extends State<PatientsListView>{
 													Icon(Icons.phone, size: 15,),
 													VerticalDivider(width: 5,),
 													Flexible(child:
-													Text(patients[index].user.phone.toString(), overflow: TextOverflow.ellipsis,),
+													Text(patient.user.phone.toString(), overflow: TextOverflow.ellipsis,),
 													)
 												]
 											)
@@ -92,7 +90,7 @@ class PatientsListViewState extends State<PatientsListView>{
 													'delete',
 													Icons.delete,
 													Color.fromARGB(255, 232, 65, 24),
-													() => showAlertDialog(context, patients[index])
+													() => showAlertDialog(context, patient)
 												)
 											),
 											Visibility(
@@ -102,7 +100,7 @@ class PatientsListViewState extends State<PatientsListView>{
 													Icons.assignment,
 													Colors.lightBlue,
 													() => Navigator.of(context)
-														.pushNamed('addpatient', arguments:patients[index])
+														.pushNamed('addpatient', arguments:patient)
 												)
 											),
 											getButton(
@@ -110,17 +108,17 @@ class PatientsListViewState extends State<PatientsListView>{
 												Icons.description,
 												Color.fromARGB(255, 76, 209, 55),
 												() => Navigator.of(context)
-													.pushNamed('viewpatient', arguments:patients[index])
+													.pushNamed('viewpatient', arguments:patient)
 											),
 										],
 									)
 								)
 							]
 						)
-					)
-				);
-			}
-		);
+			);
+			list.add(w);
+		});
+   	return Column(children:list);
 	}
 
 	showAlertDialog(BuildContext context, Patient patient) {

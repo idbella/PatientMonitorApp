@@ -5,6 +5,7 @@ import 'package:PatientMonitorMobileApp/models/Note.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 
 class NotesListView extends StatefulWidget {
@@ -120,7 +121,11 @@ class NotesListViewState  extends State<NotesListView>{
 																fontWeight: FontWeight.w300,
 																color: Colors.white
 															),
-														)
+														),
+														SizedBox(height: 5,),
+														Text(DateFormat('yMMMMd').format(note.date) + ' ' + DateFormat('jm').format(note.date),
+															style: TextStyle(fontSize: 10,color: Colors.white70),
+														),
 													]
 												),
 											]
@@ -147,10 +152,6 @@ class NotesListViewState  extends State<NotesListView>{
 							child: Column(
 								crossAxisAlignment: CrossAxisAlignment.start,
 								children:[
-									Text(note.date.toString(),
-										style: TextStyle(fontSize: 13),
-									),
-									SizedBox(height: 10,),
 									Text(
 										note.note,
 										style:TextStyle(

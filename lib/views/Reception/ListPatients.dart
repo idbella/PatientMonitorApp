@@ -1,7 +1,9 @@
 
+import 'package:PatientMonitorMobileApp/Clipper.dart';
 import 'package:PatientMonitorMobileApp/controllers/RecepController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
+import 'package:PatientMonitorMobileApp/views/Drawer.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/PatientsListView.dart';
 import 'package:flutter/material.dart';
 
@@ -23,20 +25,109 @@ class ListPatientsPageState extends State<ListPatientsPage> {
 		refreshPatientsList(context, setState);
 
 		return Scaffold(
-			bottomNavigationBar: BottomMenu(selectedIndex: 1),
-			backgroundColor:Color.fromARGB(255, 0, 168, 255),
-			body:DefaultTabController(
-				length: 3,
-				child: Scaffold(
-					backgroundColor: Globals.backgroundColor,
-					appBar: AppBar(
-						backgroundColor: Color.fromARGB(255, 64, 115, 158),
-						title: Text('Manage Patients'),
-					),
-					body: getContent()
-				),
+			bottomNavigationBar: BottomMenu(selectedIndex: 0),
+			drawer: UserDrawer(),
+			floatingActionButton: FloatingActionButton(
+				onPressed: ()=>refreshPatientsList(context, setState, true),
+				child: Icon(Icons.refresh),
 			),
-   	);
+			backgroundColor:Globals.backgroundColor,
+			body:Builder(
+				builder:(context){
+					return SafeArea(
+						child:SingleChildScrollView(
+							child: Stack(
+								children: [
+									ClipPath(
+										child:Container(
+											height: 230,
+											width: MediaQuery.of(context).size.width,
+											decoration: BoxDecoration(
+												image: DecorationImage(
+													image: AssetImage('images/header.png'),
+													fit:BoxFit.fitWidth
+												)
+											),
+										),
+										clipper: ImageClipper(),
+									),
+									Positioned(
+										top:20,
+										right: 20,
+										child:IconButton(
+											icon: Icon(Icons.menu),
+											onPressed: (){
+												Scaffold.of(context).openDrawer();
+											}
+										),
+									),
+									Padding(
+										padding: EdgeInsets.all(20),
+										child: Column(
+											mainAxisAlignment: MainAxisAlignment.center,
+											crossAxisAlignment: CrossAxisAlignment.start,
+											children: [
+												SizedBox(height: 10,),
+												Row(
+													children: [
+														CircleAvatar(
+															radius: 50,
+															backgroundImage:Image.asset('images/doctor.jpg',).image,
+														),
+														SizedBox(width: 10,),
+														Column(
+															mainAxisAlignment: MainAxisAlignment.center,
+															crossAxisAlignment: CrossAxisAlignment.start,
+															children: [
+																Divider(height: 8,),
+																Text(
+																	user.lastName.toString() + ' ' + user.firstName.toString(),
+																	style: TextStyle(
+																		fontSize: 16,
+																		fontWeight: FontWeight.w500
+																	),
+																),
+																Text(
+																	user.title.toString(),
+																	style: TextStyle(
+																		fontSize: 15,
+																		//fontWeight: FontWeight.w200
+																	),
+																	overflow: TextOverflow.ellipsis,
+																),
+																SizedBox(height: 5,),
+																Text(user.email.toString()),
+																SizedBox(height: 5,),
+																Text(user.phone.toString())
+															]
+														)
+													]
+												),
+												SizedBox(height: 30,),
+												TextField(
+													decoration: InputDecoration(
+														border:  OutlineInputBorder(
+															borderRadius: BorderRadius.all(Radius.circular(5)),
+															borderSide:  BorderSide(color: Colors.teal)
+														),
+														fillColor: Colors.white,
+														filled: true,
+														suffix: Icon(Icons.search),
+														hintText: 'Search for patient'
+													),
+												),
+												SizedBox(height: 40,),
+												getContent()
+											]
+										)
+									)
+								]
+							)
+						)
+					);
+				}
+			)
+		);
 	}
 
 	Widget getContent()

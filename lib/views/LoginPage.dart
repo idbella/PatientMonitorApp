@@ -6,8 +6,8 @@ import 'package:PatientMonitorMobileApp/controllers/Login.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:PatientMonitorMobileApp/views/Admin/AdminHomePage.dart';
+import 'package:PatientMonitorMobileApp/views/Reception/ListPatients.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
-import 'package:PatientMonitorMobileApp/views/doctor/DoctorHomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
@@ -302,9 +302,9 @@ class LoginPageState extends State<LoginPage>{
 		else if (json['role'] == Globals.recepId)
 			page = RecepHomePage();
 		else if (json['role'] == Globals.doctorId)
-			page = DoctorHomePage();
+			page = ListPatientsPage();
 		else if (json['role'] == Globals.nurseId)
-			page = DoctorHomePage();
+			page = ListPatientsPage();
 		Navigator.pushAndRemoveUntil(context,
 			MaterialPageRoute(builder: (BuildContext context) => page),
 			(Route<dynamic> route) => false,

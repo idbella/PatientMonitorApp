@@ -28,6 +28,10 @@ class Globals {
 	static User					user					= User(title: '');
 	static Color				backgroundColor	= Color.fromARGB(255, 0xd1,0xee,0xfe);
 	static String				token;
+	static int					imageAttach			= 1;
+	static int					docAttach			= 2;
+	static int					radioAttach			= 3;
+	static int					ordoAttach			= 4;
 
 	static List<AccountType> accountTypes = List.from(
 		[

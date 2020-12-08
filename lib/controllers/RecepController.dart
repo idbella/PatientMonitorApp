@@ -17,6 +17,7 @@ import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 				if (value.statusCode == 200)
 				{
 					list = value.json();
+					print(list.toString());
 					if (list.isNotEmpty) {
 						Globals.patientsList = List();
 						list.forEach((element) {

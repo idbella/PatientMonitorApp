@@ -5,10 +5,16 @@ import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/attachment.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 import 'package:ext_storage/ext_storage.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
 
 class AttachmentsListView extends StatefulWidget {
 	final MedicalFile medicalFile;
@@ -42,6 +48,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 							Attachment attachment = Attachment.fromJson(element);
 							attachment.medicalFile = medicalFile;
 							attachments.add(attachment);
+							attachment.user = User(id:element['userId']);
 						});
 					}
 					setState(() {});
@@ -97,7 +104,6 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 														backgroundImage:Image.asset('images/doctor.jpg').image
 													)
 												),
-												
 												Column(
 													crossAxisAlignment: CrossAxisAlignment.start,
 													children:[
@@ -114,66 +120,76 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 																fontWeight: FontWeight.w300,
 																color: Colors.white
 															),
-														)
+														),
+														SizedBox(height: 5,),
+														Text(DateFormat('yMMMMd').format(attachment.date) + ' ' + DateFormat('jm').format(attachment.date),
+															style: TextStyle(fontSize: 10,color: Colors.white70),
+														),
 													]
 												),
 											]
 										),
 										Row(
 											children: [
-												Icon(Icons.edit,color: Colors.white),
-												SizedBox(width: 20,),
-												Icon(Icons.delete,color: Colors.white,)
-											],	
+												// Icon(Icons.edit,color: Colors.white),
+												// SizedBox(width: 20,),
+												Visibility(
+													visible: attachment.user.id == Globals.user.id,
+													child:IconButton(
+														icon:Icon(Icons.delete,color: Colors.white,),
+														onPressed: ()=>showAlertDialog(context, attachment),
+													)
+												)
+											],
 										),
-										//Icon(Icons.arrow_drop_up,color: Colors.white,)
 									],
 								)
 							)
 						),
 						Padding(
-							padding: EdgeInsets.all(10),
-							child: Column(
-								crossAxisAlignment: CrossAxisAlignment.start,
-								children:[
-									ListTile(
-										leading: Icon(Icons.picture_as_pdf,size: 40,),
-										title:Column(
-											crossAxisAlignment: CrossAxisAlignment.start,
-											children:[
-												Text(attachment.date.toString(),
-													style: TextStyle(fontSize: 12),
-												),
-												SizedBox(height: 10,),
-												Text(
-													attachment.title,
-													style:TextStyle(
-														fontSize: 17,
-														fontWeight: FontWeight.w300,
-														color: Colors.black
-													),
-												),
-											]
-										),
-										trailing: IconButton(
-											onPressed: () async {
-												String path = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
-												String filePath = path + '/' + attachment.fileName;
-												print(filePath);
-												Dio(
-													BaseOptions(
-														headers: {'Authorization' : 'Bearer ${Globals.token}'}
-													)
-												).download(attachment.url, filePath).then((value){
-													print(value.statusCode.toString());
-												}).catchError((e){
-													print(e.toString());
-												});
-											},
-											icon:Icon(Icons.download_outlined)
-										),
-									)
-								]
+							padding: EdgeInsets.all(5),
+							child:Builder(
+								builder: (context){
+									List<Widget> list = List();
+									list.add(
+										Padding(
+											padding: EdgeInsets.all(10),
+											child:Text(
+											attachment.title,
+											style: TextStyle(
+												fontWeight: FontWeight.w300,
+												fontSize: 18
+											),
+										))
+									);
+									attachment.files.forEach((element) {
+										list.add(getSingleFileView(attachment, element));
+									});
+									list.add(
+										Row(
+											mainAxisAlignment: MainAxisAlignment.spaceBetween,
+											children: [
+												SizedBox(width: 10,),
+												RaisedButton(
+													onPressed: (){
+														showSelectDialog(attachment);
+													},
+													child:Row(
+													children: [
+														Icon(Icons.add),
+														Text('add '),
+													]
+												)
+												)
+											],
+										)
+									);
+									Widget wi = Column(
+										crossAxisAlignment: CrossAxisAlignment.center,
+										children:list
+									);
+									return wi;
+								}
 							)
 						)
 					],
@@ -184,17 +200,244 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 		return Column(children: list,);
 	}
 
+	void showAlertDialog(BuildContext context, Attachment attachment)
+	{
+		Widget cancelButton = FlatButton(
+			child: Text("Cancel"),
+			onPressed: () {
+			Navigator.of(context).pop();
+			}
+		);
+		Widget okButton = FlatButton(
+			child: Text("Delete"),
+			onPressed: () {
+				delete(attachment.id);
+			},
+		);
+	
+		AlertDialog alert = AlertDialog(
+			title: Text("Confirm"),
+			content: Text("Delete Attachment ?"),
+			actions: [
+				cancelButton,
+				okButton
+			],
+		);
+
+		showDialog(
+			context: context,
+			builder: (BuildContext context) {
+			return alert;
+			},
+		);
+  }
 	void  delete(attachmentId)
 	{
+		Navigator.of(context).pop();
 		String url = Globals.url + '/api/attachments/' + attachmentId.toString();
 		Requests.delete(url)
 			.then((value) {
+				print(value.statusCode.toString());
 				if (value.statusCode == 200)
 					setState(() {
 						attachments = null;
 					});
 				else
 					Globals.showAlertDialog(context, 'error', value.content());
+			}
+		);
+	}
+
+	void downloadAtachment(AttachFile file, filePath) async {									
+		Dio(
+			BaseOptions(
+				headers: {'Authorization' : 'Bearer ${Globals.token}'}
+			)
+		).download(file.url, filePath).then((value){
+			if (value.statusCode == 200)
+			{
+				setState(() {
+				  file.downloaded = true;
+				});
+				print(value.statusCode.toString());
+			}
+		}).catchError((e){
+			print(e.toString());
+		});
+	}
+
+	void openAttachment(fileName){
+		OpenFile.open(fileName);
+	}
+
+	Future<bool> isDownloaded(AttachFile file) async {
+		String path = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
+		String filePath = path + '/' + file.name;
+		bool exist = false;
+		try{
+			exist = await File(filePath).exists();
+		}catch(e){}
+		return exist;
+	}
+
+	Widget getSingleFileView(Attachment attachment, AttachFile file)
+	{
+		Widget leading = Icon(Icons.picture_as_pdf,size: 40,);
+		var type = attachment.type;
+		if (type == Globals.radioAttach || type == Globals.imageAttach)
+			leading = Image.network(
+				file.url,
+				headers: {'Authorization' : 'Bearer ${Globals.token}'},
+				height: 100,
+				width: 80,
+			);
+		if (!file.downloaded)
+			isDownloaded(file).then((value) {
+				if (value == true)
+					setState(() {
+						print('file ' + file.name + ' is downloaded');
+						file.downloaded = true;
+					});
+			});
+		return Card(
+			child:ListTile(
+				onTap: (){
+					var type = attachment.type;
+					if (type == Globals.imageAttach || type == Globals.radioAttach)
+					showDialog(
+						context: context,
+						builder: (BuildContext context) {
+							return AlertDialog(
+								backgroundColor: Colors.transparent,
+								content:InteractiveViewer(
+									panEnabled: true,
+									boundaryMargin: EdgeInsets.all(100),
+									minScale: 0.5,
+									maxScale: 10,
+									child: Image.network(
+										file.url,
+										width: 200,
+										height: 200,
+										fit: BoxFit.cover,
+									),
+								)
+							);
+						}
+					);
+				},
+				contentPadding: EdgeInsets.all(10),
+				leading: leading,
+				title:Column(
+					crossAxisAlignment: CrossAxisAlignment.start,
+					children:[
+						Text(
+							file.name,
+							style:TextStyle(
+								fontSize: 17,
+								fontWeight: FontWeight.w300,
+								color: Colors.black
+							),
+						),
+					]
+				),
+				trailing: IconButton(
+					onPressed: () async{
+						String path = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
+						String filePath = path + '/' + file.name;
+						bool exist = false;
+						try{
+							exist = await File(filePath).exists();
+						}catch(e){}
+						if (exist)
+							openAttachment(filePath);
+						else
+							downloadAtachment(file, filePath);
+					},
+					icon:Icon(file.downloaded ? Icons.open_in_full : Icons.download_outlined)
+				)
+			),
+		);
+	}
+
+	int _selected = 3;
+	void showSelectDialog(Attachment attachment)
+	{
+		int id = attachment.id;
+		showDialog(
+			context: context,
+			builder: (BuildContext context) {
+				return StatefulBuilder(builder: (context, setState){
+					return AlertDialog(
+						title: Text('Add attachment'),
+						content: Container(
+							height: 120,
+							child:Padding(
+								padding: EdgeInsets.only(top: 30),
+								child:Row(
+									children: [
+										FlatButton(
+											onPressed: () async {
+												var pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+												if (pickedFile != null)
+												{
+													String url = Globals.url + '/api/attachments/$id/file';
+													String filename = pickedFile.path.split('/').last;
+													var formData = FormData.fromMap({
+														"title": filename,
+														"file": await MultipartFile.fromFile(pickedFile.path, filename: filename),
+													});
+													print('filename : ' + filename);
+													Dio(
+														BaseOptions(
+															headers: {'Authorization' : 'Bearer ${Globals.token}'}
+														)
+													).post(
+														url,
+														data:formData
+													).then((value) {
+														print(value.statusCode.toString());
+													}).catchError((e){
+														print(e);
+													});
+												}
+											},
+											child: Column(
+												children:[
+													Icon(AntDesign.camera,size: 60,),
+													Text('open camera')
+												]
+											)
+										),
+										SizedBox(height: 20,),
+										FlatButton(
+											onPressed: () async{
+												FilePickerResult result = await FilePicker.platform.pickFiles();
+
+												if(result != null) {
+													File file = File(result.files.single.path);
+													print('file = ' + file.toString());
+												}
+											},
+											child:
+												Column(
+													children:[
+														Icon(AntDesign.folder1,size: 60,),
+														Text('select file')
+													]
+												)
+										)
+									],
+								)
+							)
+						),
+						actions: [
+							FlatButton(
+								onPressed: ()=>Navigator.of(context).pop(),
+								child: Text('cancel')
+							)
+						],
+					);
+				});
 			}
 		);
 	}

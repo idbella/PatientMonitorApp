@@ -27,13 +27,12 @@ import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/addPatient.dart';
 
 void main() {
-	Globals.url = 'http://172.16.177.186:8080';
-  runApp(MyApp());
+	Globals.url = 'http://10.1.34.227:8080';
+	runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
       SystemChrome.setPreferredOrientations([

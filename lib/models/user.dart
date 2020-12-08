@@ -1,10 +1,7 @@
 
-
-import 'package:flutter/material.dart';
-
 class User{
 
-	User({this.id,this.email,this.firstName,this.lastName,this.role,this.phone,@required this.title});
+	User({this.id,this.email,this.firstName,this.lastName,this.role,this.phone,this.title});
 	int id;
 	String firstName;
 	String lastName;

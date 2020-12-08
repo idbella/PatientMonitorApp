@@ -1,14 +1,21 @@
 
+import 'dart:io';
+
 import 'package:PatientMonitorMobileApp/Clipper.dart';
+import 'package:PatientMonitorMobileApp/Requests/requests.dart';
+import 'package:PatientMonitorMobileApp/StyledTextView.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/AttachmentsListView.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:http/http.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ViewAttachments extends StatefulWidget
 {
@@ -36,12 +43,13 @@ class ViewAttachmentsState extends State<ViewAttachments>{
 		});
    	super.initState();
 	}
-	
+	int _selected = 3;
+	TextEditingController titleController = TextEditingController();
 	@override
 	Widget build(BuildContext context) {
 
 		extractArgs();
-		double _iconsSize = 70;
+
 		return (
 			Scaffold(
 				bottomNavigationBar: BottomMenu(selectedIndex: 1),
@@ -51,82 +59,100 @@ class ViewAttachmentsState extends State<ViewAttachments>{
 						showDialog(
 							context: context,
 							builder: (BuildContext context) {
-								return AlertDialog(
-									title: Text('Add attachment'),
-									content: Container(
-										height: 230,
-										child:Padding(
-											padding: EdgeInsets.only(right: 0),
-											child:Column(
-												children:[
-													Row(
-														mainAxisAlignment: MainAxisAlignment.spaceBetween,
-														children: [
-															FlatButton(
-																child: Column(
-																	children:[
-																		Icon(Icons.picture_as_pdf,size: _iconsSize,),
-																		Text('Document')
-																	]
+								return StatefulBuilder(builder: (context, setState){
+									return AlertDialog(
+										title: Text('New attachment'),
+										content: Container(
+											height: 250,
+											child:Padding(
+												padding: EdgeInsets.only(right: 0),
+												child:Column(
+													crossAxisAlignment: CrossAxisAlignment.start,
+													children:[
+														Text('attachment type : '),
+														SizedBox(height: 10,),
+														DropdownButton<int>(
+															isExpanded: true,
+															value: _selected,
+															icon: Icon(Icons.arrow_downward),
+															iconSize: 24,
+															elevation: 16,
+															style: TextStyle(color: Colors.deepPurple),
+															onChanged: (int newValue) {
+																setState(() {
+																	_selected = newValue;
+																});
+															},
+															items: [
+																DropdownMenuItem<int>(
+																	value: 2,
+																	child: Row(
+																		children: [
+																			Icon(Icons.note),
+																			Text('Document')
+																		]
+																	),
 																),
-																onPressed: (){
-
-																}
+																DropdownMenuItem<int>(
+																	value: 1,
+																	child: Row(
+																		children: [
+																			Icon(Icons.image),
+																			Text('Photo')
+																		]
+																	),
+																),
+																DropdownMenuItem<int>(
+																	value: 3,
+																	child: Row(
+																		children: [
+																			Icon(Icons.image),
+																			Text('Radiologie')
+																		]
+																	),
+																),
+																DropdownMenuItem<int>(
+																	value: 4,
+																	child: Row(
+																		children: [
+																			Icon(Icons.note),
+																			Text('Ordonnace')
+																		]
+																	),
+																)
+															],
+														),
+														SizedBox(height: 10,),
+														Text('description : '),
+														TextField(
+															controller: titleController,
+															maxLines: 3,
+															decoration: InputDecoration(
+																contentPadding: EdgeInsets.zero,
+																border: OutlineInputBorder(
+																	borderSide: BorderSide(color: Colors.teal)
+																),
 															),
-															FlatButton(
-																child: Column(
-																	children:[
-																		Icon(Icons.image,size: _iconsSize,),
-																		Text('Image')
-																	]
-																),
-																onPressed: (){
-
-																}
-															)
-														]
-													),
-													SizedBox(
-														height: 30,
-													),
-													Row(
-														mainAxisAlignment: MainAxisAlignment.spaceBetween,
-														children: [
-															FlatButton(
-																child: Column(
-																	children:[
-																		Icon(Icons.description,size: _iconsSize,),
-																		Text('ordonnance')
-																	]
-																),
-																onPressed: (){
-
-																}
-															),
-															FlatButton(
-																child: Column(
-																	children:[
-																		Icon(Icons.medical_services,size: _iconsSize,),
-																		Text('Radiologie')
-																	]
-																),
-																onPressed: (){
-
-																}
-															)
-														]
-													)
-												]
+														),
+													]
+												)
 											)
-										)
-									),
-									actions: [
-										IconButton(
-											onPressed: ()=>Navigator.of(context).pop(),
-											icon: Icon(Icons.cancel)
-										)
-									],
-								);
+										),
+										actions: [
+											FlatButton(
+												onPressed: () => Navigator.of(context).pop(),
+												child: Text('Cancel')
+											),
+											FlatButton(
+												onPressed: () {
+													Navigator.of(context).pop();
+													newAttachment(medicalFile.id);
+												},
+												child: Text('Ok')
+											)
+										],
+									);
+								});
 							}
 						);
 					},
@@ -197,5 +223,21 @@ class ViewAttachmentsState extends State<ViewAttachments>{
 				)
 			)
 		);
+		}
+
+		void newAttachment(fileId)
+		{
+			String url = Globals.url + '/api/file/$fileId/attachments';
+			var body = {
+				'title':titleController.text.toString(),
+				'type':_selected.toString()
+			};
+			Requests.post(url, body: body).then((value){
+				print(value.content().toString());
+			}).catchError((e){
+				print(e);
+			}).then((value) {
+				setState((){});
+			});
 		}
 	}
