@@ -3,7 +3,6 @@ import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/views/Admin/AdminHomePage.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/ListPatients.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
-import 'package:PatientMonitorMobileApp/views/doctor/DoctorHomePage.dart';
 import 'package:flutter/material.dart';
 
 class BottomMenu extends StatefulWidget {
@@ -17,19 +16,17 @@ class _BottomMenuState extends State<BottomMenu> {
 
 	void goHome()
 	{
-		StatefulWidget page;
+		String page;
 		if (Globals.user.role == Globals.adminId)
-			page = AdminHomePage();
+			page = 'admin';
 		else if (Globals.user.role == Globals.recepId)
-			page = RecepHomePage();
+			page = 'recep';
 		else if (Globals.user.role == Globals.doctorId)
-			page = DoctorHomePage();
+			page = 'listpatients';
 		else if (Globals.user.role == Globals.nurseId)
-			page = DoctorHomePage();
-		Navigator.push(
-			context,
-			MaterialPageRoute(builder: (context) => page)
-		);
+			page = 'listpatients';
+		if (ModalRoute.of(context).settings.name != page)
+			Navigator.pushNamed(context, page);
 	}
 
   @override
@@ -55,10 +52,10 @@ class _BottomMenuState extends State<BottomMenu> {
 				if (index == 0)
 					goHome();
 				else if (index == 1)
-					Navigator.push(
-						context,
-						MaterialPageRoute(builder: (context) => ListPatientsPage())
-					);
+				{
+					if (ModalRoute.of(context).settings.name != 'listpatients')
+						Navigator.pushNamed(context, 'listpatients');
+				}
 			},
 		);
   }
