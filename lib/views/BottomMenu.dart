@@ -56,6 +56,12 @@ class _BottomMenuState extends State<BottomMenu> {
 					if (ModalRoute.of(context).settings.name != 'listpatients')
 						Navigator.pushNamed(context, 'listpatients');
 				}
+				else if (index == 2)
+				{
+					if (ModalRoute.of(context).settings.name != 'profile')
+						Navigator.pushNamed(context, 'profile');
+				}
+
 			},
 		);
   }

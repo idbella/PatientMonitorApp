@@ -36,6 +36,41 @@ class _UserDrawerState extends State<UserDrawer> {
 							),
 							Card(
 								child:ListTile(
+									title: Text('Home'),
+									leading: Icon(Icons.home),
+									onTap: (){
+										String page = 'listpatients';
+										if (Globals.user.role == Globals.adminId)
+											page = 'admin';
+										else if (Globals.user.role == Globals.recepId)
+											page = 'recep';
+										if (ModalRoute.of(context).settings.name != page)
+											Navigator.pushNamed(context, page);
+									},
+								)
+							),
+							Card(
+								child:ListTile(
+									title: Text('Profile'),
+									leading: Icon(Icons.person),
+									onTap: (){
+										if (ModalRoute.of(context).settings.name != 'profile')
+											Navigator.pushNamed(context, 'profile');
+									},
+								)
+							),
+							Card(
+								child:ListTile(
+									title: Text('Patients'),
+									leading: Icon(Icons.person),
+									onTap: (){
+										if (ModalRoute.of(context).settings.name != 'listpatients')
+											Navigator.pushNamed(context, 'listpatients');
+									},
+								)
+							),
+							Card(
+								child:ListTile(
 									title: Text('logout'),
 									leading: Icon(Icons.keyboard_arrow_left),
 									onTap: (){
@@ -51,7 +86,7 @@ class _UserDrawerState extends State<UserDrawer> {
 										});
 									},
 								)
-							)
+							),
 						]
 					)
 				)
