@@ -63,6 +63,7 @@ class Globals {
 
 	static void getDoctors({Function callback})
 	{
+		Globals.doctors = List();
 		Requests.get(Globals.url + '/api/doctors').then((ResponseX response){
 			print('doctors : ' + response.content().toString());
 			if (response.statusCode == 200)
