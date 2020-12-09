@@ -220,13 +220,13 @@ class LoginPageState extends State<LoginPage>{
 						SizedBox(height: 40,),
 						FlatButton(
 							child: Text(
-								'Connexion',
+								'Login',
 								style: TextStyle(
 									color: Color.fromARGB(255, 245, 246, 250),
 									fontSize: 18
 								),
 							),
-							padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+							padding: EdgeInsets.symmetric(horizontal: 40,vertical: 10),
 							onPressed: disableButton ? null : loginButtonOnClick,
 							color: Colors.blue,
 							shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50))),

@@ -150,7 +150,27 @@ class AddPatientPageState extends State<AddPatientPage> {
 		);
 	}
 
+	String check(){
+		if (fnameController.text.length <= 0)
+			return 'first name';
+		if (lnameController.text.length <= 0)
+			return 'last name';
+		if (cinController.text.length <= 0)
+			return 'cin';
+		if (phoneController.text.length <= 0)
+			return 'phone number';
+		if (motifController.text.length <= 0)
+			return 'motif';
+		return null;
+	}
+
 	void next(){
+		String field;
+		if ((field = check()) != null)
+		{
+			Globals.showAlertDialog(context, 'Missing fields', '$field is required');
+			return;
+		}
 		var body = {
 			'first_name':fnameController.text,
 			'last_name':lnameController.text,

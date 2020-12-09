@@ -34,7 +34,6 @@ class AddPatientExtraPageState extends State<AddPatientExtraPage> {
 	TextEditingController addressController = TextEditingController();
 	TextEditingController cityController = TextEditingController();
 	TextEditingController postalCodeController = TextEditingController();
-	TextEditingController cinController = TextEditingController();
 
 	Patient					patient;
 	Map<String,dynamic>	args;
@@ -53,7 +52,6 @@ class AddPatientExtraPageState extends State<AddPatientExtraPage> {
 			emailController.text			= patient.user.email.toString();
 			addressController.text		= patient.address.toString();
 			cityController.text			= patient.city.toString();
-			cinController.text			= patient.cin.toString();
 			postalCodeController.text	= patient.postalCode.toString();
 			_country = Country.ALL.where((country) => country.name == patient.country).first;
 			_selected = patient.sexe == 0 ? Genre.male : Genre.female;
@@ -251,8 +249,25 @@ class AddPatientExtraPageState extends State<AddPatientExtraPage> {
       	)
 		);
 	}
+	String check(){
+		if (emailController.text.length <= 0)
+			return 'email';
+		if (addressController.text.length <= 0)
+			return 'Address';
+		if (postalCodeController.text.length <= 0)
+			return 'postal code';
+		if (cityController.text.length <= 0)
+			return 'city';
+		return null;
+	}
 
 	void next(){
+		String field;
+		if ((field = check()) != null)
+		{
+			Globals.showAlertDialog(context, 'Missing fields', '$field is required');
+			return;
+		}
 		var body = {
 			'email': emailController.text,
 			'sexe':_selected == Genre.female ? '1' : '0',
