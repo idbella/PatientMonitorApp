@@ -6,6 +6,7 @@ import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/Drawer.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/PatientsListView.dart';
 import 'package:flutter/material.dart';
+import 'package:PatientMonitorMobileApp/models/user.dart';
 
 class ListPatientsPage extends StatefulWidget{
 
@@ -23,7 +24,7 @@ class ListPatientsPageState extends State<ListPatientsPage> {
 	Widget build(BuildContext context) {
 
 		refreshPatientsList(context, setState);
-
+		User user = Globals.user;
 		return Scaffold(
 			bottomNavigationBar: BottomMenu(selectedIndex: 1),
 			drawer: UserDrawer(),

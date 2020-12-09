@@ -9,9 +9,9 @@ class UserDrawer extends StatefulWidget {
   _UserDrawerState createState() => _UserDrawerState();
 }
 
-User user = Globals.user;
 
 class _UserDrawerState extends State<UserDrawer> {
+	
   	@override
   	Widget build(BuildContext context) {
 		return SizedBox(
@@ -76,11 +76,12 @@ class _UserDrawerState extends State<UserDrawer> {
 									onTap: (){
 										logout().then((value) {
 											value.remove('token').then((value) {
-												Navigator.pushReplacement(
+												Navigator.pushAndRemoveUntil(
 													context,
 													MaterialPageRoute(
 														builder: (context) => LoginPage(checkLogin: false,)
-													)
+													),
+													(va)=>false
 												);
 											});
 										});

@@ -71,7 +71,7 @@ class AddPatientPageState extends State<AddPatientPage> {
 								height: 120.0,
 								decoration: BoxDecoration(
 									image: DecorationImage(
-										image: NetworkImage('https://cdn.intra.42.fr/users/medium_sid-bell.jpg'),
+										image: Image.asset('images/avatar.png').image,
 										fit: BoxFit.cover,
 									),
 									borderRadius: BorderRadius.all(Radius.circular(60.0)),
