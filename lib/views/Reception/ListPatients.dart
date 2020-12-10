@@ -2,11 +2,13 @@
 import 'package:PatientMonitorMobileApp/Clipper.dart';
 import 'package:PatientMonitorMobileApp/controllers/RecepController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
+import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/Drawer.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/PatientsListView.dart';
 import 'package:flutter/material.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class ListPatientsPage extends StatefulWidget{
 
@@ -20,6 +22,7 @@ class ListPatientsPage extends StatefulWidget{
 
 class ListPatientsPageState extends State<ListPatientsPage> {
 
+	TextEditingController searchController = TextEditingController();
 	@override
 	Widget build(BuildContext context) {
 
@@ -73,7 +76,7 @@ class ListPatientsPageState extends State<ListPatientsPage> {
 													children: [
 														CircleAvatar(
 															radius: 50,
-															backgroundImage:Image.asset('images/doctor.jpg',).image,
+															backgroundImage:Image.asset(Globals.user.role == Globals.doctorId ? 'images/doctor.jpg' : 'images/avatar.png').image,
 														),
 														SizedBox(width: 10,),
 														Column(
@@ -105,17 +108,42 @@ class ListPatientsPageState extends State<ListPatientsPage> {
 													]
 												),
 												SizedBox(height: 30,),
-												TextField(
-													decoration: InputDecoration(
-														border:  OutlineInputBorder(
-															borderRadius: BorderRadius.all(Radius.circular(5)),
-															borderSide:  BorderSide(color: Colors.teal)
+												TypeAheadField(
+													textFieldConfiguration: TextFieldConfiguration(
+														style: TextStyle(fontSize: 15),
+														decoration: InputDecoration(
+															prefixText: ' patient : ',
+															suffix: Icon(Icons.search),
+															border: OutlineInputBorder()
 														),
-														fillColor: Colors.white,
-														filled: true,
-														suffix: Icon(Icons.search),
-														hintText: 'Search for patient'
+														controller: searchController,
 													),
+													suggestionsCallback: (pattern) async {
+														var list = Globals.patientsList.where((patient) {
+															if (patient.cin.toString().startsWith(pattern))
+																return true;
+															if (patient.user.firstName.startsWith(pattern))
+																return true;
+															if (patient.user.lastName.startsWith(pattern))
+																return true;
+															if (patient.user.email.startsWith(pattern))
+																return true;
+															return false;
+														}).toList();
+														return list;
+													},
+													itemBuilder: (context, Patient patient) {
+														return ListTile(
+															leading: CircleAvatar(backgroundImage: Image.asset('images/avatar.png').image,),
+															title: Text(patient.user.firstName + ' ' + patient.user.lastName),
+															subtitle: Text(patient.user.email.toString()),
+														);
+													},
+													onSuggestionSelected: (Patient patient) {
+														setState((){
+															searchController.text = patient.user.firstName + ' ' + patient.user.lastName;
+														});
+													},
 												),
 												SizedBox(height: 10,),
 												getContent()

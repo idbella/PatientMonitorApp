@@ -85,7 +85,7 @@ class ProfileState extends State<Profile> {
 													children: [
 														CircleAvatar(
 															radius: 50,
-															backgroundImage:Image.asset('images/doctor.jpg',).image,
+															backgroundImage:Image.asset(Globals.user.role == Globals.doctorId ? 'images/doctor.jpg' : 'images/avatar.png').image,
 														),
 														SizedBox(width: 10,),
 														Column(

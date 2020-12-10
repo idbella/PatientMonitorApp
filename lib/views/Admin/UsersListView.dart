@@ -50,7 +50,7 @@ class UsersListState extends State<UsersList>{
                 children: [
                   Icon(Icons.email, size: 15,),
                   VerticalDivider(width: 5,),
-                  Text(users[index].email),
+                  Flexible(child:Text(users[index].email,overflow: TextOverflow.ellipsis,)),
                 ]
               ),
               SizedBox(height: 5,),

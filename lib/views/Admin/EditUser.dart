@@ -19,25 +19,27 @@ class EditUserPage extends StatefulWidget{
 class EditUserPageState extends State<EditUserPage> {
 
   void extractArgs(){
-    if (user != null)
-      return;
-    user = ModalRoute.of(context).settings.arguments;
-    if (user == null)
-      return;
-    emailController.text = user.email.toString();
-    phoneController.text = user.phone.toString();
-    fnameController.text = user.firstName.toString();
-    lnameController.text = user.lastName.toString();
-    dropdownValue = user.role;
-  }
+		if (user != null)
+		return;
+		user = ModalRoute.of(context).settings.arguments;
+		if (user == null)
+		return;
+		emailController.text = user.email.toString();
+		phoneController.text = user.phone.toString();
+		fnameController.text = user.firstName.toString();
+		lnameController.text = user.lastName.toString();
+		titleController.text = user.title.toString();
+		dropdownValue = user.role;
+	}
 
 	User user;
 
   int dropdownValue;
 	TextEditingController emailController = TextEditingController();
-  TextEditingController fnameController = TextEditingController();
-  TextEditingController lnameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+	TextEditingController fnameController = TextEditingController();
+	TextEditingController lnameController = TextEditingController();
+	TextEditingController phoneController = TextEditingController();
+	TextEditingController titleController = TextEditingController();
 
   @override
 	Widget build(BuildContext context) {
@@ -81,9 +83,9 @@ class EditUserPageState extends State<EditUserPage> {
 									children: [
 										Row(
 											children: [
-											Icon(Icons.settings),
-											VerticalDivider(),
-											Text('account type : '),
+												Icon(Icons.settings),
+												VerticalDivider(),
+												Text('account type : '),
 											]
 										),
 										DropdownButton<int>(
@@ -109,6 +111,8 @@ class EditUserPageState extends State<EditUserPage> {
 							SizedBox(height: 20,),
 							textField(hint:'enter last name', icon:Icon(Icons.person), label: 'last name', controller: lnameController),
 							SizedBox(height: 20,),
+							textField(hint:'enter title', icon:Icon(Icons.description), label: 'title', controller: titleController),
+							SizedBox(height: 20,),
 							textField(hint:'enter phone number', icon:Icon(Icons.phone), label: 'phone number', controller: phoneController),
 							SizedBox(height: 20,),
 							RaisedButton(
@@ -118,27 +122,7 @@ class EditUserPageState extends State<EditUserPage> {
 										color: Color.fromARGB(255, 245, 246, 250)
 									),
 								),
-								onPressed: (){
-									var body = {
-											'email': emailController.text,
-											'first_name':fnameController.text,
-											'last_name':lnameController.text,
-											'phone':phoneController.text,
-											'role':dropdownValue
-										};
-									body.removeWhere((key,val)=>key=='email' && user.email == val.toString());
-									Requests.post(
-										Globals.url + '/api/admin/users/' + user.id.toString(), 
-											body: body
-									).then((value) {
-										if (value.statusCode == 200)
-											print('success');
-										else
-											print(value.statusCode.toString());
-										   Globals.usersList = List();
-                    					Navigator.of(context).pushReplacementNamed('admin');
-									}).catchError((e){print(e.toString());});
-								},
+								onPressed: ()=>editUser(),
 								color: Colors.green,
 								shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
 							)
@@ -147,5 +131,47 @@ class EditUserPageState extends State<EditUserPage> {
 				),
 			)
 		);
+	}
+
+	String check(){
+		if (emailController.text.length <= 0)
+			return 'email';
+		if (titleController.text.length <= 0)
+			return 'title';
+		if (fnameController.text.length <= 0)
+			return 'first name';
+		if (lnameController.text.length <= 0)
+			return 'last name';
+		if (phoneController.text.length <= 0)
+			return 'phone number';
+		return null;
+	}
+	void editUser()
+	{
+		String field;
+		if ((field = check()) != null)
+		{
+			Globals.showAlertDialog(context, 'Missing fields', '$field is required');
+			return;
+		}
+		var body = {
+			'email': emailController.text,
+			'first_name':fnameController.text,
+			'last_name':lnameController.text,
+			'phone':phoneController.text,
+			'role':dropdownValue
+		};
+		body.removeWhere((key,val)=>key=='email' && user.email == val.toString());
+		Requests.post(
+			Globals.url + '/api/admin/users/' + user.id.toString(), 
+				body: body
+		).then((value) {
+			if (value.statusCode == 200)
+				print('success');
+			else
+				print(value.statusCode.toString());
+				Globals.usersList = List();
+				Navigator.of(context).pushReplacementNamed('admin');
+		}).catchError((e){print(e.toString());});
 	}
 }

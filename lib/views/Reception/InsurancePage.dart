@@ -21,6 +21,10 @@ class InsurancePageState extends State<InsurancePage> {
 
 	List<Insurance> inlist = List();
 
+	InsurancePageState(){
+				if (Globals.insuarnces.length > 0)
+					_selected = Globals.insuarnces.first.id;
+	}
 	int _selected;
 
 	@override
@@ -31,8 +35,7 @@ class InsurancePageState extends State<InsurancePage> {
 		Globals.insuarnces.forEach((Insurance element) {
 			widgets.add(getCard(element));
 		});
-		if (Globals.insuarnces.length > 0)
-			_selected = Globals.insuarnces.first.id;
+
 		return
 			Scaffold(
 				bottomNavigationBar: BottomMenu(selectedIndex: 1),

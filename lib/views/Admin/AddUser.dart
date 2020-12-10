@@ -99,31 +99,7 @@ class AddUserPageState extends State<AddUserPage> {
             SizedBox(height: 20,),
             RaisedButton(
               child: Text('save', style: TextStyle(color: Color.fromARGB(255, 245, 246, 250)),),
-              onPressed: (){
-                var body = {
-                      'email': emailController.text,
-                      'first_name':fnameController.text,
-                      'last_name':lnameController.text,
-                      'phone':phoneController.text,
-                      'role':dropdownValue,
-                      'password':passController.text,
-							 'title':titleController.text.toString()
-                    };
-
-                Requests.post(
-                  Globals.url + '/api/register/', 
-                		body: body
-                ).then((value) {
-                  if (value.statusCode == 200)
-                  {
-                    Globals.usersList = List();
-                    Navigator.of(context).pushReplacementNamed('admin');
-                    print('success');
-                  }
-                  else
-                    print(value.statusCode.toString());
-                }).catchError((e){print(e.toString());});
-              },
+              onPressed: () => addUser(),
               color: Color.fromARGB(255, 25, 42, 86),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
             )
@@ -131,5 +107,54 @@ class AddUserPageState extends State<AddUserPage> {
           ),
       )
 		);
+	}
+
+	String check(){
+		if (emailController.text.length <= 0)
+			return 'email';
+		if (titleController.text.length <= 0)
+			return 'title';
+		if (fnameController.text.length <= 0)
+			return 'first name';
+		if (lnameController.text.length <= 0)
+			return 'last name';
+		if (phoneController.text.length <= 0)
+			return 'phone number';
+		if (passController.text.length <= 0)
+			return 'password';
+		return null;
+	}
+
+	void addUser()
+	{
+		String field;
+		if ((field = check()) != null)
+		{
+			Globals.showAlertDialog(context, 'Missing fields', '$field is required');
+			return;
+		}
+
+		var body = {
+			'email': emailController.text,
+			'first_name':fnameController.text,
+			'last_name':lnameController.text,
+			'phone':phoneController.text,
+			'role':dropdownValue,
+			'password':passController.text,
+			'title':titleController.text.toString()
+		};
+		Requests.post(
+		Globals.url + '/api/register/', 
+			body: body
+		).then((value) {
+		if (value.statusCode == 200)
+		{
+			Globals.usersList = List();
+			Navigator.of(context).pushReplacementNamed('admin');
+			print('success');
+		}
+		else
+			print(value.statusCode.toString());
+		}).catchError((e){print(e.toString());});
 	}
 }

@@ -7,7 +7,6 @@ import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/Drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 class RecepHomePage extends StatefulWidget{
@@ -148,33 +147,33 @@ class RecepHomePageState extends State<RecepHomePage> {
 													// 	],
 													// ),
 													SizedBox(height: 20,),
-													Row(
-														mainAxisAlignment: MainAxisAlignment.spaceBetween,
-														children: [
-															getCard(
-																'      Render-Vous      ',
-																Icon(
-																	Foundation.calendar,
-																	size: 70,
-																),
-																EdgeInsets.symmetric(horizontal: 15, vertical:40),
-																(){
-																	Navigator.of(context).pushNamed('addpatient');
-																}
-															),
-															// getCard(
-															// 	'List Patients',
-															// 	Icon(
-															// 		Icons.find_in_page,
-															// 		size: 70,
-															// 	),
-															// 	EdgeInsets.symmetric(horizontal: 40,vertical: 40),
-															// 	(){
-															// 		Navigator.of(context).pushNamed('listpatients');
-															// 	}
-															// ),
-														],
-													),
+													// Row(
+													// 	mainAxisAlignment: MainAxisAlignment.spaceBetween,
+													// 	children: [
+													// 		getCard(
+													// 			'      Render-Vous      ',
+													// 			Icon(
+													// 				Foundation.calendar,
+													// 				size: 70,
+													// 			),
+													// 			EdgeInsets.symmetric(horizontal: 15, vertical:40),
+													// 			(){
+													// 				Navigator.of(context).pushNamed('addpatient');
+													// 			}
+													// 		),
+													// 		// getCard(
+													// 		// 	'List Patients',
+													// 		// 	Icon(
+													// 		// 		Icons.find_in_page,
+													// 		// 		size: 70,
+													// 		// 	),
+													// 		// 	EdgeInsets.symmetric(horizontal: 40,vertical: 40),
+													// 		// 	(){
+													// 		// 		Navigator.of(context).pushNamed('listpatients');
+													// 		// 	}
+													// 		// ),
+													// 	],
+													// ),
 												],
 											)
 										]
