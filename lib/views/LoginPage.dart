@@ -135,9 +135,23 @@ class LoginPageState extends State<LoginPage>{
 								visible: errorVisibility,
 								child: Column(
 									children:[
-										SizedBox(height: 50,),
-										Text(errorString),
-										SizedBox(height: 50,),
+										SizedBox(height: showLoginPage?0:50,),
+										Row(
+											mainAxisAlignment: MainAxisAlignment.center,
+											children: [
+												Icon(Icons.info,color: Colors.red,),
+												SizedBox(width: 5,),
+												Text(
+													errorString,
+													style: TextStyle(
+														color: Colors.red,
+														fontSize: 15,
+														fontWeight: FontWeight.w300
+													)
+												),
+											]
+										),
+										SizedBox(height: showLoginPage?0:50,),
 										Visibility(
 											visible: !showLoginPage,
 											child: RaisedButton(
@@ -263,15 +277,16 @@ class LoginPageState extends State<LoginPage>{
 		pr.show();
 		authenticate(email, password)
 		.then((value) {
+			pr.hide();
 			print(value.statusCode);
 			if (value.statusCode == 404){
 				setState(() {
-					showError = true;
-					errorString = "email/password invalid : " + value.statusCode.toString();
+					errorVisibility = true;
+					errorString = "Error : invalid email or password";
 				});
 			}
 			else if (value.statusCode == 200){
-				pr.hide();
+				
 				var json = value.json();
 				SharedPreferences.getInstance()
 					.then((prefs){
@@ -283,7 +298,10 @@ class LoginPageState extends State<LoginPage>{
 					});
 			}
 		})
-		.catchError((e) => print(e))
+		.catchError((e) {
+			Globals.showAlertDialog(context, 'error', e.toString());
+			pr.hide();
+		})
 		.then((value) => {
 			setState(() {
 				disableButton = false;
