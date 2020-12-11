@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountType{
@@ -59,6 +60,30 @@ class Globals {
 			else
 				print('error ' + response.content().toString());
 		});
+	}
+
+	static ProgressDialog progressDialog;
+
+	static void loading(context, message)
+	{
+		if (progressDialog == null)
+			progressDialog = ProgressDialog(context);
+		progressDialog.style(
+			message: message,
+			borderRadius: 1.0,
+			backgroundColor: Color.fromARGB(255, 220, 221, 225),
+			progressWidget: CircularProgressIndicator(),
+			elevation: 10.0,
+			insetAnimCurve: Curves.easeInOut,
+			progress: 0.0,
+			maxProgress: 100.0,
+			progressTextStyle: TextStyle(
+				color: Colors.black, fontSize: 10.0, fontWeight: FontWeight.w400
+			),
+			messageTextStyle: TextStyle(
+				color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w600
+			)
+		);
 	}
 
 	static void getDoctors({Function callback})
