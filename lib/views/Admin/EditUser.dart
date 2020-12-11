@@ -105,15 +105,15 @@ class EditUserPageState extends State<EditUserPage> {
 								),
 							),
 							SizedBox(height: 20,),
-							textField(hint:'enter email', icon:Icon(Icons.mail), label: 'email', controller: emailController),
+							textField(hint:'Email', icon:Icon(Icons.mail), label: 'Email', controller: emailController),
 							SizedBox(height: 20,),
-							textField(hint:'enter first name', icon:Icon(Icons.person), label: 'first name', controller: fnameController),
+							textField(hint:'First name', icon:Icon(Icons.person), label: 'First name', controller: fnameController),
 							SizedBox(height: 20,),
-							textField(hint:'enter last name', icon:Icon(Icons.person), label: 'last name', controller: lnameController),
+							textField(hint:'Last name', icon:Icon(Icons.person), label: 'Last name', controller: lnameController),
 							SizedBox(height: 20,),
-							textField(hint:'enter title', icon:Icon(Icons.description), label: 'title', controller: titleController),
+							textField(hint:'Speciality', icon:Icon(Icons.description), label: 'Speciality', controller: titleController),
 							SizedBox(height: 20,),
-							textField(hint:'enter phone number', icon:Icon(Icons.phone), label: 'phone number', controller: phoneController),
+							textField(hint:'Phone number', icon:Icon(Icons.phone), label: 'Phone number', controller: phoneController),
 							SizedBox(height: 20,),
 							RaisedButton(
 								child: Text(
@@ -137,7 +137,7 @@ class EditUserPageState extends State<EditUserPage> {
 		if (emailController.text.length <= 0)
 			return 'email';
 		if (titleController.text.length <= 0)
-			return 'title';
+			return 'speciality';
 		if (fnameController.text.length <= 0)
 			return 'first name';
 		if (lnameController.text.length <= 0)

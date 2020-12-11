@@ -124,13 +124,13 @@ class FileListViewState  extends State<FileListView>{
 							child:Column(
 								crossAxisAlignment: CrossAxisAlignment.start,
 								children: [
-									getKeyValue('motif de consultation', medicalFile.motif.toString()),
+									getKeyValue('Consultation reason', medicalFile.motif.toString()),
 									SizedBox(height: 8,),
 									getKeyValue('Doctor', doctor.toString()),
 									SizedBox(height: 8,),
 									getKeyValue('Inusrance', insurance.toString()),
 									SizedBox(height: 8,),
-									getKeyValue('Rendez-vous', 'not set'),
+									getKeyValue('Appointment', 'not set'),
 									SizedBox(height: 8,),
 									getKeyValue('Status', 'Active'),
 									SizedBox(height: 10,),

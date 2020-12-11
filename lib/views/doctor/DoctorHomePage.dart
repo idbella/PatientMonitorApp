@@ -110,7 +110,7 @@ class DoctorHomePageState extends State<DoctorHomePage> {
 															mainAxisAlignment: MainAxisAlignment.spaceBetween,
 															children: [
 																getCard(
-																	'      Render-Vous      ',
+																	'      Appointment      ',
 																	Icon(
 																		Foundation.calendar,
 																		size: 70,

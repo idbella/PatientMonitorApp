@@ -389,7 +389,9 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 															setState((){showLoading = true;});
 															var pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
 															if (pickedFile != null)
-																uploadFile(pickedFile, id);
+																uploadFile(pickedFile.path, id);
+															else
+																Navigator.of(context).pop();
 														},
 														child: Column(
 															children:[
@@ -406,7 +408,8 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 
 															if(result != null) {
 																uploadFile(result.files.single.path, id);
-															}
+															} else
+																Navigator.of(context).pop();
 														},
 														child:
 															Column(
@@ -438,8 +441,11 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 
 	void uploadFile(file, id) async
 	{
+		Globals.loading(context, 'please wait..');
 		String url = Globals.url + '/api/attachments/$id/file';
-		String filename = file.split('/').last;
+		String filename = file;
+		if (filename.contains('/'))
+			filename = file.split('/').last;
 		var formData = FormData.fromMap({
 			"title": filename,
 			"file": await MultipartFile.fromFile(file, filename: filename),
@@ -457,6 +463,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 		}).catchError((e){
 			print(e);
 		}).then((value){
+			Globals.progressDialog.hide();
 			showLoading = false;
 			if (ModalRoute.of(context).settings.name == 'viewattachments')
 				Navigator.of(context).pop();

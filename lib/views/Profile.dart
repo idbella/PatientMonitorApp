@@ -28,15 +28,18 @@ class ProfileState extends State<Profile> {
    	fnameController.text = user.firstName.toString();
    	lnameController.text = user.lastName.toString();
 		titleController.text = user.title.toString();
+		passwordController.text = '******';
 	}
 
-	User user = Globals.user;
+	User user				= Globals.user;
+	bool changePassword	= false;
 
 	TextEditingController emailController = TextEditingController();
 	TextEditingController fnameController = TextEditingController();
 	TextEditingController lnameController = TextEditingController();
 	TextEditingController phoneController = TextEditingController();
 	TextEditingController titleController = TextEditingController();
+	TextEditingController passwordController = TextEditingController();
 
   @override
 	Widget build(BuildContext context) {
@@ -123,12 +126,62 @@ class ProfileState extends State<Profile> {
 												SizedBox(height: 20,),
 												textField(hint:'enter first name', icon:Icon(Icons.person), label: 'first name', controller: fnameController),
 												SizedBox(height: 20,),
-												textField(hint:'enter title', icon:Icon(Icons.description), label: 'title', controller: titleController),
-												SizedBox(height: 20,),
 												textField(hint:'enter last name', icon:Icon(Icons.person), label: 'last name', controller: lnameController),
+												SizedBox(height: 20,),
+												textField(hint:'speciality', icon:Icon(Icons.description), label: 'speciality', controller: titleController),
 												SizedBox(height: 20,),
 												textField(hint:'enter phone number', icon:Icon(Icons.phone), label: 'phone number', controller: phoneController),
 												SizedBox(height: 20,),
+												Stack(
+													children: <Widget>[
+														Container(
+															width: double.infinity,
+															height: 120,
+															margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+															decoration: BoxDecoration(
+																border: Border.all(
+																	color: Colors.grey,
+																	width: 1
+																),
+																borderRadius: BorderRadius.circular(5),
+																shape: BoxShape.rectangle,
+															),
+														),
+														Positioned(
+															left: 10,
+															top: 0,
+															child: Container(
+																padding: EdgeInsets.only(bottom: 10, left: 10, right: 10),
+																color: Globals.backgroundColor,
+																child: Row(
+																	children:[
+																		SizedBox(
+																			width: 30,
+																			child:Checkbox(
+																				value: changePassword,
+																				onChanged: (value){
+																					if (value)
+																						passwordController.text = '';
+																					else
+																						passwordController.text = '******';
+																					setState(() => changePassword = value);
+																				}
+																			),
+																		),
+																		Text(
+																			'Change Password',
+																			style: TextStyle(color: Colors.black, fontSize: 14),
+																		)	
+																	]
+																)
+															)
+														),
+														Padding(
+															padding: EdgeInsets.symmetric(horizontal:10,vertical: 50),
+															child:textField(obscure: true,readOnly: !changePassword,hint:'password', icon:Icon(Icons.vpn_key), label: 'password', controller: passwordController),
+														),
+													],
+												),
 												RaisedButton(
 													child: Text(
 														'save', 
@@ -136,30 +189,7 @@ class ProfileState extends State<Profile> {
 															color: Color.fromARGB(255, 245, 246, 250)
 														),
 													),
-													onPressed: (){
-														var body = {
-																'email': emailController.text,
-																'first_name':fnameController.text,
-																'last_name':lnameController.text,
-																'phone':phoneController.text,
-															};
-														body.removeWhere((key,val)=>key=='email' && user.email == val.toString());
-														Requests.post(
-															Globals.url + '/api/user/users/' + user.id.toString(), 
-																body: body
-														).then((value) {
-															if (value.statusCode == 200)
-															{
-																Globals.user.email = emailController.text.toString();
-																Globals.user.title = titleController.text.toString();
-																Globals.user.firstName = fnameController.text.toString();
-																Globals.user.lastName = lnameController.text.toString();
-																setState(() {
-																  
-																});
-															}
-														}).catchError((e){print(e.toString());});
-													},
+													onPressed: ()=>editUser(),
 													color: Colors.green,
 													shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
 												)
@@ -174,4 +204,58 @@ class ProfileState extends State<Profile> {
 			)
 		);
 	}
+
+	String check(){
+		if (emailController.text.length <= 0)
+			return 'email';
+		if (titleController.text.length <= 0)
+			return 'speciality';
+		if (fnameController.text.length <= 0)
+			return 'first name';
+		if (lnameController.text.length <= 0)
+			return 'last name';
+		if (phoneController.text.length <= 0)
+			return 'phone number';
+		if (changePassword && passwordController.text.length <= 0)
+			return 'password';
+		return null;
+	}
+	void editUser()
+	{
+		String field;
+		if ((field = check()) != null)
+		{
+			Globals.showAlertDialog(context, 'Missing fields', '$field is required');
+			return;
+		}
+		var body = {
+			'email': emailController.text,
+			'first_name':fnameController.text,
+			'last_name':lnameController.text,
+			'phone':phoneController.text,
+			'password':passwordController.text,
+			'title':titleController.text
+		};
+		if (!changePassword)
+			body.removeWhere((key,val)=>key=='password');
+		body.removeWhere((key,val)=>key=='email' && user.email == val.toString());
+		print(body.toString());
+		Requests.post(
+			Globals.url + '/api/users/' + user.id.toString(), 
+				body: body
+		).then((value) {
+			if (value.statusCode == 200)
+			{
+				Globals.user.email = emailController.text.toString();
+				Globals.user.title = titleController.text.toString();
+				Globals.user.firstName = fnameController.text.toString();
+				Globals.user.lastName = lnameController.text.toString();
+				setState(() {});
+			}
+			else
+				Globals.showAlertDialog(context, 'error', value.content());
+		}).catchError((e){
+			Globals.showAlertDialog(context, 'error', e.toString());
+		});
+}
 }

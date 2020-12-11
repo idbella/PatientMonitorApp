@@ -97,8 +97,8 @@ class ViewMedicalFileState extends State<ViewMedicalFile> {
 											readOnly: true,
 											multiline: true,
 											maxlines: null,
-											hint:'motif de consultation',
-											label:'motif de consultation',
+											hint:'consultation reason',
+											label:'consultation reason',
 											controller: motifController,
 											icon:Icon(Icons.article)
 										),

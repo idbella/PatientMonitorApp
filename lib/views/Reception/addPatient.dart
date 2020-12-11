@@ -114,8 +114,8 @@ class AddPatientPageState extends State<AddPatientPage> {
 													textField(
 														maxlines: null,
 														inputtype: TextInputType.multiline,
-														hint:'motif de consultation', icon:Icon(Icons.article),
-														label: 'motif de consultation',
+														hint:'consultation reason', icon:Icon(Icons.article),
+														label: 'consultation reason',
 														controller: motifController
 													),
 												],

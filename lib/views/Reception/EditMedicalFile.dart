@@ -180,7 +180,7 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 																	),
 																),
 																Text(
-																	'Rendez-Vous',
+																	'Appointment',
 																	style: TextStyle(color: Colors.black, fontSize: 14),
 																)	
 															]
@@ -245,7 +245,7 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 															mainAxisAlignment: MainAxisAlignment.spaceBetween,
 															children:[
 																Icon(Icons.info),
-																Text('  No Rendez-Vous.'),
+																Text('  No Appointments.'),
 															]
 														)
 													)

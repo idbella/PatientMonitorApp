@@ -71,7 +71,7 @@ class AdminHomePageState extends State<AdminHomePage> {
                	Tab(
 							iconMargin: EdgeInsets.zero,
 							icon: CircleAvatar(
-								backgroundImage: Image.asset('images/doctor.jpg').image,
+								backgroundImage: Image.asset('images/nurse.png').image,
 								radius: 20,
 						 	),
 							text: 'Nurses'
@@ -79,7 +79,7 @@ class AdminHomePageState extends State<AdminHomePage> {
                	Tab(
 							iconMargin: EdgeInsets.zero,
 							icon: CircleAvatar(
-								backgroundImage: Image.asset('images/doctor.jpg').image,
+								backgroundImage: Image.asset('images/reception.png').image,
 								radius: 20,
 						 	),
 							text: 'Receptionists'

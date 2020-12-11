@@ -87,7 +87,7 @@ class AddUserPageState extends State<AddUserPage> {
             SizedBox(height: 20,),
             textField(hint:'enter email', icon:Icon(Icons.mail), label: 'email', controller: emailController),
 				SizedBox(height: 20,),
-				textField(hint:'title', icon:Icon(Icons.description), label: 'title', controller: titleController),
+				textField(hint:'speciality', icon:Icon(Icons.description), label: 'speciality', controller: titleController),
 				SizedBox(height: 20,),
 				textField(obscure: true, hint:'enter password', icon:Icon(Icons.lock), label: 'password', controller: passController),
             SizedBox(height: 20,),

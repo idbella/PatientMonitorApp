@@ -93,8 +93,8 @@ class AddMedicalFilePageState extends State<AddMedicalFilePage> {
 										textField(
 											multiline: true,
 											maxlines: null,
-											hint:'motif de consultation',
-											label:'motif de consultation',
+											hint:'consultation reason',
+											label:'consultation reason',
 											controller: motifController,
 											icon:Icon(Icons.article)
 										),
@@ -169,7 +169,7 @@ class AddMedicalFilePageState extends State<AddMedicalFilePage> {
 																	),
 																),
 																Text(
-																	'Rendez-Vous',
+																	'Appointment',
 																	style: TextStyle(color: Colors.black, fontSize: 14),
 																)	
 															]
@@ -234,7 +234,7 @@ class AddMedicalFilePageState extends State<AddMedicalFilePage> {
 															mainAxisAlignment: MainAxisAlignment.spaceBetween,
 															children:[
 																Icon(Icons.info),
-																Text('  No Rendez-Vous.'),
+																Text('  No appointments.'),
 															]
 														)
 													)
