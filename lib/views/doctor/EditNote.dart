@@ -126,29 +126,11 @@ class EditNoteState extends State<EditNote>{
 																	),
 																),
 																DropdownMenuItem<int>(
-																	value: 2,
-																	child: Row(
-																		children: [
-																			Icon(Icons.person),
-																			Text('Doctors Only')
-																		]
-																	),
-																),
-																DropdownMenuItem<int>(
 																	value: 4,
 																	child: Row(
 																		children: [
 																			Icon(Icons.person),
 																			Text('Nurses Only')
-																		]
-																	),
-																),
-																DropdownMenuItem<int>(
-																	value: 6,
-																	child: Row(
-																		children: [
-																			Icon(Icons.person),
-																			Text('Doctors and Nurses')
 																		]
 																	),
 																),

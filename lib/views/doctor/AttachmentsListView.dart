@@ -25,15 +25,14 @@ class AttachmentsListView extends StatefulWidget {
 }
   
 class AttachmentsListViewState  extends State<AttachmentsListView>{
-	
-	List<Attachment> attachments;
+
 	final MedicalFile medicalFile;
 
   AttachmentsListViewState(this.medicalFile);
 
 	void getNotes()
 	{
-		if (attachments != null)
+		if (medicalFile.attachments != null)
 			return ;
 		Requests.get(Globals.url + '/api/file/' + medicalFile.id.toString() + '/attachments')
 			.then((response) {
@@ -41,20 +40,20 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 				if (response.statusCode == 200)
 				{
 					List<dynamic> list = response.json();
-					attachments = List();
+					medicalFile.attachments = List();
 					if (list.isNotEmpty)
 					{
 						list.forEach((element) {
 							Attachment attachment = Attachment.fromJson(element);
 							attachment.medicalFile = medicalFile;
-							attachments.add(attachment);
+							medicalFile.attachments.add(attachment);
 							attachment.user = User(id:element['userId']);
 						});
 					}
 					setState(() {});
 				}
 				if (response.statusCode == 404)
-					setState(() {attachments = List();});
+					setState(() {medicalFile.attachments = List();});
 			});
 	}
 
@@ -64,9 +63,9 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 		getNotes();
 		List<Widget> list = List();
 		
-		if (attachments == null)
+		if (medicalFile.attachments == null)
 			return Center(child:Column(children:[SizedBox(height:100),Text('Loading...')]));
-		if (attachments.isEmpty)
+		if (medicalFile.attachments.isEmpty)
 			return Center(child:Column(children:[SizedBox(height:100),Text('No Attachments to show...')]));
 		Doctor	doctor = medicalFile.doctor;
 		User		user;
@@ -80,7 +79,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 			docName = user.firstName + ' ' + user.lastName;
 			docTitle = user.title;
 		}
-		attachments.forEach((Attachment attachment) {
+		medicalFile.attachments.forEach((Attachment attachment) {
 
 			Widget wi = Card(
 				margin: EdgeInsets.symmetric(vertical:10),
@@ -242,7 +241,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 				print(value.statusCode.toString());
 				if (value.statusCode == 200)
 					setState(() {
-						attachments = null;
+						medicalFile.attachments = null;
 					});
 				else
 					Globals.showAlertDialog(context, 'error', value.content());
@@ -462,11 +461,18 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 			print(value.statusCode.toString());
 		}).catchError((e){
 			print(e);
+			Globals.progressDialog.hide();
+			Globals.showAlertDialog(context, 'error', e.toString());
 		}).then((value){
 			Globals.progressDialog.hide();
 			showLoading = false;
 			if (ModalRoute.of(context).settings.name == 'viewattachments')
+			{
 				Navigator.of(context).pop();
+				setState(() {
+				  medicalFile.attachments = null;
+				});
+			}
 		});
 	}
 }
