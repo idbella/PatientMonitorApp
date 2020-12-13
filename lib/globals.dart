@@ -1,5 +1,6 @@
 
 import 'package:PatientMonitorMobileApp/models/Doctor.dart';
+import 'package:PatientMonitorMobileApp/models/Nurse.dart';
 import 'package:PatientMonitorMobileApp/models/insurance.dart';
 import 'package:flutter/material.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
@@ -21,6 +22,7 @@ class Globals {
 	static List<Patient>		patientsList;
 	static List<Insurance>	insuarnces			= List();
 	static List<Doctor>		doctors				= List();
+	static List<Nurse>		nurses				= List();
 	static int					adminId				= 1;
 	static int					nurseId				= 3;
 	static int					doctorId				= 2;
@@ -86,6 +88,25 @@ class Globals {
 		);
 	}
 
+	static void getNurses({Function callback})
+	{
+		Globals.nurses = List();
+		Requests.get(Globals.url + '/api/nurses').then((ResponseX response){
+			print('nurse : ' + response.content().toString());
+			if (response.statusCode == 200)
+			{
+				List<dynamic> list = response.json();
+				list.forEach((json) {
+					nurses.add(Nurse.fromJson(json));
+				});
+				if (callback != null)
+					callback();
+			}
+			else
+				print('error ' + response.content().toString());
+		});
+	}
+
 	static void getDoctors({Function callback})
 	{
 		Globals.doctors = List();
@@ -109,6 +130,7 @@ class Globals {
 	{
 		getInsurances();
 		getDoctors();
+		getNurses();
 	}
 
 	static storageSet(String key, String value) async {

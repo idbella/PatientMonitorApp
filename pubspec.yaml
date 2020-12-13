@@ -33,6 +33,7 @@ dependencies:
   open_file: ^3.0.3
   file_picker: ^2.1.0
   image_picker: ^0.6.7+14
+  arcore_flutter_plugin: ^0.0.10
   flutter_localizations:
     sdk: flutter
   flutter:
@@ -69,6 +70,7 @@ flutter:
     - images/insurance.jpg
     - images/nurse.png
     - images/reception.png
+    - images/arrow.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

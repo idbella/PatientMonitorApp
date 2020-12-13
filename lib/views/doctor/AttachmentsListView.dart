@@ -4,6 +4,7 @@ import 'package:PatientMonitorMobileApp/models/Doctor.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/attachment.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
+import 'package:PatientMonitorMobileApp/views/doctor/ArView.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
@@ -14,7 +15,6 @@ import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:open_file/open_file.dart';
 
 class AttachmentsListView extends StatefulWidget {
 	final MedicalFile medicalFile;
@@ -28,7 +28,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 
 	final MedicalFile medicalFile;
 
-  AttachmentsListViewState(this.medicalFile);
+	AttachmentsListViewState(this.medicalFile);
 
 	void getNotes()
 	{
@@ -84,13 +84,13 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 			Widget wi = Card(
 				margin: EdgeInsets.symmetric(vertical:10),
 				elevation: 20,
-				color: Color.fromARGB(255, 251, 197, 49),
+				color: Colors.white,
 				child:Column(
 					children: [
 						Card(
-							color: Color.fromARGB(255, 140, 122, 230),
-							elevation: 5,
-							margin: EdgeInsets.zero,
+							color: Colors.white,
+							elevation: 2,
+							margin: EdgeInsets.all(2),
 							child:Padding(
 								padding: EdgeInsets.all(10),
 								child:Row(
@@ -112,19 +112,19 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 															docName.toString(),
 															style: TextStyle(
 																fontWeight: FontWeight.w800,
-																color: Colors.white
+																color: Colors.black
 															),
 														),
 														Text(
 															docTitle.toString(),
 															style: TextStyle(
 																fontWeight: FontWeight.w300,
-																color: Colors.white
+																color: Colors.black
 															),
 														),
 														SizedBox(height: 5,),
 														Text(DateFormat('yMMMMd').format(attachment.date) + ' ' + DateFormat('jm').format(attachment.date),
-															style: TextStyle(fontSize: 10,color: Colors.white70),
+															style: TextStyle(fontSize: 10,color: Colors.black),
 														),
 													]
 												),
@@ -172,13 +172,14 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 											children: [
 												SizedBox(width: 10,),
 												RaisedButton(
+													color: Colors.blue,
 													onPressed: (){
 														showSelectDialog(attachment);
 													},
 													child:Row(
 													children: [
-														Icon(Icons.add),
-														Text('add '),
+														Icon(Icons.add, color: Colors.white),
+														Text('add ', style: TextStyle(color: Colors.white),),
 													]
 												)
 												)
@@ -268,7 +269,8 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 	}
 
 	void openAttachment(fileName){
-		OpenFile.open(fileName);
+		Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ARView(image: fileName,)));
+		//OpenFile.open(fileName);
 	}
 
 	Future<bool> isDownloaded(AttachFile file) async {
@@ -300,6 +302,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 					});
 			});
 		return Card(
+			color: Colors.white70,
 			child:ListTile(
 				onTap: (){
 					var type = attachment.type;
@@ -341,7 +344,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 					]
 				),
 				trailing: IconButton(
-					onPressed: () async{
+					onPressed: () async {
 						String path = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
 						String filePath = path + '/' + file.name;
 						bool exist = false;
@@ -388,7 +391,10 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 															setState((){showLoading = true;});
 															var pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
 															if (pickedFile != null)
+															{
+																openAttachment(pickedFile.path);
 																uploadFile(pickedFile.path, id);
+															}
 															else
 																Navigator.of(context).pop();
 														},

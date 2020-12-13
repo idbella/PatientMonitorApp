@@ -1,5 +1,4 @@
 
-
 import 'package:PatientMonitorMobileApp/Clipper.dart';
 import 'package:PatientMonitorMobileApp/DateTextField.dart';
 import 'package:PatientMonitorMobileApp/StyledTextView.dart';
@@ -7,10 +6,10 @@ import 'package:PatientMonitorMobileApp/TimePicker.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/Doctor.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
+import 'package:PatientMonitorMobileApp/models/Nurse.dart';
 import 'package:PatientMonitorMobileApp/models/insurance.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -34,11 +33,13 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 	TimeOfDay			time = TimeOfDay.now();
 	bool					rendezVous = true;
 	int					_selected;
-	int					_doctor;
-
+	Doctor				_doctor;
+	List<Nurse>			nurses = List();
+	
 	TextEditingController titleController = TextEditingController();
 	TextEditingController motifController = TextEditingController();
 	TextEditingController doctorController = TextEditingController();
+	TextEditingController nurseController = TextEditingController();
 
 	void extractArgs(){
 		if (medicalFile != null)
@@ -46,10 +47,12 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 		medicalFile = ModalRoute.of(context).settings.arguments;
 		if (medicalFile != null)
 		{
+			nurses = medicalFile.nurses;
 			titleController.text = medicalFile.title.toString();
 			motifController.text = medicalFile.motif.toString();
-			if (medicalFile.doctor != null)
-				doctorController.text = medicalFile.doctor.user.firstName.toString();
+			_doctor = medicalFile.doctor;
+			if (_doctor != null)
+				doctorController.text = '';
 			_selected = medicalFile.insuranceType;
 			Globals.insuarnces.firstWhere((element) => element.id == medicalFile.insuranceType).controller.text = medicalFile.insurance;
 		}
@@ -104,49 +107,129 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 										textField(
 											multiline: true,
 											maxlines: null,
-											hint:'motif de consultation',
-											label:'motif de consultation',
+											hint:'consultation reason',
+											label:'consultation reason',
 											controller: motifController,
 											icon:Icon(Icons.article)
 										),
 										SizedBox(height: 20,),
-										TypeAheadField(
-											textFieldConfiguration: TextFieldConfiguration(
-												style: TextStyle(fontSize: 15),
-												decoration: InputDecoration(
-													prefixIcon: CircleAvatar(backgroundImage: Image.asset('images/doctor.jpg').image,radius: 10,),
-													prefixText: ' doctor : ',
-													border: OutlineInputBorder()
+										Column(
+											children: [
+												SizedBox(height: 20,),
+												Text(
+													'Medical Staff',
+													style: TextStyle(
+														fontSize: 26,
+														fontWeight: FontWeight.w400
+													),
 												),
-												controller: doctorController,
-											),
-											suggestionsCallback: (pattern) async {
-												var list = Globals.doctors.where((doctor) {
-													if (doctor.speciality.toString().startsWith(pattern))
-														return true;
-													if (doctor.user.firstName.startsWith(pattern))
-														return true;
-													if (doctor.user.lastName.startsWith(pattern))
-														return true;
-													return false;
-												}).toList();
+												SizedBox(height: 20,),
+												Text('Doctor :'),
+												TypeAheadField(
+													textFieldConfiguration: TextFieldConfiguration(
+														style: TextStyle(fontSize: 15),
+														decoration: InputDecoration(
+															prefixIcon: CircleAvatar(backgroundImage: Image.asset('images/doctor.jpg').image,radius: 10,),
+															prefixText: ' doctor : ',
+															labelText: '  search',
+															border: OutlineInputBorder()
+														),
+														controller: doctorController,
+													),
+													suggestionsCallback: (pattern) async {
+														var list = Globals.doctors.where((doctor) {
+															if (doctor.user.title.toString().startsWith(pattern))
+																return true;
+															if (doctor.user.firstName.startsWith(pattern))
+																return true;
+															if (doctor.user.lastName.startsWith(pattern))
+																return true;
+															return false;
+														}).toList();
 
-												list.forEach((element) {print(element.user.email);});
-												return list;
-											},
-											itemBuilder: (context, Doctor doctor) {
-												return ListTile(
-													leading: CircleAvatar(backgroundImage: Image.asset('images/doctor.jpg').image,),
-													title: Text(doctor.user.firstName + ' ' + doctor.user.lastName),
-													subtitle: Text(doctor.user.title.toString()),
-												);
-											},
-											onSuggestionSelected: (Doctor doctor) {
-												setState((){
-													_doctor = doctor.id;
-													doctorController.text = doctor.user.firstName + ' ' + doctor.user.lastName;
-												});
-											},
+														list.forEach((element) {print(element.user.email);});
+														return list;
+													},
+													itemBuilder: (context, Doctor doctor) {
+														return ListTile(
+															leading: CircleAvatar(backgroundImage: Image.asset('images/doctor.jpg').image,),
+															title: Text(doctor.user.firstName + ' ' + doctor.user.lastName),
+															subtitle: Text(doctor.user.title.toString()),
+														);
+													},
+													onSuggestionSelected: (Doctor doctor) {
+														setState((){
+															_doctor = doctor;
+															doctorController.text = doctor.user.firstName + ' ' + doctor.user.lastName;
+														});
+													},
+												),
+												Card(
+													color: Colors.white,
+													child:ListTile(
+														leading: _doctor == null ? Icon(Icons.info, color: Colors.red,) : CircleAvatar(backgroundImage: Image.asset('images/doctor.jpg').image,radius: 20,),
+														title: Text(_doctor != null ? _doctor.user.fullName() : 'please select a doctor !'),
+														trailing: _doctor !=null?IconButton(
+															onPressed: () => setState(() {
+																_doctor = null;
+																doctorController.text = '';
+															}),
+															icon: Icon(Icons.delete,color:Colors.red),
+														):null,
+													)
+												),
+												SizedBox(height: 20,),
+												Text('Nurses :'),
+												TypeAheadField(
+													textFieldConfiguration: TextFieldConfiguration(
+														style: TextStyle(fontSize: 15),
+														decoration: InputDecoration(
+															prefixIcon: CircleAvatar(backgroundImage: Image.asset('images/avatar.png').image,radius: 10,),
+															prefixText: ' Nurse : ',
+															labelText: '  search',
+															border: OutlineInputBorder()
+														),
+														controller: nurseController,
+													),
+													suggestionsCallback: (pattern) async {
+														List list = List();
+														if (Globals.nurses != null && Globals.nurses.isNotEmpty)
+															list = Globals.nurses.where((nurse) {
+																if (nurse.user.title.toString().startsWith(pattern))
+																	return true;
+																if (nurse.user.firstName.startsWith(pattern))
+																	return true;
+																if (nurse.user.lastName.startsWith(pattern))
+																	return true;
+																return false;
+															}).toList();
+														if (list == null)
+														{
+															print('list = null');
+															list = List();
+														}
+														return list;
+													},
+													itemBuilder: (BuildContext context, nurse) {
+														return ListTile(
+															leading: CircleAvatar(backgroundImage: Image.asset('images/avatar.png').image,),
+															title: Text(nurse.user.firstName + ' ' + nurse.user.lastName),
+															subtitle: Text(nurse.user.title.toString()),
+														);
+													},
+													onSuggestionSelected: (nurse) {
+														setState((){
+															if (!nurses.contains(nurse))
+																nurses.add(nurse);
+															nurseController.text = '';
+														});
+													},
+												),
+												SizedBox(height: 20,),
+												Column(
+													children:getNursesView()
+												),
+											]
 										),
 										SizedBox(height: 10,),
 										Stack(
@@ -307,6 +390,39 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 		);
 	}
 
+	List<Widget> getNursesView()
+	{
+		List<Widget> list = List();
+		nurses.forEach((nurse) {
+			list.add(
+				Card(
+					color: Colors.white,
+					child:ListTile(
+						leading: CircleAvatar(backgroundImage: Image.asset('images/avatar.png').image,radius: 20,),
+						title: Text(nurse.user.fullName()),
+						trailing: IconButton(
+							onPressed: () => setState(() => nurses.removeWhere((_nurse) => _nurse.user.id == nurse.user.id)),
+							icon: Icon(Icons.delete,color:Colors.red),
+						),
+					)
+				)
+			);
+		});
+		if (nurses.isEmpty)
+		{
+			list.add(
+				Card(
+					color: Colors.white,
+					child:ListTile(
+						leading: Icon(Icons.info, color: Colors.red,),
+						title: Text('please select a nurse !'),
+					)
+				)
+			);
+		}
+		return list;
+	}
+
 	Widget getCard(Insurance element){
 		return
 			Card(
@@ -386,16 +502,34 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 		);
 	}
 
+	String getSelectedNurses()
+	{
+		String data;
+		nurses.forEach((nurse) {
+			if (data != null)
+				data += ',' + nurse.user.id.toString();
+			else
+				data = nurse.user.id.toString();
+		});
+		return data;
+	}
+
 	void editMedicalFile(int fileId)
 	{
+		if (_doctor == null)
+			return Globals.showAlertDialog(context, 'required fields', 'doctor is requird');
+		if (nurses.isEmpty)
+			return Globals.showAlertDialog(context, 'required fields', 'at least one nurse is requird');
+
 		var body = {
 			'insurance_type':_selected.toString(),
 			'title':titleController.text,
 			'motif':motifController.text,
-			'doctor':_doctor,
+			'doctor':_doctor.user.id,
+			'nurses':getSelectedNurses(),
 			'insurance':Globals.insuarnces.where((element) => element.id == _selected).first.controller.text.toString()
 		};
-		body.removeWhere((key,val)=>key=='doctor' && val == null);
+		print(body.toString());
 		Requests.post(Globals.url + '/api/file/' + fileId.toString(), body: body)
 		.then((value){
 			print('edit file = ' + value.content());

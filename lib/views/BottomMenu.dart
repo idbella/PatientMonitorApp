@@ -1,8 +1,5 @@
 
 import 'package:PatientMonitorMobileApp/globals.dart';
-import 'package:PatientMonitorMobileApp/views/Admin/AdminHomePage.dart';
-import 'package:PatientMonitorMobileApp/views/Reception/ListPatients.dart';
-import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
 import 'package:flutter/material.dart';
 
 class BottomMenu extends StatefulWidget {

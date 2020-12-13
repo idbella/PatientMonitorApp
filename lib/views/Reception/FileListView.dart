@@ -36,17 +36,29 @@ class FileListViewState  extends State<FileListView>{
 							MedicalFile medicalFile = MedicalFile.fromjson(element);
 							medicalFile.patient = patient;
 							medicalFiles.add(medicalFile);
-							print('element : ' + element.toString());
+							medicalFile.nurses = List();
 							if (element['doctor'] != null)
 							{
 								if (Globals.doctors != null && Globals.doctors.isNotEmpty)
 								{
-									Doctor doc = Globals.doctors.firstWhere((doctor) => doctor.id == element['doctor']);
+									Doctor doc = Globals.doctors.firstWhere((doctor) => doctor.user.id == element['doctor']);
 									if (doc != null)
 										medicalFile.doctor = doc;
-									print(doc.toString());
 								}
 							}
+							if (element['nurses'] != null)
+							{
+								if (Globals.doctors != null && Globals.doctors.isNotEmpty)
+								{
+									var nurses = element['nurses'].toString().split(',');
+									nurses.forEach((nurseId) {
+										var nurse = Globals.nurses.firstWhere((nurse) => nurse.user.id == int.parse(nurseId));
+										if (nurse != null)
+											medicalFile.nurses.add(nurse);
+									});
+								}
+							}
+							medicalFile.nurses.forEach((element) {print('nurse: ' + element.user.email.toString());});
 						});
 						setState(() {});
 					}

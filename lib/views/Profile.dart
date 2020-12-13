@@ -153,26 +153,23 @@ class ProfileState extends State<Profile> {
 															child: Container(
 																padding: EdgeInsets.only(bottom: 10, left: 10, right: 10),
 																color: Globals.backgroundColor,
-																child: Row(
-																	children:[
-																		SizedBox(
-																			width: 30,
-																			child:Checkbox(
-																				value: changePassword,
-																				onChanged: (value){
-																					if (value)
-																						passwordController.text = '';
-																					else
-																						passwordController.text = '******';
-																					setState(() => changePassword = value);
-																				}
+																child: FlatButton(
+																	onPressed: ()=>onChangePasswordClicked(!changePassword),
+																	child:Row(
+																		children:[
+																			SizedBox(
+																				width: 30,
+																				child:Checkbox(
+																					value: changePassword,
+																					onChanged:onChangePasswordClicked
+																				),
 																			),
-																		),
-																		Text(
-																			'Change Password',
-																			style: TextStyle(color: Colors.black, fontSize: 14),
-																		)	
-																	]
+																			Text(
+																				'Change Password',
+																				style: TextStyle(color: Colors.black, fontSize: 14),
+																			)	
+																		]
+																	)
 																)
 															)
 														),
@@ -204,7 +201,14 @@ class ProfileState extends State<Profile> {
 			)
 		);
 	}
-
+	void onChangePasswordClicked(value)
+	{
+		if (value)
+			passwordController.text = '';
+		else
+			passwordController.text = '******';
+		setState(() => changePassword = value);
+	}
 	String check(){
 		if (emailController.text.length <= 0)
 			return 'email';

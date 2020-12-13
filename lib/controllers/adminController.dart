@@ -47,5 +47,7 @@ Future<SharedPreferences> logout(){
 	Globals.usersList  = List();
 	Globals.user = null;
 	Globals.token = null;
+	Globals.nurses = List();
+	Globals.doctors = List();
 	return SharedPreferences.getInstance();
 }

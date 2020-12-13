@@ -299,20 +299,21 @@ class LoginPageState extends State<LoginPage>{
 			}
 		})
 		.catchError((e) {
-			Globals.showAlertDialog(context, 'error', e.toString());
 			pr.hide();
+			Globals.showAlertDialog(context, 'error', e.toString());
 		})
-		.then((value) => {
+		.then((value){
+			pr.hide();
 			setState(() {
 				disableButton = false;
-			}),
-			pr.hide()
+			});
 		});
 	}
 
 	void authenticated(json)
 	{
 		Globals.init();
+		
 		Globals.user = User.fromjson(json);
 		StatefulWidget page;
 		if (json['role'] == Globals.adminId)

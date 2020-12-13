@@ -1,6 +1,5 @@
 import 'package:PatientMonitorMobileApp/controllers/adminController.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
-import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:PatientMonitorMobileApp/views/LoginPage.dart';
 import 'package:flutter/material.dart';
 
@@ -85,6 +84,15 @@ class _UserDrawerState extends State<UserDrawer> {
 												);
 											});
 										});
+									},
+								)
+							),
+							Card(
+								child:ListTile(
+									title: Text('staff'),
+									leading: Icon(Icons.keyboard_arrow_left),
+									onTap: (){
+										Navigator.of(context).pushNamed('staff');
 									},
 								)
 							),

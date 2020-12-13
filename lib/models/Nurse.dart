@@ -1,13 +1,13 @@
 
 import 'package:PatientMonitorMobileApp/models/user.dart';
 
-class Doctor{
+class Nurse{
 
 	User		user;
 
-	static Doctor fromJson(Map<String, dynamic> json){ 
-		Doctor doctor = Doctor();
-		doctor.user = User(
+	static Nurse fromJson(Map<String, dynamic> json){ 
+		Nurse nurse = Nurse();
+		nurse.user = User(
 			id:			json['id'],
 			firstName:	json['first_name'],
 			lastName:	json['last_name'],
@@ -15,6 +15,6 @@ class Doctor{
 			email:		json['email'],
 			title:		json['title']
 		);
-		return doctor;
+		return nurse;
 	}
 }

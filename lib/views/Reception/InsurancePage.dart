@@ -1,16 +1,13 @@
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/insurance.dart';
 import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
-import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:PatientMonitorMobileApp/StyledTextView.dart';
-import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 
 class InsurancePage extends StatefulWidget{
 
 	InsurancePage({Key key}) : super(key: key);
-	
 	
 	@override
 	State<StatefulWidget> createState() => InsurancePageState();
@@ -20,6 +17,7 @@ class InsurancePage extends StatefulWidget{
 class InsurancePageState extends State<InsurancePage> {
 
 	List<Insurance> inlist = List();
+	TextEditingController doctorController = TextEditingController();
 
 	InsurancePageState(){
 				if (Globals.insuarnces.length > 0)
@@ -171,23 +169,6 @@ class InsurancePageState extends State<InsurancePage> {
 
 		var args = patientInfo['args'];
 		body = {...args,...body};
-		print('final req body = '+ body.toString());
-		Requests.post(Globals.url + '/api/patients/', body: body)
-		.then((value) {
-			if (value.statusCode == 200)
-			{
-				Globals.patientsList = null;
-				Navigator.pushReplacement(
-					context,
-					MaterialPageRoute(builder: (context)=>RecepHomePage())
-				);
-				print('success');
-			}
-			else
-				print(value.statusCode.toString());
-		})
-		.catchError((e){
-			print(e.toString());
-		});
+		Navigator.of(context).pushNamed('staff', arguments: {'args':body});
 	}
 }

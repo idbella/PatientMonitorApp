@@ -4,6 +4,7 @@ import 'package:PatientMonitorMobileApp/views/Profile.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/AddMedicalFile.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/EditMedicalFile.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/ListPatients.dart';
+import 'package:PatientMonitorMobileApp/views/Reception/Staff.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/addPatientExtra.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/viewPatient.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/AddNote.dart';
@@ -28,7 +29,7 @@ import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/addPatient.dart';
 
 void main() {
-	//Globals.url = 'http://10.1.34.227:8080';
+	Globals.url = 'http://10.1.34.227:8080';
 	runApp(MyApp());
 }
 
@@ -75,7 +76,8 @@ class MyApp extends StatelessWidget {
 			'addfile'			:(context) => AddMedicalFilePage(),
 			'viewattachments' :(context) => ViewAttachments(),
 			'editnote'			:(context) => EditNote(),
-			'profile'			:(context) => Profile()
+			'profile'			:(context) => Profile(),
+			'staff'				:(context) => StaffPage()
       },
     );
   }

@@ -26,13 +26,13 @@ class ListPatientsPageState extends State<ListPatientsPage> {
 	@override
 	Widget build(BuildContext context) {
 
-		refreshPatientsList(context, setState);
+		refreshPatientsList();
 		User user = Globals.user;
 		return Scaffold(
 			bottomNavigationBar: BottomMenu(selectedIndex: 1),
 			drawer: UserDrawer(),
 			floatingActionButton: FloatingActionButton(
-				onPressed: ()=>refreshPatientsList(context, setState, true),
+				onPressed: ()=>refreshPatientsList(true),
 				child: Icon(Icons.refresh),
 			),
 			backgroundColor:Globals.backgroundColor,
@@ -161,6 +161,7 @@ class ListPatientsPageState extends State<ListPatientsPage> {
 
 	Widget getContent()
 	{
+		print('reload');
 		if (Globals.patientsList == null)
 			return Center(child:Text('Loading...'));
 		if (Globals.patientsList.isEmpty)
@@ -180,5 +181,39 @@ class ListPatientsPageState extends State<ListPatientsPage> {
         	return alert;
       	}
     	);
+	}
+
+	void refreshPatientsList([bool reload=false])
+	{
+		List<dynamic> list;
+
+		if (reload || Globals.patientsList == null)
+		{
+			Globals.patientsList = null;
+		
+			listPatients().then((value) {
+				if (value.statusCode == 200)
+				{
+					list = value.json();
+					print(list.toString());
+					Globals.patientsList = List();
+					if (list.isNotEmpty) {
+						list.forEach((element) {
+							Patient patient = Patient.fromjson(element);
+							Globals.patientsList.add(patient);
+						});
+						
+					}
+					setState((){
+							
+					});
+				}
+				else if (value.statusCode == 401)
+					Navigator.pushReplacementNamed(context, 'login');
+			})
+			.catchError((err){
+				print('errr = ' + err.toString());
+			});
+		}
 	}
 }

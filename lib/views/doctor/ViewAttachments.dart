@@ -1,21 +1,14 @@
 
-import 'dart:io';
-
 import 'package:PatientMonitorMobileApp/Clipper.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
-import 'package:PatientMonitorMobileApp/StyledTextView.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/AttachmentsListView.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-import 'package:http/http.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ViewAttachments extends StatefulWidget
 {
@@ -210,6 +203,19 @@ class ViewAttachmentsState extends State<ViewAttachments>{
 													)
 												]
 											)
+										),
+										Positioned(
+											top: 130,
+											right: 20,
+											child:FlatButton(
+												color: Colors.blue,
+												onPressed: (){
+													setState(() {
+													  medicalFile.attachments = null;
+													});
+												},
+												child: Icon(Icons.refresh),
+											)
 										)
 									]
 								),
@@ -233,6 +239,10 @@ class ViewAttachmentsState extends State<ViewAttachments>{
 				'type':_selected.toString()
 			};
 			Requests.post(url, body: body).then((value){
+				setState((){
+					medicalFile.attachments = null;
+				});
+				
 				print(value.content().toString());
 			}).catchError((e){
 				print(e);
