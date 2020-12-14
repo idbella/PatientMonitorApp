@@ -48,14 +48,17 @@ class FileListViewState  extends State<FileListView>{
 							}
 							if (element['nurses'] != null)
 							{
-								if (Globals.doctors != null && Globals.doctors.isNotEmpty)
+								if (Globals.nurses != null && Globals.nurses.isNotEmpty)
 								{
-									var nurses = element['nurses'].toString().split(',');
-									nurses.forEach((nurseId) {
-										var nurse = Globals.nurses.firstWhere((nurse) => nurse.user.id == int.parse(nurseId));
-										if (nurse != null)
-											medicalFile.nurses.add(nurse);
-									});
+									if (element['nurses'].toString().contains(','))
+									{
+										var nurses = element['nurses'].toString().split(',');
+										nurses.forEach((nurseId) {
+											var nurse = Globals.nurses.firstWhere((nurse) => nurse.user.id == int.parse(nurseId));
+											if (nurse != null)
+												medicalFile.nurses.add(nurse);
+										});
+									}
 								}
 							}
 							medicalFile.nurses.forEach((element) {print('nurse: ' + element.user.email.toString());});
@@ -63,9 +66,9 @@ class FileListViewState  extends State<FileListView>{
 						setState(() {});
 					}
 				}
-			});//.catchError((err){
-			// 	print('files err = ' + err.toString());
-			// });
+			}).catchError((err){
+				Globals.showAlertDialog(context, 'Errord', err.toString());
+			});
 	}
 
 	void extractArgs(){
@@ -140,6 +143,8 @@ class FileListViewState  extends State<FileListView>{
 									SizedBox(height: 8,),
 									getKeyValue('Doctor', doctor.toString()),
 									SizedBox(height: 8,),
+									getKeyValue('Nurses', getNurses(medicalFile)),
+									SizedBox(height: 8,),
 									getKeyValue('Inusrance', insurance.toString()),
 									SizedBox(height: 8,),
 									getKeyValue('Appointment', 'not set'),
@@ -156,6 +161,20 @@ class FileListViewState  extends State<FileListView>{
 			list.add(wi);
 		});
 		return Column(children: list,);
+	}
+
+	String getNurses(MedicalFile medicalFile)
+	{
+		String nurses;
+		medicalFile.nurses.forEach((element) {
+			if (nurses == null)
+				nurses = element.user.fullName();
+			else
+				nurses += ' - ' + element.user.fullName();
+		});
+		if (nurses != null)
+			return nurses;
+		return 'no Nurse assigned !';
 	}
 
 	Widget getKeyValue(title, value){

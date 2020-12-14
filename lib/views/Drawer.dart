@@ -86,16 +86,7 @@ class _UserDrawerState extends State<UserDrawer> {
 										});
 									},
 								)
-							),
-							Card(
-								child:ListTile(
-									title: Text('staff'),
-									leading: Icon(Icons.keyboard_arrow_left),
-									onTap: (){
-										Navigator.of(context).pushNamed('staff');
-									},
-								)
-							),
+							)
 						]
 					)
 				)

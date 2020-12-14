@@ -88,8 +88,8 @@ class AddUserPageState extends State<AddUserPage> {
             textField(hint:'enter email', icon:Icon(Icons.mail), label: 'email', controller: emailController),
 				SizedBox(height: 20,),
 				textField(hint:'speciality', icon:Icon(Icons.description), label: 'speciality', controller: titleController),
-				SizedBox(height: 20,),
-				textField(obscure: true, hint:'enter password', icon:Icon(Icons.lock), label: 'password', controller: passController),
+				// SizedBox(height: 20,),
+				// textField(obscure: true, hint:'enter password', icon:Icon(Icons.lock), label: 'password', controller: passController),
             SizedBox(height: 20,),
             textField(hint:'enter first name', icon:Icon(Icons.person), label: 'first name', controller: fnameController),
             SizedBox(height: 20,),
@@ -120,8 +120,8 @@ class AddUserPageState extends State<AddUserPage> {
 			return 'last name';
 		if (phoneController.text.length <= 0)
 			return 'phone number';
-		if (passController.text.length <= 0)
-			return 'password';
+		// if (passController.text.length <= 0)
+		// 	return 'password';
 		return null;
 	}
 
@@ -140,7 +140,7 @@ class AddUserPageState extends State<AddUserPage> {
 			'last_name':lnameController.text,
 			'phone':phoneController.text,
 			'role':dropdownValue,
-			'password':passController.text,
+			//'password':passController.text,
 			'title':titleController.text.toString()
 		};
 		Requests.post(
@@ -149,8 +149,9 @@ class AddUserPageState extends State<AddUserPage> {
 		).then((value) {
 		if (value.statusCode == 200)
 		{
+			Globals.showAlertDialog(context, 'Account Created', 'an email with credentials is sent to ' + emailController.text);
 			Globals.usersList = List();
-			Navigator.of(context).pushReplacementNamed('admin');
+			//Navigator.of(context).pushReplacementNamed('admin');
 			print('success');
 		}
 		else
