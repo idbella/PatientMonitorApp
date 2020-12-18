@@ -41,12 +41,6 @@ class LoginPageState extends State<LoginPage>{
 		passwordTextController.text = 'admin';
 	}
 
-	@override
-	void initState() {
-		super.initState();
-		
-	}
-
 	void signIn()
 	{
 		Requests.get(Globals.url + '/api/profile')

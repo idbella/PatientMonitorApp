@@ -143,11 +143,15 @@ class Globals {
 		return sharedPreferences.getString(key);
 	}
 
-	static void showAlertDialog(BuildContext context, String title, String body) {
+	static void showAlertDialog(BuildContext context, String title, String body, [Function callback]) {
 
 		Widget okButton = FlatButton(
 			child: Text("Ok"),
-			onPressed: () => Navigator.of(context).pop(),
+			onPressed: () {
+				Navigator.of(context).pop();
+				if (callback != null)
+					callback();
+				},
 		);
 
 		AlertDialog alert = AlertDialog(
@@ -166,4 +170,8 @@ class Globals {
 		);
 	}
 
+	static Map<String,String> headers()
+	{
+		return {'Authorization' : 'Bearer ${Globals.token}'};
+	}
 }
