@@ -48,17 +48,19 @@ class FileListViewState  extends State<FileListView>{
 							}
 							if (element['nurses'] != null)
 							{
+								print('nurses = '+ element['nurses'].toString());
 								if (Globals.nurses != null && Globals.nurses.isNotEmpty)
 								{
+									List<String> nurses = List();
 									if (element['nurses'].toString().contains(','))
-									{
-										var nurses = element['nurses'].toString().split(',');
-										nurses.forEach((nurseId) {
-											var nurse = Globals.nurses.firstWhere((nurse) => nurse.user.id == int.parse(nurseId));
-											if (nurse != null)
-												medicalFile.nurses.add(nurse);
-										});
-									}
+										nurses = element['nurses'].toString().split(',');
+									else
+										nurses.add(element['nurses']);
+									nurses.forEach((nurseId) {
+										var nurse = Globals.nurses.firstWhere((nurse) => nurse.user.id == int.parse(nurseId));
+										if (nurse != null)
+											medicalFile.nurses.add(nurse);
+									});
 								}
 							}
 							medicalFile.nurses.forEach((element) {print('nurse: ' + element.user.email.toString());});
