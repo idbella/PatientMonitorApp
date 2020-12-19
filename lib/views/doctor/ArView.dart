@@ -1,9 +1,9 @@
 
 import 'dart:typed_data';
+import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:flutter/services.dart';
-import 'package:vector_math/vector_math_64.dart';
 
 class ARView extends StatefulWidget {
 	final String image;
@@ -24,30 +24,25 @@ Uint8List rightarrow;
 				print('flu:loaded');
 				setState(() => this.imageData = data.buffer.asUint8List());
 			}
-		);
-		rootBundle.load('images/arrow.png')
-			.then((data){
-				print('flu:loaded');
-				setState(() => this.rightarrow = data.buffer.asUint8List());
-			}
-		);
+		).catchError((e){
+			Globals.showAlertDialog(context, 'loading error', e.toString(), ()=>Navigator.of(context).pop());
+		});
 	}
 	@override
 	Widget build(BuildContext context) {
-		if (imageData!=null)
+		if (_controller != null && imageData!=null)
 		{
-			print('one');
 			_controller.addArCoreNode(
 				ArCoreNode(
 					image: ArCoreImage(
 						bytes:imageData,
-						width:300,
-						height:300
+						width:200,
+						height:200
 					)
 				)
 			);
 		}
-		if (rightarrow!=null)
+		if (_controller != null && rightarrow!=null)
 		{
 			_controller.addArCoreNode(
 				ArCoreNode(
@@ -64,9 +59,6 @@ Uint8List rightarrow;
 				title: Text('ar core'),
 			),
 			body:ArCoreView(
-				type: ArCoreViewType.STANDARDVIEW,
-				enableUpdateListener: false,
-				enablePlaneRenderer: false,
 				onArCoreViewCreated: onCreate,
 			)
 		);
@@ -74,7 +66,10 @@ Uint8List rightarrow;
 	ArCoreController _controller;
   void onCreate(ArCoreController controller)
   {
+
 	  print('flu:created');
-	  _controller = controller;
+	  setState(() {
+	    _controller = controller;
+	  });
   }
 }
