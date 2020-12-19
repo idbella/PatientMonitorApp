@@ -18,7 +18,7 @@ class PatientsListViewState extends State<PatientsListView>{
 
 	@override
 	Widget build(BuildContext context) {
-
+		bool enableButtons = Globals.user.role == Globals.recepId;
    	List<Patient> patients = Globals.patientsList;
 		if (patients.isEmpty)
 			return (Text('empty list'));
@@ -79,30 +79,24 @@ class PatientsListViewState extends State<PatientsListView>{
 									),
 									isThreeLine: true
 								),
-								SizedBox(height: 10,),
+								SizedBox(height: 0,),
 								Padding(
-									padding: EdgeInsets.only(left:10,right:10,bottom:10),
+									padding: EdgeInsets.only(left:10,right:10,bottom:2),
 									child:Row(
 										mainAxisAlignment: MainAxisAlignment.spaceBetween,
 										children: [
-											Visibility(
-												visible: Globals.user.role == Globals.recepId,
-												child:getButton(
-													'delete',
-													Icons.delete,
-													Color.fromARGB(255, 232, 65, 24),
-													() => showAlertDialog(context, patient)
-												)
+											getButton(
+												'delete',
+												Icons.delete,
+												Color.fromARGB(255, 232, 65, 24),
+												!enableButtons ? null : () => showAlertDialog(context, patient)
 											),
-											Visibility(
-												visible: Globals.user.role == Globals.recepId,
-												child:getButton(
-													'edit',
-													Icons.assignment,
-													Colors.lightBlue,
-													() => Navigator.of(context)
-														.pushNamed('addpatient', arguments:patient)
-												)
+											getButton(
+												'edit',
+												Icons.assignment,
+												Colors.lightBlue,
+												!enableButtons ? null : () => Navigator.of(context)
+													.pushNamed('addpatient', arguments:patient)
 											),
 											getButton(
 												'view',

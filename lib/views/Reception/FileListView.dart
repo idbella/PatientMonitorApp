@@ -48,7 +48,6 @@ class FileListViewState  extends State<FileListView>{
 							}
 							if (element['nurses'] != null)
 							{
-								print('nurses = '+ element['nurses'].toString());
 								if (Globals.nurses != null && Globals.nurses.isNotEmpty)
 								{
 									List<String> nurses = List();
