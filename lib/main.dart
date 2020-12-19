@@ -29,7 +29,7 @@ import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/addPatient.dart';
 
 void main() {
-	Globals.url = 'http://10.1.34.227:8080';
+	//Globals.url = 'http://172.16.177.141:8080';
 	runApp(MyApp());
 }
 
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
         const Locale('ar'),
       ],
       debugShowCheckedModeBanner: false,
-      title: 'Patient Monior',
+      title: 'Patient Monitor',
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

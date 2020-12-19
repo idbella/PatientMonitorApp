@@ -2,8 +2,9 @@
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/Doctor.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
+import 'package:PatientMonitorMobileApp/models/Nurse.dart';
 import 'package:PatientMonitorMobileApp/models/attachment.dart';
-import 'package:PatientMonitorMobileApp/models/user.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/ArView.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -30,7 +31,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 
 	AttachmentsListViewState(this.medicalFile);
 
-	void getNotes()
+	void getAttachments()
 	{
 		if (medicalFile.attachments != null)
 			return ;
@@ -47,7 +48,22 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 							Attachment attachment = Attachment.fromJson(element);
 							attachment.medicalFile = medicalFile;
 							medicalFile.attachments.add(attachment);
-							attachment.user = User(id:element['userId']);
+							int userId = element['userId'];
+							var nurses = Globals.nurses;
+							var doctors = Globals.doctors;
+							if (doctors != null && doctors.isNotEmpty)
+							{
+								Doctor doc = doctors.firstWhere((doctor) => doctor.user.id == userId);
+								if (doc != null)
+									attachment.user = doc.user;
+							}
+							if (attachment.user == null && nurses != null && nurses.isNotEmpty)
+							{
+								Nurse nurse = nurses.firstWhere((nurse) => nurse.user.id == userId);
+								if (nurse != null)
+									attachment.user = nurse.user;
+							}
+							print(attachment.user);
 						});
 					}
 					setState(() {});
@@ -60,35 +76,24 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 	@override
 	Widget build(BuildContext context) {
 
-		getNotes();
+		getAttachments();
 		List<Widget> list = List();
 		
 		if (medicalFile.attachments == null)
 			return Center(child:Column(children:[SizedBox(height:100),Text('Loading...')]));
 		if (medicalFile.attachments.isEmpty)
 			return Center(child:Column(children:[SizedBox(height:100),Text('No Attachments to show...')]));
-		Doctor	doctor = medicalFile.doctor;
-		User		user;
-		String	docName;
-		String	docTitle;
 
-		if (doctor != null)
-			user = doctor.user;
-		if (user != null)
-		{
-			docName = user.firstName + ' ' + user.lastName;
-			docTitle = user.title;
-		}
 		medicalFile.attachments.forEach((Attachment attachment) {
 
 			Widget wi = Card(
 				margin: EdgeInsets.symmetric(vertical:10),
 				elevation: 20,
-				color: Colors.white,
+				color: Colors.green[300],
 				child:Column(
 					children: [
 						Card(
-							color: Colors.white,
+							color: Colors.green,
 							elevation: 2,
 							margin: EdgeInsets.all(2),
 							child:Padding(
@@ -109,14 +114,14 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 													crossAxisAlignment: CrossAxisAlignment.start,
 													children:[
 														Text(
-															docName.toString(),
+															attachment.user.fullName().toString(),
 															style: TextStyle(
 																fontWeight: FontWeight.w800,
 																color: Colors.black
 															),
 														),
 														Text(
-															docTitle.toString(),
+															attachment.user.title.toString(),
 															style: TextStyle(
 																fontWeight: FontWeight.w300,
 																color: Colors.black
@@ -137,7 +142,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 												Visibility(
 													visible: attachment.user.id == Globals.user.id,
 													child:IconButton(
-														icon:Icon(Icons.delete,color: Colors.white,),
+														icon:Icon(Icons.delete,color: Colors.black,),
 														onPressed: ()=>showAlertDialog(context, attachment),
 													)
 												)
@@ -275,6 +280,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 
 	Future<bool> isDownloaded(AttachFile file) async {
 		String path = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
+		path = path.toLowerCase();
 		String filePath = path + '/' + file.name;
 		bool exist = false;
 		try{
@@ -288,12 +294,14 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 		Widget leading = Icon(Icons.picture_as_pdf,size: 40,);
 		var type = attachment.type;
 		if (type == Globals.radioAttach || type == Globals.imageAttach)
-			leading = Image.network(
-				file.url,
-				headers: {'Authorization' : 'Bearer ${Globals.token}'},
-				height: 100,
-				width: 80,
+		{
+			leading = CachedNetworkImage(
+				httpHeaders: Globals.headers(),
+				imageUrl: file.url,
+				placeholder: (context, url) => CircularProgressIndicator(),
+				errorWidget: (context, url, error) => Icon(Icons.error),
 			);
+		}
 		if (!file.downloaded)
 			isDownloaded(file).then((value) {
 				if (value == true)
@@ -302,7 +310,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 					});
 			});
 		return Card(
-			color: Colors.white70,
+			color: Colors.green[200],
 			child:ListTile(
 				onTap: (){
 					var type = attachment.type;
@@ -317,12 +325,12 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 									boundaryMargin: EdgeInsets.all(100),
 									minScale: 0.5,
 									maxScale: 10,
-									child: Image.network(
-										file.url,
-										width: 200,
-										height: 200,
-										fit: BoxFit.cover,
-									),
+									child: CachedNetworkImage(
+										httpHeaders: Globals.headers(),
+										imageUrl: file.url,
+										placeholder: (context, url) => CircularProgressIndicator(),
+										errorWidget: (context, url, error) => Icon(Icons.error),
+									)
 								)
 							);
 						}
@@ -343,7 +351,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 						),
 					]
 				),
-				trailing: IconButton(
+				trailing:IconButton(
 					onPressed: () async {
 						String path = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
 						String filePath = path + '/' + file.name;
@@ -357,7 +365,7 @@ class AttachmentsListViewState  extends State<AttachmentsListView>{
 							downloadAtachment(file, filePath);
 					},
 					icon:Icon(file.downloaded ? Icons.open_in_full : Icons.download_outlined)
-				)
+				),
 			),
 		);
 	}
