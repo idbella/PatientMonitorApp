@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
@@ -55,6 +57,16 @@ class AddPatientExtraPageState extends State<AddPatientExtraPage> {
 			postalCodeController.text	= patient.postalCode.toString();
 			_country = Country.ALL.where((country) => country.name == patient.country).first;
 			_selected = patient.sexe == 0 ? Genre.male : Genre.female;
+		}
+		else
+		{
+			/*
+			** THIS IS JUST FOR DEBUGGING
+			*/
+			emailController.text			= Random().nextInt(200000).toString();
+			addressController.text		= 'auto address';
+			cityController.text			= 'auto city';
+			postalCodeController.text	= '3244';
 		}
 	}
 

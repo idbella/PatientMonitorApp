@@ -195,18 +195,15 @@ class ListPatientsPageState extends State<ListPatientsPage> {
 				if (value.statusCode == 200)
 				{
 					list = value.json();
-					print(list.toString());
+					print('patients : ' + list.toString());
 					Globals.patientsList = List();
 					if (list.isNotEmpty) {
 						list.forEach((element) {
 							Patient patient = Patient.fromjson(element);
 							Globals.patientsList.add(patient);
 						});
-						
 					}
-					setState((){
-							
-					});
+					setState((){});
 				}
 				else if (value.statusCode == 401)
 					Navigator.pushReplacementNamed(context, 'login');

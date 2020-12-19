@@ -41,6 +41,18 @@ class AddPatientPageState extends State<AddPatientPage> {
 			cinController.text = patient.cin.toString();
 			date = patient.birthdate;
 		}
+		else
+		{
+			/*
+			** THIS IS JUST FOR DEBUGGING
+			*/
+
+			fnameController.text = 'automated fname';
+			lnameController.text = 'automated lname';
+			phoneController.text = '2123333333';
+			cinController.text = 'J53454';
+			motifController.text = 'auto motif test';
+		}
 	}
 
 	@override
