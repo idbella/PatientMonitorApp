@@ -1,5 +1,6 @@
 
 import 'package:PatientMonitorMobileApp/globals.dart';
+import 'package:PatientMonitorMobileApp/views/Calendar.dart';
 import 'package:PatientMonitorMobileApp/views/Profile.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/AddMedicalFile.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/EditMedicalFile.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: 'login',
       routes: {
+			'calendar'			:(context) => AppointmentsView(),
 			'login'				:(context) => LoginPage(),
 			'admin' 				:(context) => AdminHomePage(),
 			'edit'  				:(context) => EditUserPage(),

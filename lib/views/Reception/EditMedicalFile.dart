@@ -1,20 +1,22 @@
 
-import 'package:PatientMonitorMobileApp/Clipper.dart';
+import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
+import 'package:PatientMonitorMobileApp/models/insurance.dart';
 import 'package:PatientMonitorMobileApp/DateTextField.dart';
 import 'package:PatientMonitorMobileApp/StyledTextView.dart';
 import 'package:PatientMonitorMobileApp/TimePicker.dart';
 import 'package:PatientMonitorMobileApp/globals.dart';
+import 'package:PatientMonitorMobileApp/Clipper.dart';
 import 'package:PatientMonitorMobileApp/models/Doctor.dart';
-import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/Nurse.dart';
-import 'package:PatientMonitorMobileApp/models/insurance.dart';
 import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/views/BottomMenu.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:PatientMonitorMobileApp/Requests/requests.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 
 class EditMedicalFile extends StatefulWidget{
 
@@ -527,6 +529,7 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 			'motif':motifController.text,
 			'doctor':_doctor.user.id,
 			'nurses':getSelectedNurses(),
+			'appointment':DateFormat('yyy-MM-dd').format(date) +' '+ time.hour.toString() + ':' + time.minute.toString() + ':00',
 			'insurance':Globals.insuarnces.where((element) => element.id == _selected).first.controller.text.toString()
 		};
 		print(body.toString());
