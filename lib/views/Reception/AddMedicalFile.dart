@@ -14,7 +14,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
-
+import 'package:intl/intl.dart';
 class AddMedicalFilePage extends StatefulWidget{
 
 	AddMedicalFilePage({Key key, this.title}) : super(key: key);
@@ -48,7 +48,7 @@ class AddMedicalFilePageState extends State<AddMedicalFilePage> {
 
 	@override
 	Widget build(BuildContext context) {
-		
+
 		extractArgs();
 
 		List<Widget> widgets = List();
@@ -512,6 +512,7 @@ class AddMedicalFilePageState extends State<AddMedicalFilePage> {
 			'motif':motifController.text,
 			'doctor':_doctor.user.id,
 			'nurses':getSelectedNurses(),
+			'appointment':DateFormat('yyy-MM-dd').format(date) +' '+ time.hour.toString() + ':' + time.minute.toString() + ':00',
 			'insurance':Globals.insuarnces.where((element) => element.id == _selected).first.controller.text.toString()
 		};
 		body.removeWhere((key,val)=>key=='doctor' && val == null);
