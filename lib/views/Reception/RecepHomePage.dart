@@ -92,7 +92,7 @@ class RecepHomePageState extends State<RecepHomePage> {
 													)
 												]
 											),
-											SizedBox(height: 150,),
+											SizedBox(height: 130,),
 											Column(
 												children: [
 													Row(
@@ -104,7 +104,6 @@ class RecepHomePageState extends State<RecepHomePage> {
 																	Icons.add,
 																	size: 70,
 																),
-																EdgeInsets.symmetric(horizontal: 15, vertical:40),
 																(){
 																	Navigator.of(context).pushNamed('addpatient');
 																}
@@ -115,7 +114,6 @@ class RecepHomePageState extends State<RecepHomePage> {
 																	Icons.find_in_page,
 																	size: 70,
 																),
-																EdgeInsets.symmetric(horizontal: 40,vertical: 40),
 																(){
 																	Navigator.of(context).pushNamed('listpatients');
 																}
@@ -123,57 +121,28 @@ class RecepHomePageState extends State<RecepHomePage> {
 														],
 													),
 													SizedBox(height: 20,),
-													// Row(
-													// 	mainAxisAlignment: MainAxisAlignment.spaceBetween,
-													// 	children: [
-													// 		getCard(
-													// 			' new Questionnaire  ',
-													// 			Icon(
-													// 				Icons.list,
-													// 				size: 70,
-													// 			),
-													// 			EdgeInsets.symmetric(horizontal: 15, vertical:40),
-													// 			(){}
-													// 		),
-													// 		getCard(
-													// 			'List Questionnaire',
-													// 			Icon(
-													// 				FontAwesome.list,
-													// 				size: 70,
-													// 			),
-													// 			EdgeInsets.symmetric(horizontal: 20,vertical: 40),
-													// 			(){}
-													// 		),
-													// 	],
-													// ),
+													Row(
+														mainAxisAlignment: MainAxisAlignment.spaceBetween,
+														children: [
+															getCard(
+																'   Appointments   ',
+																Icon(
+																	Icons.list,
+																	size: 70,
+																),
+																(){}
+															),
+															getCard(
+																' Archive',
+																Icon(
+																	Icons.list,
+																	size: 70,
+																),
+																(){}
+															),
+														],
+													),
 													SizedBox(height: 20,),
-													// Row(
-													// 	mainAxisAlignment: MainAxisAlignment.spaceBetween,
-													// 	children: [
-													// 		getCard(
-													// 			'      Render-Vous      ',
-													// 			Icon(
-													// 				Foundation.calendar,
-													// 				size: 70,
-													// 			),
-													// 			EdgeInsets.symmetric(horizontal: 15, vertical:40),
-													// 			(){
-													// 				Navigator.of(context).pushNamed('addpatient');
-													// 			}
-													// 		),
-													// 		// getCard(
-													// 		// 	'List Patients',
-													// 		// 	Icon(
-													// 		// 		Icons.find_in_page,
-													// 		// 		size: 70,
-													// 		// 	),
-													// 		// 	EdgeInsets.symmetric(horizontal: 40,vertical: 40),
-													// 		// 	(){
-													// 		// 		Navigator.of(context).pushNamed('listpatients');
-													// 		// 	}
-													// 		// ),
-													// 	],
-													// ),
 												],
 											)
 										]
@@ -204,21 +173,22 @@ class RecepHomePageState extends State<RecepHomePage> {
     );
   }
 
-	Widget getCard(String text, Widget icon, EdgeInsetsGeometry padding, Function onClick){
+	Widget getCard(String text, Widget icon, Function onClick){
+
+		double width = MediaQuery.of(context).size.width;
 		return (
-			FlatButton(
-				onPressed: onClick,
-				padding: EdgeInsets.zero,
-				child: Card(
+			SizedBox(
+				width: (width - 60 ) / 2,
+				child:RaisedButton(
 					elevation: 10,
-					child:Padding(
-						padding: padding,
-						child:Column(
-							children: [
-								icon,
-								Text(text)
-							]
-						)
+					color: Colors.white,
+					onPressed: onClick,
+					padding: EdgeInsets.symmetric(vertical:40),
+					child:Column(
+						children: [
+							icon,
+							Text(text)
+						]
 					)
 				)
 			)
