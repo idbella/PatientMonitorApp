@@ -31,7 +31,10 @@ class EditMedicalFileState extends State<EditMedicalFile> {
   
 	ProgressDialog		pr;
 	MedicalFile			medicalFile;
+	DateTime				firstDate = DateTime.now();
+	DateTime				lastDate = DateTime.now().add(Duration(days: 90));
 	DateTime				date = DateTime.now();
+
 	TimeOfDay			time = TimeOfDay.now();
 	bool					rendezVous = true;
 	int					_selected;
@@ -64,7 +67,7 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 	Widget build(BuildContext context) {
 		
 		extractArgs();
-
+		
 		List<Widget> widgets = List();
 		
 		Globals.insuarnces.forEach((Insurance element) {
@@ -287,8 +290,8 @@ class EditMedicalFileState extends State<EditMedicalFile> {
 																			labelText: "Date",
 																			prefixIcon: Icon(Icons.date_range),
 																			suffixIcon: Icon(Icons.arrow_drop_down),
-																			lastDate: date,
-																			firstDate: DateTime(1920),
+																			lastDate: lastDate,
+																			firstDate: firstDate,
 																			initialDate: date,
 																			onDateChanged: (selectedDate) {
 																				date = selectedDate;

@@ -28,7 +28,11 @@ class AddMedicalFilePageState extends State<AddMedicalFilePage> {
   
 	ProgressDialog		pr;
 	Patient				patient;
+	
+	DateTime				firstDate = DateTime.now();
+	DateTime				lastDate = DateTime.now().add(Duration(days: 90));
 	DateTime				date = DateTime.now();
+	
 	TimeOfDay			time = TimeOfDay.now();
 	bool					rendezVous = true;
 	int					_selected;
@@ -271,8 +275,8 @@ class AddMedicalFilePageState extends State<AddMedicalFilePage> {
 																			labelText: "Date",
 																			prefixIcon: Icon(Icons.date_range),
 																			suffixIcon: Icon(Icons.arrow_drop_down),
-																			lastDate: date,
-																			firstDate: DateTime(1920),
+																			lastDate: lastDate,
+																			firstDate: firstDate,
 																			initialDate: date,
 																			onDateChanged: (selectedDate) {
 																				date = selectedDate;
