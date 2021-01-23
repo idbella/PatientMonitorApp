@@ -46,9 +46,8 @@ class NotesListViewState  extends State<NotesListView>{
 								firstName: element['first_name'],
 								lastName: element['last_name'],
 								role: element['fk_role']
-								);
+							);
 						});
-						
 					}
 					setState(() {});
 				}

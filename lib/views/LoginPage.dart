@@ -37,10 +37,9 @@ class LoginPageState extends State<LoginPage>{
 	LoginPageState(this.checkLogin){
 		if (checkLogin == false)
 			showLoginPage = true;
-		emailTextController.text = 'recep';
-		passwordTextController.text = 'admin';
+		emailTextController.text = 'kurusaki97@gmail.com';
+		passwordTextController.text = 'kECnFjHN';
 	}
-
 	void signIn()
 	{
 		Requests.get(Globals.url + '/api/profile')

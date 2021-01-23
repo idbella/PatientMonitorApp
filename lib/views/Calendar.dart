@@ -36,8 +36,6 @@ class _AppointmentsViewState extends State<AppointmentsView> {
 		));
   		return _AppointmentDataSource(appointments);
 	}
-
-
 }
 class _AppointmentDataSource extends CalendarDataSource {
 	_AppointmentDataSource(List<Appointment> source){
