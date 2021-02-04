@@ -49,7 +49,7 @@ class AddMedicalFilePageState extends State<AddMedicalFilePage> {
 			return;
 		patient = ModalRoute.of(context).settings.arguments;
 	}
-
+	int dropdownValue = Globals.fileTypes[0].id;
 	@override
 	Widget build(BuildContext context) {
 
@@ -61,6 +61,19 @@ class AddMedicalFilePageState extends State<AddMedicalFilePage> {
 			widgets.add(getCard(element));
 		});
 		
+		List<DropdownMenuItem<int>> list = Globals.fileTypes.map((value) {
+			return DropdownMenuItem<int>(
+				value: value.id,
+				child: Row(
+					children: [
+						Icon(Icons.description),
+						SizedBox(width: 10,),
+						Text(value.title.toString())
+					]
+				),
+			);
+		}).toList();
+
 		return Scaffold(
 			bottomNavigationBar: BottomMenu(selectedIndex: 1),
 			backgroundColor:Globals.backgroundColor,
@@ -89,6 +102,28 @@ class AddMedicalFilePageState extends State<AddMedicalFilePage> {
 									children: [
 										patientInfo(),
 										SizedBox(height: 40,),
+										Padding(
+											padding: EdgeInsets.symmetric(horizontal:20),
+											child:Row(
+												mainAxisAlignment: MainAxisAlignment.spaceBetween,
+												children:[
+												Text('type de dossier : '),
+												DropdownButton<int>(
+													value: dropdownValue,
+													icon: Icon(Icons.arrow_downward),
+													iconSize: 24,
+													elevation: 16,
+													style: TextStyle(color: Colors.deepPurple),
+													onChanged: (int newValue) {
+														setState(() {
+														dropdownValue = newValue;
+														});
+													},
+													items: list,
+												),
+											]
+											),
+										),
 										textField(
 											hint:'titre de dossier',
 											label:'titre de dossier',
@@ -517,10 +552,12 @@ class AddMedicalFilePageState extends State<AddMedicalFilePage> {
 			'doctor':_doctor.user.id,
 			'nurses':getSelectedNurses(),
 			'appointment':DateFormat('yyy-MM-dd').format(date) +' '+ time.hour.toString() + ':' + time.minute.toString() + ':00',
-			'insurance':Globals.insuarnces.where((element) => element.id == _selected).first.controller.text.toString()
+			'insurance':Globals.insuarnces.where((element) => element.id == _selected).first.controller.text.toString(),
+			'type':dropdownValue.toString()
 		};
 		body.removeWhere((key,val)=>key=='doctor' && val == null);
 		body.removeWhere((key,val)=>key=='insurance_type' && val == null);
+		print(body);
 		Requests.post(Globals.url + '/api/patients/' + patientId.toString() + '/file', body: body)
 		.then((value){
 			print('add file = ' + value.content());

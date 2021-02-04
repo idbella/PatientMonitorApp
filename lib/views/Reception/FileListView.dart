@@ -10,14 +10,20 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 
 class FileListView extends StatefulWidget {
+	final int type;
+
+  const FileListView(this.type, {Key key}) : super(key: key);
 	@override
-	State<StatefulWidget> createState() => FileListViewState();
+	State<StatefulWidget> createState() => FileListViewState(type);
 }
   
 class FileListViewState  extends State<FileListView>{
 	
+	final int  type;
 	List<MedicalFile> medicalFiles;
 	Patient patient;
+
+  FileListViewState(this.type);
 
 	void getMedicalFiles()
 	{
@@ -30,9 +36,16 @@ class FileListViewState  extends State<FileListView>{
 				{
 					List<dynamic> list = response.json();
 					medicalFiles = List();
+					
 					if (list.isNotEmpty)
 					{
 						list.forEach((element) {
+							if (element['type'] != type)
+							{
+								
+								return;
+							}
+							print(type.toString() +  ' - type = ' + element['type'].toString());
 							MedicalFile medicalFile = MedicalFile.fromjson(element);
 							medicalFile.patient = patient;
 							medicalFiles.add(medicalFile);
@@ -89,7 +102,7 @@ class FileListViewState  extends State<FileListView>{
 		if (medicalFiles == null)
 			return Center(child:Column(children:[SizedBox(height:100),Text('Loading...')]));
 		if (medicalFiles.isEmpty)
-			return Center(child:Column(children:[SizedBox(height:100),Text('No medical files to show...')]));
+			return Center(child:Column(children:[SizedBox(height:100),Text('No ' + (type == Globals.medical ? 'medical' : 'chirurgical') + ' files to show...')]));
 
 		medicalFiles.forEach((MedicalFile medicalFile) {
 			String insurance;
