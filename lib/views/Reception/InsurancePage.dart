@@ -24,7 +24,7 @@ class InsurancePageState extends State<InsurancePage> {
 					_selected = Globals.insuarnces.first.id;
 	}
 	int _selected;
-
+	int dropdownValue = 0;
 	@override
 	Widget build(BuildContext context) {
 
@@ -33,6 +33,19 @@ class InsurancePageState extends State<InsurancePage> {
 		Globals.insuarnces.forEach((Insurance element) {
 			widgets.add(getCard(element));
 		});
+
+		List<DropdownMenuItem<int>> list = Globals.fileTypes.map((value) {
+			return DropdownMenuItem<int>(
+				value: value.id,
+				child: Row(
+					children: [
+						Icon(Icons.description),
+						SizedBox(width: 10,),
+						Text(value.title.toString())
+					]
+				),
+			);
+		}).toList();
 
 		return
 			Scaffold(
@@ -74,6 +87,28 @@ class InsurancePageState extends State<InsurancePage> {
 							child:Column(
 								children: [
 									SizedBox(height: 260,),
+									Padding(
+										padding: EdgeInsets.symmetric(horizontal:20),
+										child:Row(
+											mainAxisAlignment: MainAxisAlignment.spaceBetween,
+											children:[
+											Text('type de dossier : '),
+											DropdownButton<int>(
+												value: dropdownValue,
+												icon: Icon(Icons.arrow_downward),
+												iconSize: 24,
+												elevation: 16,
+												style: TextStyle(color: Colors.deepPurple),
+												onChanged: (int newValue) {
+													setState(() {
+													dropdownValue = newValue;
+													});
+												},
+												items: list,
+											),
+										]
+										),
+									),
 									Text(
 										'Insurance type',
 										style: TextStyle(
@@ -83,6 +118,7 @@ class InsurancePageState extends State<InsurancePage> {
 									),
 									SizedBox(height: 20,),
 									Column(children: widgets,),
+
 									SizedBox(height: 30,),
             					Row(
 										mainAxisAlignment: MainAxisAlignment.center,
@@ -161,6 +197,7 @@ class InsurancePageState extends State<InsurancePage> {
 	void next(){
 		Map<String,dynamic> body = {
 			'insurance_type':_selected,
+			'type':dropdownValue.toString()
 		};
 		Insurance insurance = Globals.insuarnces.where((element) => element.id == _selected).first;
 		if (insurance.editable)
