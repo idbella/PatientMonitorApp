@@ -18,12 +18,21 @@ class ViewNotesState extends State<ViewNotes>{
 
 	MedicalFile	medicalFile;
 	Patient		patient;
-
+	bool			all = false;
 	void extractArgs(){
-		if (medicalFile != null)
+		if (patient != null)
 			return;
-		medicalFile = ModalRoute.of(context).settings.arguments;
-		patient = medicalFile.patient;
+		Object object = ModalRoute.of(context).settings.arguments;
+		if (object.runtimeType == MedicalFile().runtimeType)
+		{
+			medicalFile = object;
+			patient = medicalFile.patient;
+		}
+		else{
+			all = true;
+			patient = object;
+			//medicalFile = MedicalFile(patient: patient);
+		}
 	}
 
 	@override
@@ -36,7 +45,7 @@ class ViewNotesState extends State<ViewNotes>{
 				bottomNavigationBar: BottomMenu(selectedIndex: 1),
 				backgroundColor:Globals.backgroundColor,
 				floatingActionButton: FloatingActionButton(
-					onPressed: () => Navigator.of(context).pushNamed('addnote', arguments:medicalFile),
+					onPressed: () => Navigator.of(context).pushNamed('addnote', arguments:medicalFile == null ? patient : medicalFile),
 					child:Icon(Icons.add)
 				),
 				body:SafeArea(
@@ -96,7 +105,7 @@ class ViewNotesState extends State<ViewNotes>{
 								),
 								Padding(
 									padding: EdgeInsets.symmetric(horizontal:20),
-									child:NotesListView(medicalFile: medicalFile,)
+									child:NotesListView(medicalFile, all ? patient: null)
 								)
 							]
 						)

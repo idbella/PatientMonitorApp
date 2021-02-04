@@ -20,12 +20,24 @@ class AddNoteState extends State<AddNote>{
 	MedicalFile					medicalFile;
 	Patient						patient;
 	int							_visibleTo = 6;
+	int							noteId;
 
 	void extractArgs(){
-		if (medicalFile != null)
+		if (patient != null)
 			return;
-		medicalFile = ModalRoute.of(context).settings.arguments;
-		patient = medicalFile.patient;
+		Object object = ModalRoute.of(context).settings.arguments;
+		if (object.runtimeType == MedicalFile().runtimeType)
+		{
+			medicalFile = object;
+			patient = medicalFile.patient;
+			noteId = medicalFile.id;
+			print('id of medicalFile');
+		}
+		else{
+			patient = object;
+			noteId = patient.id;
+			print('id of patient');
+		}
 	}
 
 	@override
@@ -211,7 +223,7 @@ class AddNoteState extends State<AddNote>{
 														),
 														RaisedButton(
 															child: Text('Save', style: TextStyle(color: Color.fromARGB(255, 245, 246, 250)),),
-															onPressed: ()=>saveNote(medicalFile.id),
+															onPressed: ()=>saveNote(noteId, medicalFile == null),
 															color: Color.fromARGB(255, 0, 151, 230),
 															shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)))
 														)
@@ -229,17 +241,22 @@ class AddNoteState extends State<AddNote>{
 		);
 		}
 
-		void saveNote(int fileId)
+		void saveNote(int fileId, [bool patient = false])
 		{
-			String url = Globals.url + '/api/file/' + fileId.toString() + '/notes';
+			String route = 'file';
+			if (patient == true)
+				route = 'patient';
+			String url = Globals.url + '/api/' + route + '/' + fileId.toString() + '/notes';
 			var body = {
 				'notes':noteController.text.toString(),
-				'permissions':_visibleTo.toString()
+				'permissions':_visibleTo.toString(),
 			};
+			print(url);
 			Requests.post(url, body: body).then((value) {
 				if (value.statusCode == 200)
 				{
-					medicalFile.notes = null;
+					if (medicalFile != null)
+						medicalFile.notes = null;
 					Navigator.pop(context);
 				}
 				print(value.content());

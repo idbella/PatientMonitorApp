@@ -2,6 +2,7 @@
 import 'package:PatientMonitorMobileApp/globals.dart';
 import 'package:PatientMonitorMobileApp/models/MedicalFile.dart';
 import 'package:PatientMonitorMobileApp/models/Note.dart';
+import 'package:PatientMonitorMobileApp/models/patient.dart';
 import 'package:PatientMonitorMobileApp/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -9,31 +10,58 @@ import 'package:intl/intl.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 
 class NotesListView extends StatefulWidget {
-	final MedicalFile medicalFile;
+	final MedicalFile	medicalFile;
+	final Patient		patient;
 
-	NotesListView({Key key, this.medicalFile}) : super(key: key);
+	NotesListView(this.medicalFile, this.patient, {Key key}) : super(key: key);
 	@override
-	State<StatefulWidget> createState() => NotesListViewState(medicalFile);
+	State<StatefulWidget> createState() => NotesListViewState(medicalFile, patient);
 }
   
 class NotesListViewState  extends State<NotesListView>{
 	
-	List<Note> notes;
-	final MedicalFile medicalFile;
+	List<Note>			notes;
+	MedicalFile	medicalFile;
+	final Patient		patient;
 
-  NotesListViewState(this.medicalFile);
+	NotesListViewState(MedicalFile medicalFile, this.patient){
+		if (medicalFile != null)
+			this.medicalFile = medicalFile;
+		else
+		{
+			this.medicalFile = MedicalFile();
+			this.medicalFile.patient = patient;
+		}
+	}
 
 	void getNotes()
 	{
-		if (medicalFile.notes != null)
+		String	route;
+		int		id;
+		
+		if (medicalFile != null && medicalFile.notes != null)
 			return ;
-		Requests.get(Globals.url + '/api/file/' + medicalFile.id.toString() + '/notes')
+		if (patient != null)
+		{
+			id = patient.id;
+			route = 'patient';
+		}
+		else
+		{
+			route = 'file';
+			id = medicalFile.id;
+		}
+		String url = Globals.url + '/api/' + route + '/' + id.toString() + '/notes';
+		print('all notes url = ' + url);
+		Requests.get(url)
 			.then((response) {
 				print('notes : ' + response.content().toString());
+				medicalFile = MedicalFile();
+				medicalFile.notes = List();
 				if (response.statusCode == 200)
 				{
 					List<dynamic> list = response.json();
-					medicalFile.notes = List();
+					
 					if (list.isNotEmpty)
 					{
 						list.forEach((element) {
@@ -41,11 +69,11 @@ class NotesListViewState  extends State<NotesListView>{
 							note.medicalFile = medicalFile;
 							medicalFile.notes.add(note);
 							note.user = User(
-								id:element['userId'],
-								title: element['title'],
-								firstName: element['first_name'],
-								lastName: element['last_name'],
-								role: element['fk_role']
+								id				: element['userId'],
+								title			: element['title'],
+								firstName	: element['first_name'],
+								lastName		: element['last_name'],
+								role			: element['fk_role']
 							);
 						});
 					}
