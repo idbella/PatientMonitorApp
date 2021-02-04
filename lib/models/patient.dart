@@ -4,7 +4,9 @@ import 'package:PatientMonitorMobileApp/models/user.dart';
 
 class Patient{
 
-	Patient({this.id,this.cin,this.address,this.postalCode,this.sexe,this.city,this.country, this.userId, String birthday}){
+	Patient({this.id,this.cin,this.address,this.postalCode,this.sexe,
+	this.city,this.country, this.userId, String birthday,
+	this.dia,this.tab,this.obe,this.hta}){
     this.birthdate = DateTime.parse(birthday);
   }
 
@@ -18,6 +20,10 @@ class Patient{
 	int		userId;
 	User		user;
 	DateTime	birthdate;
+	String	tab;
+	String	dia;
+	String	hta;
+	String	obe;
 
 	static Patient fromjson(Map<String, dynamic> json){ 
 		Patient patient = new Patient(
@@ -29,7 +35,11 @@ class Patient{
 			country:json['country'].toString(),
 			postalCode: json['postalcode'].toString(),
 			userId:json['userid'],
-			birthday: json['birthday'].toString()
+			birthday: json['birthday'].toString(),
+			obe: json['obe'],
+			hta: json['hta'],
+			tab: json['tab'],
+			dia: json['dia']
 		);
    	patient.user = User(
 			role: Globals.patientId,
