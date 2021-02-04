@@ -37,8 +37,8 @@ class LoginPageState extends State<LoginPage>{
 	LoginPageState(this.checkLogin){
 		if (checkLogin == false)
 			showLoginPage = true;
-		emailTextController.text = 'kurusaki97@gmail.com';
-		passwordTextController.text = 'kECnFjHN';
+		emailTextController.text = 'doctor';
+		passwordTextController.text = 'admin';//'kECnFjHN';
 	}
 	void signIn()
 	{
@@ -61,9 +61,10 @@ class LoginPageState extends State<LoginPage>{
 			}
 		})
 		.catchError((err){
+			print('server = ' + Globals.url.toString());
 			print('check error : ' + err.toString());
 			setState(() {
-				errorString = 'network Error please verify you internet connection';
+				errorString = 'network Error please verify your internet connection';
 				errorVisibility = true;
 			});
 		});

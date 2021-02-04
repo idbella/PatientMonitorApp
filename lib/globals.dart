@@ -15,6 +15,12 @@ class AccountType{
   AccountType(this.id, this.title);
 }
 
+class FileType{
+  int id;
+  String title;
+  FileType(this.id, this.title);
+}
+
 class Globals {
 
 	static String				url					= 'https://idbella.herokuapp.com';
@@ -35,7 +41,9 @@ class Globals {
 	static int					docAttach			= 2;
 	static int					radioAttach			= 3;
 	static int					ordoAttach			= 4;
-
+	static int					medical				= 0;
+	static int 					chirurgical			= 1;
+	
 	static List<AccountType> accountTypes = List.from(
 		[
 			AccountType(2,'doctor'),
@@ -44,6 +52,13 @@ class Globals {
 		]
 	);
 
+	static List<FileType> fileTypes = List.from(
+		[
+			FileType(0,'medical'),
+			FileType(1,'chirurgical'),
+		]
+	);
+	
 	static void getInsurances({Function callback})
 	{
 		if (Globals.insuarnces.isNotEmpty)

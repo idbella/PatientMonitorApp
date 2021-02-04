@@ -32,15 +32,15 @@ class AddUserPageState extends State<AddUserPage> {
 	Widget build(BuildContext context) {
     
     List<DropdownMenuItem<int>> c = Globals.accountTypes.map((value) {
-                  return DropdownMenuItem<int>(
-                    value: value.id,
-                    child: Row(children: [
-                      Icon(Icons.person),
-                      Text(value.title.toString())
-                    ],),
-                  );
-                }).toList();
-          
+			return DropdownMenuItem<int>(
+				value: value.id,
+				child: Row(children: [
+					Icon(Icons.person),
+					Text(value.title.toString())
+				],),
+			);
+		}).toList();
+   
 		return Scaffold(
 			backgroundColor:Globals.backgroundColor,
       appBar: AppBar(
