@@ -27,6 +27,7 @@ class ViewPatientPageState extends State<ViewPatientPage> {
 		if (patient != null)
 			return;
 		patient = ModalRoute.of(context).settings.arguments;
+		print('userId for patient = ' + patient.user.id.toString());
 	}
 
 	@override
@@ -83,7 +84,63 @@ class ViewPatientPageState extends State<ViewPatientPage> {
 											),
 										),
 										SizedBox(height: 15,),
-										FileListView(),
+										Card(
+											child:ListTile(
+												leading: Icon(Icons.dehaze_rounded),
+												title: Text('observations médicales'),
+												onTap: (){
+													Navigator.of(context).pushNamed('viewnotes', arguments: patient);
+												},
+											)
+										),
+										Card(
+											child:ListTile(
+												leading: Icon(Icons.dehaze_rounded),
+												title: Text('Antécédents médicaux'),
+												onTap: (){
+													Navigator.of(context).pushNamed('medical', arguments: patient);
+												},
+											)
+										),
+										Card(
+											child:ListTile(
+												leading: Icon(Icons.dehaze_rounded),
+												title: Text('Antécédents chirurgicaux'),
+												onTap: (){
+													Navigator.of(context).pushNamed('chirurgical', arguments: patient);
+												},
+											)
+										),
+										Card(
+											child:ListTile(
+												leading: Icon(Icons.dehaze_rounded),
+												title: Text('traitement en cours')
+											)
+										),
+										Card(
+											child:ListTile(
+												leading: Icon(Icons.dehaze_rounded),
+												title: Text('Allergie du patient'),
+												onTap: (){
+													Navigator.of(context).pushNamed('allergy', arguments: patient);
+												},
+											)
+										),
+										Card(
+											child:ListTile(
+												leading: Icon(Icons.dehaze_rounded),
+												title: Text('Histoire de la maladie')
+											)
+										),
+										Card(
+											child:ListTile(
+												leading: Icon(Icons.dehaze_rounded),
+												title: Text('Facteurs de risque'),
+												onTap: (){
+													Navigator.of(context).pushNamed('factor', arguments: patient);
+												},
+											)
+										),
 										SizedBox(height: 50,)
 									]
 								)
