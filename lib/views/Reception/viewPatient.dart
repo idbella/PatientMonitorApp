@@ -52,7 +52,7 @@ class ViewPatientPageState extends State<ViewPatientPage> {
 						children: [
 							ClipPath(
 								child:Container(
-									height: 230,
+									height: 200,
 									width: MediaQuery.of(context).size.width,
 									decoration: BoxDecoration(
 										image: DecorationImage(
@@ -70,20 +70,17 @@ class ViewPatientPageState extends State<ViewPatientPage> {
 									crossAxisAlignment: CrossAxisAlignment.start,
 									children: [
 										patientInfo(),
-										SizedBox(height: 30,),
-										TextField(
-											decoration: InputDecoration(
-												border:  OutlineInputBorder(
-													borderRadius: BorderRadius.all(Radius.circular(5)),
-													borderSide:  BorderSide(color: Colors.teal)
-												),
-												fillColor: Colors.white,
-												filled: true,
-												suffix: Icon(Icons.search),
-												hintText: 'Search for medical file'
+										SizedBox(height: 60,),
+										Padding(
+											padding: EdgeInsets.symmetric(vertical:10),
+											child:Text(
+												'Dossier médical : ',
+												style:TextStyle(
+													fontSize: 18,
+													fontWeight: FontWeight.w400
+												)
 											),
 										),
-										SizedBox(height: 15,),
 										Card(
 											child:ListTile(
 												leading: Icon(Icons.dehaze_rounded),
@@ -114,12 +111,6 @@ class ViewPatientPageState extends State<ViewPatientPage> {
 										Card(
 											child:ListTile(
 												leading: Icon(Icons.dehaze_rounded),
-												title: Text('traitement en cours')
-											)
-										),
-										Card(
-											child:ListTile(
-												leading: Icon(Icons.dehaze_rounded),
 												title: Text('Allergie du patient'),
 												onTap: (){
 													Navigator.of(context).pushNamed('allergy', arguments: patient);
@@ -129,13 +120,35 @@ class ViewPatientPageState extends State<ViewPatientPage> {
 										Card(
 											child:ListTile(
 												leading: Icon(Icons.dehaze_rounded),
-												title: Text('Histoire de la maladie')
+												title: Text('Facteurs de risque'),
+												onTap: (){
+													Navigator.of(context).pushNamed('factor', arguments: patient);
+												},
+											)
+										),
+										Padding(
+											padding: EdgeInsets.symmetric(vertical:20),
+											child:Text(
+												'Dossier de soins infirmiers : ',
+												style:TextStyle(
+													fontSize: 18,
+													fontWeight: FontWeight.w400
+												)
+											),
+										),
+										Card(
+											child:ListTile(
+												leading: Icon(Icons.dehaze_rounded),
+												title: Text('Observations infirmières'),
+												onTap: (){
+													Navigator.of(context).pushNamed('nurseNotes', arguments: patient);
+												},
 											)
 										),
 										Card(
 											child:ListTile(
 												leading: Icon(Icons.dehaze_rounded),
-												title: Text('Facteurs de risque'),
+												title: Text('Plan de soins infirmiers'),
 												onTap: (){
 													Navigator.of(context).pushNamed('factor', arguments: patient);
 												},

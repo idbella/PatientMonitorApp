@@ -14,11 +14,13 @@ import 'package:PatientMonitorMobileApp/views/Reception/Staff.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/addPatientExtra.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/viewPatient.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/AddNote.dart';
+import 'package:PatientMonitorMobileApp/views/doctor/AddNurseNote.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/DoctorHomePage.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/EditMedicalFile.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/EditNote.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/ViewAttachments.dart';
 import 'package:PatientMonitorMobileApp/views/doctor/ViewNotes.dart';
+import 'package:PatientMonitorMobileApp/views/doctor/ViewNurseNotes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -35,7 +37,7 @@ import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/addPatient.dart';
 
 void main() {
-	//Globals.url = 'http://192.168.42.179:8080';
+	Globals.url = 'http://192.168.42.179:8080';
 	Globals.url = 'http://10.30.248.2:8080';
 	runApp(MyApp());
 }
@@ -90,7 +92,9 @@ class MyApp extends StatelessWidget {
 			'allergy'			:(context) => AllergyPage(),
 			'factor'				:(context) => FactorPage(),
 			'medical'			:(context) => MedicalListPage(),
-			'chirurgical'		:(context) => ChirurgicalListPage()
+			'chirurgical'		:(context) => ChirurgicalListPage(),
+			'nurseNotes'		:(context) => ViewNurseNotes(),
+			'addNurseNote'		:(context) => AddNurseNote(),
       },
     );
   }
