@@ -9,54 +9,27 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:PatientMonitorMobileApp/Requests/requests.dart';
 
-class NotesListView extends StatefulWidget {
-	final MedicalFile	medicalFile;
+class NurseNotesListView extends StatefulWidget {
 	final Patient		patient;
 
-	NotesListView(this.medicalFile, this.patient, {Key key}) : super(key: key);
+	NurseNotesListView(this.patient, {Key key}) : super(key: key);
 	@override
-	State<StatefulWidget> createState() => NotesListViewState(medicalFile, patient);
+	State<StatefulWidget> createState() => NurseNotesListViewState(patient);
 }
   
-class NotesListViewState  extends State<NotesListView>{
+class NurseNotesListViewState  extends State<NurseNotesListView>{
 	
 	List<Note>			notes;
-	MedicalFile	medicalFile;
 	final Patient		patient;
+	MedicalFile			medicalFile = MedicalFile();
 
-	NotesListViewState(MedicalFile medicalFile, this.patient){
-		if (medicalFile != null)
-			this.medicalFile = medicalFile;
-		else
-		{
-			this.medicalFile = MedicalFile();
-			this.medicalFile.patient = patient;
-		}
-	}
+	NurseNotesListViewState(this.patient);
 
 	void getNotes()
 	{
-		String	route;
-		int		id;
-		
-		if (medicalFile != null && medicalFile.notes != null)
-			return ;
-		if (patient != null)
-		{
-			id = patient.id;
-			route = 'patient';
-		}
-		else
-		{
-			route = 'file';
-			id = medicalFile.id;
-		}
-		String url = Globals.url + '/api/' + route + '/' + id.toString() + '/notes';
-		print('all notes url = ' + url);
+		String url = Globals.url + '/api/patient/' + patient.id.toString() + '/notes';
 		Requests.get(url)
 			.then((response) {
-				print('notes : ' + response.content().toString());
-				medicalFile = MedicalFile();
 				medicalFile.notes = List();
 				if (response.statusCode == 200)
 				{
@@ -65,8 +38,8 @@ class NotesListViewState  extends State<NotesListView>{
 					if (list.isNotEmpty)
 					{
 						list.forEach((element) {
-							if (element['type'] != 0)
-								return;
+							if (element['type'] != 1)
+								return ;
 							Note note = Note.fromJson(element);
 							note.medicalFile = medicalFile;
 							medicalFile.notes.add(note);
@@ -87,7 +60,8 @@ class NotesListViewState  extends State<NotesListView>{
 	@override
 	Widget build(BuildContext context) {
 
-		getNotes();
+		if (medicalFile.notes == null)
+			getNotes();
 		List<Widget> list = List();
 		
 		if (medicalFile.notes == null)
@@ -133,7 +107,6 @@ class NotesListViewState  extends State<NotesListView>{
 														backgroundImage:image
 													)
 												),
-												
 												Column(
 													crossAxisAlignment: CrossAxisAlignment.start,
 													children:[
@@ -169,7 +142,7 @@ class NotesListViewState  extends State<NotesListView>{
 													),
 													SizedBox(width: 20,),
 													Icon(Icons.delete,color: Colors.white,)
-												],	
+												],
 											)
 										)
 									],
