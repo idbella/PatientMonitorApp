@@ -37,8 +37,8 @@ import 'package:PatientMonitorMobileApp/views/Reception/RecepHomePage.dart';
 import 'package:PatientMonitorMobileApp/views/Reception/addPatient.dart';
 
 void main() {
-	Globals.url = 'http://192.168.42.179:8080';
-	Globals.url = 'http://10.30.248.2:8080';
+	// Globals.url = 'http://192.168.42.179:8080';
+	// Globals.url = 'http://10.30.248.2:8080';
 	runApp(MyApp());
 }
 

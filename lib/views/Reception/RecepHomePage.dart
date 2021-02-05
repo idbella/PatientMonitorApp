@@ -95,54 +95,37 @@ class RecepHomePageState extends State<RecepHomePage> {
 											SizedBox(height: 130,),
 											Column(
 												children: [
-													Row(
-														mainAxisAlignment: MainAxisAlignment.spaceBetween,
-														children: [
-															getCard(
-																'register new Patient',
-																Icon(
-																	Icons.add,
-																	size: 70,
-																),
-																(){
-																	Navigator.of(context).pushNamed('addpatient');
-																}
-															),
-															getCard(
-																'Patients List',
-																Icon(
-																	Icons.find_in_page,
-																	size: 70,
-																),
-																(){
-																	Navigator.of(context).pushNamed('listpatients');
-																}
-															),
-														],
+													getCard(
+														'nouveaux Patient',
+														Icon(
+															Icons.add,
+															size: 70,
+														),
+														(){
+															Navigator.of(context).pushNamed('addpatient');
+														}
+													),
+													SizedBox(height: 30,),
+													getCard(
+														'List des Patients',
+														Icon(
+															Icons.find_in_page,
+															size: 70,
+														),
+														(){
+															Navigator.of(context).pushNamed('listpatients');
+														}
 													),
 													SizedBox(height: 20,),
-													Row(
-														mainAxisAlignment: MainAxisAlignment.spaceBetween,
-														children: [
-															getCard(
-																'   Appointments   ',
-																Icon(
-																	Icons.list,
-																	size: 70,
-																),
-																(){
-																	Navigator.of(context).pushNamed('calendar');
-																}
-															),
-															getCard(
-																' Archive',
-																Icon(
-																	Icons.list,
-																	size: 70,
-																),
-																(){}
-															),
-														],
+													getCard(
+														'List des Rendez-vous',
+														Icon(
+															Icons.calendar_today,
+															size: 70,
+														),
+														(){
+															Navigator.of(context).pushNamed('calendar');
+														}
 													),
 													SizedBox(height: 20,),
 												],
@@ -159,9 +142,7 @@ class RecepHomePageState extends State<RecepHomePage> {
 	}
 
   void showAlertDialog(BuildContext context) {
-    // set up the button
 
-    // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Loading"),
       content: Text("Please wait..."),
@@ -180,16 +161,19 @@ class RecepHomePageState extends State<RecepHomePage> {
 		double width = MediaQuery.of(context).size.width;
 		return (
 			SizedBox(
-				width: (width - 60 ) / 2,
+				width: (width - 60 ),
 				child:RaisedButton(
 					elevation: 10,
 					color: Colors.white,
 					onPressed: onClick,
-					padding: EdgeInsets.symmetric(vertical:40),
-					child:Column(
+					padding: EdgeInsets.symmetric(vertical:30),
+					child:Row(
+						mainAxisAlignment: MainAxisAlignment.spaceBetween,
 						children: [
+							SizedBox(width: 20,),
 							icon,
-							Text(text)
+							Text(text),
+							SizedBox(width: 20,),
 						]
 					)
 				)
