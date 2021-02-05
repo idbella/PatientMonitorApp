@@ -222,7 +222,13 @@ class FactorPageState extends State<FactorPage> {
 		};
 		Requests.post(url, body: body).then((value) {
 			if (value.statusCode == 200)
-				Globals.showAlertDialog(context, 'ok', 'done');
+			{
+				patient.dia = diaController.text;
+				patient.hta = htaController.text;
+				patient.obe = obeController.text;
+				patient.tab = tabController.text;
+				Globals.showAlertDialog(context, 'saved', 'done');
+			}
 			else
 				Globals.showAlertDialog(context, 'unexpected error', value.content());
 		}).catchError((e){
